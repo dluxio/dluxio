@@ -1,17 +1,11 @@
-
-/*
-logic to address scene components, also load and unload scenes
-
-360 videosphere loader
-
-var scene = document.querySelector('a-scene');
-var entityEl = document.createElement('a-videosphere');
-entityEl.setAttribute('src', 'ipfsgateway/seed');
-entityEl.addEventListener('loaded');
-scene.appendChild(entityEl);
-
-360 video pause, play
-
-AFRAME.registerComponent('a-videosphere').play();
-AFRAME.registerComponent('a-videosphere').pause();
-*/
+AFRAME.registerComponent('cursor-listener', {
+  init: function () {
+    var lastIndex = -1;
+    var COLORS = ['red', 'green', 'blue'];
+    this.el.addEventListener('click', function (evt) {
+      lastIndex = (lastIndex + 1) % COLORS.length;
+      this.setAttribute('material', 'color', COLORS[lastIndex]);
+      this.setAttribute('material', 'opacity', 1.0)
+    });
+  }
+});

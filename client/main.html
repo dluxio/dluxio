@@ -11,19 +11,57 @@
   </body>
 </template>
 
-<template name="homeCanvas">
-  <a-entity camera universal-controls mouse-controls>
-  </a-entity>
-  <a-sphere position="0 1 -3" color="red"></a-sphere>
-</template>
-
-<template name="dlux">
+<template name="userLoader">
   <a-scene>
-  <a-entity camera universal-controls mouse-controls>
-  <a-box cursor-listen position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+    <a-entity camera position="0 1.6 0 " universal-controls mouse-controls>
+      <a-entity cursor="fuse: true; fuseTimeout: 500"
+                position="0 0 -1"
+                geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02"
+                material="color: blue; shader: flat">
+      </a-entity>
+    </a-entity>
+  <a-sphere id="menuButton" cursor-listener position="0 0 0" scale="0.5 0.5 0.5" transparent=true opacity=0 universal-controls mouse-controls></a-sphere>
+  <a-box cursor-listener position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
   <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
   <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
   <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
   <a-sky color="#ECECEC"></a-sky>
   </a-scene>
+</template>
+
+<template name="postLoader">
+  <a-scene>
+    <a-entity camera position="0 1.6 0 " universal-controls mouse-controls>
+      <a-entity cursor="fuse: true; fuseTimeout: 500"
+                position="0 0 -1"
+                geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02"
+                material="color: blue; shader: flat">
+      </a-entity>
+    </a-entity>
+  <a-sphere id="menuButton" cursor-listener position="0 0 0" scale="0.5 0.5 0.5" transparent=true opacity=0 universal-controls mouse-controls></a-sphere>
+  <a-box cursor-listener position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+  <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+  <a-sky color="#ECECEC"></a-sky>
+  </a-scene>
+</template>
+
+<template name="dlux">
+  <a-scene>
+    <a-entity camera position="0 1.6 0 " universal-controls mouse-controls>
+      <a-entity cursor="fuse: true; fuseTimeout: 500"
+                position="0 0 -1"
+                geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02"
+                material="color: blue; shader: flat">
+      </a-entity>
+    </a-entity>
+  <a-sphere id="menuButton" cursor-listener position="0 0 0" scale="0.5 0.5 0.5" transparent=true opacity=0 universal-controls mouse-controls></a-sphere>
+  <a-cylinder cursor-listener position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+  <a-plane cursor-listener position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+  <a-sky color="#ECECEC"></a-sky>
+  </a-scene>
+
+</template>
+
+<template name="loginSC">
+  <h1>Steemconnect Draw 2d</h1>
 </template>

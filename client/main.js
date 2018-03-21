@@ -19,8 +19,57 @@ Template.dlux.onCreated(function dluxOnCreated() {
 });
 });
 
+Template.App_body.helpers({
+  /* activePostClass(post) {
+    const active = ActiveRoute.name('post')
+      && FlowRouter.getParam('_postid') === post._id;
+    return active && 'active';
+  },
+  activeListClass(user) {
+    const active = ActiveRoute.name('user')
+      && FlowRouter.getParam('_userid') === user._userid;
+    return active && 'active';
+  },
+  activeClass(home) {
+    const active = ActiveRoute.name('home');
+    return active && 'active';
+  } */
+});
+
 Template.dlux.helpers({
+
 });
 
 Template.dlux.events({
-});s
+
+});
+
+Template.loginSC.helpers({
+
+});
+
+Template.loginSC.events({
+
+});
+
+Template.postLoader.helpers({
+ /*  postID(){
+    let postId = Flowrouter.getParam('_postid');
+    return Meteor.users.findOne(postId);
+  } */
+});
+
+Template.postLoader.events({
+
+});
+
+Template.userLoader.helpers({
+/*  user(){
+    let userId = Flowrouter.getParam('_userid');
+    return Meteor.users.findOne(userId);
+  } */
+});
+
+Template.userLoader.events({
+
+});

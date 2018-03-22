@@ -2,7 +2,7 @@
   "name": "dlux",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "MONGO_URL=mongodb://steemit:steemit@mongo1.steemdata.com:27017/SteemData meteor run"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.42",
@@ -10,9 +10,13 @@
     "aframe-extras": "^3.13.1",
     "aframe-gui": "^0.1.5",
     "babel-runtime": "^6.26.0",
+    "bufferutil": "^3.0.3",
     "meteor-node-stubs": "^0.3.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "sc2-sdk": "^1.0.2"
+    "sc2-sdk": "^1.0.2",
+    "steem-rpc": "^0.6.6",
+    "steemjs-lib": "^0.3.7",
+    "utf-8-validate": "^4.0.0"
   }
 }

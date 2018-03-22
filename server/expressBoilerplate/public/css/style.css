@@ -1,0 +1,90 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  /*font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;*/
+}
+
+a {
+  /*color: #00B7FF;
+  margin: 0 20px 20px 0;
+  display: inline-block;*/
+}
+
+main, aside {
+  padding: 30px 0;
+  max-width: 520px;
+  margin: 0 auto;
+}
+.tags {
+  margin: 10px 0;
+}
+.tags span {
+  border: solid 1px #ccc;
+  padding: 5px;
+  border-radius: 5px;
+  margin: 0 5px 0 0;
+}
+
+img {
+  max-width: 100%;
+}
+.item {
+  border: solid 1px #ccc;
+  margin: 30px 0;
+}
+.comment {
+  margin: 15px 0;
+}
+.comment-level-1 {
+  padding-left: 15px;
+}
+.comment-level-2 {
+  padding-left: 30px;
+}
+.comment-level-3 {
+  padding-left: 45px;
+}
+
+.meta form {
+  display: inline-block;
+}
+
+input, label, textarea, button {
+  margin: 15px 0;
+  width: 100%;
+  border-radius: 3px;
+  padding: 5px;
+}
+
+input, textarea {
+  border: solid 1px #7b7b7b;
+}
+
+input:focus, textarea:focus {
+  outline: 0;
+}
+
+textarea {
+  min-height: 400px;
+}
+
+button, input[type="submit"] {
+  cursor: pointer;
+}
+
+.vote {
+  width: 100px;
+}
+
+.comment-message {
+  margin-top: 20px;
+}
+.send-comment {
+  cursor: pointer;
+  display: inline-block;
+  border-radius: 3px;
+  padding: 10px;
+  border: solid 1px #7b7b7b;
+  margin: 20px 0 40px;
+}

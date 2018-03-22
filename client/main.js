@@ -3,7 +3,9 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import { Meteor } from 'meteor/meteor';
 import aframe from 'aframe';
 import sc2 from 'sc2-sdk';
+import steem from 'steemjs-lib';
 import { FlowRouter } from 'meteor/flowRouter';
+import SteemData from 'SteemData';
 
 import './main.html';
 import './brain/dlux.js';
@@ -11,15 +13,13 @@ import './lib/routes.js';
 
 var aframeGui = require('aframe-gui');
 
-Template.dlux.onCreated(function dluxOnCreated() {
-  sc2.init({
-  app: 'dlux',
-  callbackURL: 'localhost:3000',
-  scope: ['vote', 'comment']
-});
-});
 
-Template.App_body.helpers({
+
+/*
+  steem.broadcast.vote("wif", "userId",
+    "post", "postlink", 10000, function(err, result) {
+    console.log(err, result);
+}); */
   /* activePostClass(post) {
     const active = ActiveRoute.name('post')
       && FlowRouter.getParam('_postid') === post._id;
@@ -34,7 +34,7 @@ Template.App_body.helpers({
     const active = ActiveRoute.name('home');
     return active && 'active';
   } */
-});
+
 
 Template.dlux.helpers({
 
@@ -42,7 +42,7 @@ Template.dlux.helpers({
 
 Template.dlux.events({
 
-});
+   });
 
 Template.loginSC.helpers({
 

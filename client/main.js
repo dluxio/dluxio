@@ -5,7 +5,6 @@ import aframe from 'aframe';
 import sc2 from 'sc2-sdk';
 import steem from 'steemjs-lib';
 import { FlowRouter } from 'meteor/flowRouter';
-import SteemData from 'SteemData';
 
 import './main.html';
 import './brain/dlux.js';

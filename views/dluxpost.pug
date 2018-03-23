@@ -1,0 +1,12 @@
+doctype html
+html
+ head
+ meta(charset='utf-8')
+ title dlux | sculpt your post | press Ctrl + Alt +i
+ meta(name='dlux', content='crafting VR')
+ script(src='https://aframe.io/releases/0.8.0/aframe.min.js')
+body
+ a-scene
+  a-entity(camera position='0 1.6 0' universal-controls mouse-controls)
+    a-entity(cursor fuse='true' fuseTimeout='500' position='0 0 -1' geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02" material='color: blue; shader: flat')
+  a-sphere(cursor-listener position='0 0 0' scale='0.5 0.5 0.5' transparent='true' opacity='0' universal-controls mouse-controls)

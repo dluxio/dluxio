@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  include partials/nav
+
+  main.feed(data-feed-type=`${feed}`)
+    .container
+      .row.feed-insert
+
+  script(src='/js/showdown.min.js')

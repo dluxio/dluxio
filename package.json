@@ -6,12 +6,14 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "aframe": "^0.8.1",
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.15.5",
     "express-sanitize-escape": "^1.1.0",
     "express-session": "^1.15.6",
+    "ipfs-api": "^18.2.1",
     "morgan": "~1.9.0",
     "pug": "2.0.0-beta11",
     "sc2-sdk": "^1.0.2",

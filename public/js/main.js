@@ -1,6 +1,7 @@
 let allUsers = []
 let allContent = []
 let converter = new showdown.Converter({ tables: true })
+let AFRAME = require('aframe');
 
 function getTrending(query, initial){
   steem.api.getDiscussionsByTrending(query, (err, result) => {
@@ -116,6 +117,55 @@ function genImageInHTML(markdown){
     } else {
       return false
     }
+}
+
+function getDlux(url) {
+  steem.api.getState(url, (err, result) => {
+    let users = result.accounts;
+    let resultsArray = [];
+    for ( post in result.content ){
+
+      var md = '## [dlux content]( ${result.content[post].permlink} )';
+
+
+      resultsArray.push({
+        id: result.content[post].id,
+        title: result.content[post].root_title,
+        author: result.content[post].author,
+        body: md,
+        json: result.content[post].json_metadata,
+        permlink: result.content[post].permlink,
+        depth: result.content[post].depth,
+        root_comment: result.content[post].root_comment,
+        parent_permlink: result.content[post].parent_permlink,
+        created: result.content[post].created,
+        votes: result.content[post].net_votes,
+        voters: result.content[post].active_votes.map(vote => vote.voter),
+        value: Math.round( parseFloat(result.content[post].pending_payout_value.substring(0,5)) * 100) / 100
+      })
+    }
+
+    // Sort By Date/ID
+    resultsArray = resultsArray.sort((a,b) => {
+      return b.id - a.id
+    });
+
+    // Find Deepest Comment
+    let maxDepthComment = resultsArray.reduce((prev, current) => {
+      return (prev.depth > current.depth) ? prev : current
+    })
+
+    // Multi demention array by
+    let resultsByDepth = [];
+    for (var i = 0; i < maxDepthComment.depth + 1; i++) {
+      resultsByDepth.push(resultsArray.filter(elem => {
+        return elem.depth === i
+      }))
+    }
+    appendSinglePost(resultsByDepth[0][0], users)
+    appendComments(resultsByDepth)
+
+  })
 }
 
 function getPostAndComments(url) {
@@ -337,6 +387,11 @@ if ($('main').hasClass('feed') ) {
 if ($('main').hasClass('single')) {
   let data = $('main').data()
   getPostAndComments(`/${data.category}/@${data.username}/${data.permlink}`)
+}
+
+if ($('main').hasClass('dlux')) {
+  let data = $('main').data()
+  getDlux(`/${data.category}/@${data.username}/${data.permlink}`)
 }
 
 if ($('main').hasClass('dashboard')) {

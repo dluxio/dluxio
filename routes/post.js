@@ -13,14 +13,38 @@ router.get('/', util.isAuthenticated, (req, res, next) => {
 router.get('/dluxpost', util.isAuthenticated, (req, res, next) => {
     res.render('dluxpost', {
       name: req.session.steemconnect.name
+    })
+});
+
+router.post('/create-dluxpost', util.isAuthenticated, (req, res) => { //where to point post button from VR
+    let author = req.session.steemconnect.name
+    let permlink = util.urlString()
+    var tags = req.body.tags.split(',').map(item => item.trim());  //needs app tagging, comment extentions, and properly formatted with a link that will trigger a mechanism in the permLink to display a VR scene
+    let primaryTag = 'dluxVR'
+    let otherTags = tags.slice(1)
+    let title = req.body.title
+    let body = req.body.post
+
+    steem.comment('', primaryTag, author, permlink, title, body, '', (err, steemResponse) => {
+        if (err) {
+          res.render('post', {
+            name: req.session.steemconnect.name,
+            msg: 'Error'
+          })
+        } else {
+          res.render('post', {
+            name: req.session.steemconnect.name,
+            msg: 'Posted To Steem Network'
+          })
+        }
     });
 });
 
 router.post('/create-post', util.isAuthenticated, (req, res) => {
     let author = req.session.steemconnect.name
     let permlink = util.urlString()
-    var tags = req.body.tags.split(',').map(item => item.trim());
-    let primaryTag = tags[0] || 'photography'
+    var tags = req.body.tags.split(',').map(item => item.trim());// also needs tagging and comment extentions
+    let primaryTag = 'dlux'
     let otherTags = tags.slice(1)
     let title = req.body.title
     let body = req.body.post

@@ -44,6 +44,7 @@ app.use('/feed', feed);
 app.use('/post', post);
 app.use('/post/create-post', post);
 app.use('/post/dluxpost', post);
+app.use('/post/create-dluxpost', post);
 
 
 // catch 404 and forward to error handler

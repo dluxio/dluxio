@@ -22,11 +22,11 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
       let category = req.params.category
       let username = req.params.username
       let permlink = req.params.permlink
-      if (category == "dluxVR") { //to render our VR scene
+      if (category == "dluxvr") { //to render our VR scene
         res.render('dlux', {
           category: category,
           username: username,
-          permlink: permlink
+          permlink: permlink //ipfsloc: ipfsloc
         });
       } else {
       res.render('single', {

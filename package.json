@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "aframe": "^0.8.1",
+    "aframe-inspector": "github:dluxio/aframe-inspector#dluxipfs",
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",

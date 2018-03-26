@@ -5,7 +5,8 @@ html
  title dlux | sculpt your post | press Ctrl + Alt +i
  meta(name='dlux', content='crafting VR')
  script(src='https://aframe.io/releases/0.8.0/aframe.min.js')
- script(src='http://dlux.io/alpha/aframe-text-geometry.min.js')
 body
+block content
  a-scene
-  a-gltf-model(src='https://ipfs.io/ipfs/QmSBUNpUBWvcTJiDnYg8u3WKmYeghykGgvmq2u29CLuTE5')
+
+main.dlux(data-username=`${username}` data-permlink=`${permlink}` data-category=`${category}`)

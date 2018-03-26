@@ -1,7 +1,6 @@
 let allUsers = []
 let allContent = []
 let converter = new showdown.Converter({ tables: true })
-let AFRAME = require('aframe');
 
 function getTrending(query, initial){
   steem.api.getDiscussionsByTrending(query, (err, result) => {
@@ -125,14 +124,14 @@ function getDlux(url) {
     let resultsArray = [];
     for ( post in result.content ){
 
-      var md = '## [dlux content]( ${result.content[post].permlink} )';
+      var body = result.content[post].body;
 
 
       resultsArray.push({
         id: result.content[post].id,
         title: result.content[post].root_title,
         author: result.content[post].author,
-        body: md,
+        body: body,
         json: result.content[post].json_metadata,
         permlink: result.content[post].permlink,
         depth: result.content[post].depth,

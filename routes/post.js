@@ -3,6 +3,7 @@ let util = require('../modules/util');
 let steem = require('../modules/steemconnect')
 let router = express.Router();
 
+
 router.get('/', util.isAuthenticated, (req, res, next) => {
     res.render('post', {
       name: req.session.steemconnect.name
@@ -15,19 +16,16 @@ router.get('/dluxpost', util.isAuthenticated, (req, res, next) => {
     })
 });
 
-router.post('/create-dluxpost/:url', util.isAuthenticated, (req, res) => { //where to point post button from VR
+router.post('/create-dluxpost', util.isAuthenticated, (req, res) => { //where to point post button from VR
     let author = req.session.steemconnect.name
-    let permlink = util.urlString()  //needs app tagging, comment extentions, and properly formatted with a link that will trigger a mechanism in the permLink to display a VR scene
+    let permlink = util.urlString()
+    var tags = req.body.tags.split(',').map(item => item.trim());  //needs app tagging, comment extentions, and properly formatted with a link that will trigger a mechanism in the permLink to display a VR scene
     let primaryTag = 'dluxVR'
     let otherTags = tags.slice(1)
-    let title = prompt('Title', 'Title your scene')
-    let body = prompt('Say something inspiring', 'Share')
-    let hash = res.params.url
-    let templatePost = '<br />${hash}<br /><hr/><em>View @ <a href="${permLink}">dlux - Decentralized Limitless User eXperiences</a>'
-    let bodyOut = body + templatePost
-    let jsonMetadata = ''
+    let title = req.body.title
+    let body = req.body.post
 
-    steem.comment('', primaryTag, author, permlink, title, bodyOut, jsonMetadata, (err, steemResponse) => {
+    steem.comment('', primaryTag, author, permlink, title, body, '', (err, steemResponse) => {
         if (err) {
           res.render('post', {
             name: req.session.steemconnect.name,

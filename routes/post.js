@@ -23,7 +23,7 @@ router.post('/create-dluxpost', util.isAuthenticated, (req, res) => { //where to
     let primaryTag = 'dluxVR'
     let otherTags = tags.slice(1)
     let title = req.body.title
-    let body = req.body.post
+    let body = req.body.post //more meta-data around here.. 
 
     steem.comment('', primaryTag, author, permlink, title, body, '', (err, steemResponse) => {
         if (err) {

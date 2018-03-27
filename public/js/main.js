@@ -168,7 +168,7 @@ function getDlux(url) {
 }
 
 function getPostAndComments(url) {
-  steem.api.getState(url, (err, result) => {
+  steem.api.getState(url, (err, result) => { //
     let users = result.accounts;
     let resultsArray = [];
     for ( post in result.content ){
@@ -209,8 +209,8 @@ function getPostAndComments(url) {
         return elem.depth === i
       }))
     }
-    appendSinglePost(resultsByDepth[0][0], users)
-    appendComments(resultsByDepth)
+    appendSinglePost(resultsByDepth[0][0], users)  //all the metadata magic needs to happen around here. ^
+    appendComments(resultsByDepth) //this should become a menu function to display comments
 
   })
 }

@@ -1,6 +1,8 @@
 let allUsers = []
 let allContent = []
 let converter = new showdown.Converter({ tables: true })
+require('aframe');
+include('./seeds/video.js');
 
 function getTrending(query, initial){
   steem.api.getDiscussionsByTrending(query, (err, result) => {
@@ -209,8 +211,8 @@ function getPostAndComments(url) {
         return elem.depth === i
       }))
     }
-    appendSinglePost(resultsByDepth[0][0], users)  //all the metadata magic needs to happen around here. ^
-    appendComments(resultsByDepth) //this should become a menu function to display comments
+    appendSinglePost(resultsByDepth[0][0], users)  //where metadata decisions about content delivery need to be made.
+    //appendComments(resultsByDepth) //this should become a menu function to display comments/
 
   })
 }
@@ -259,7 +261,7 @@ function appendSinglePost(post, users){
     <span class="send-comment" data-parent="${post.author}" data-parent-permlink="${post.permlink}" data-parent-title="${post.title}">Post Comment</span>
   </div>
   `
-  $('main').append(header + html + voteButton + commentBox)
+  $('main').append(header + html + voteButton)
 }
 
 function appendComments(posts){

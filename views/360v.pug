@@ -1,0 +1,31 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    title 360 Video hosted on DLIVE with Steem Vote
+    meta(name="description" content="Solar Eclipse, fast")
+    script(src="https://aframe.io/releases/0.8.2/aframe.min.js")
+  body
+    a-scene.fullscreen(id="" transparent="true" canvas="" keyboard-shortcuts="" screenshot="" vr-mode-ui="")
+      a-assets
+        video#oe(autoplay="" crossorigin="anonymous" loop="true" src="https://ipfs.io/ipfs/QmVow5NRdttgYR8veBra7DuGEm9CuiWoiWeDkMUWhU2P99")
+        img#homeThumb(crossorigin="anonymous" src="https://ipfs.io/ipfs/QmYcNJ8MdN3vC8UZJYaN5Xx13m4ne3z456UCeSTYjE9J5v")
+      a-camera(position="0 1.6 0")
+        a-cursor(position="0 0 1")
+      a-videosphere(src="#oe")
+      a-entity(position="0 0 0" rotation="90 0 0" link="href: /dashboard; title: dlux; image: #homeThumb")
+      a-entity#vote(geometry="primitive: sphere" material="color: blue" position="0 0 -2")
+    script.
+      document.querySelector('#vote').addEventListener('click', function() {
+      $.post({
+      url: '/post/vote360'
+      }, (response) => {
+      if (response.error) {
+      var entityel = document.querySelector('#vote');
+      entityel.setAttribute('color','#FF0000');
+      } else {
+      var entityel = document.querySelector('#vote');
+      entityel.setAttribute('color','#00FF00');
+      }
+      })
+      });

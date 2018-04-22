@@ -16,6 +16,12 @@ router.get('/dluxpost', util.isAuthenticated, (req, res, next) => {
     })
 });
 
+router.get('/360v', util.isAuthenticated, (req, res, next) => {
+    res.render('360v', {
+      name: req.session.steemconnect.name
+    })
+});
+
 router.post('/create-dluxpost', util.isAuthenticated, (req, res) => { //where to point post button from VR
     let author = req.session.steemconnect.name
     let permlink = util.urlString()
@@ -23,7 +29,7 @@ router.post('/create-dluxpost', util.isAuthenticated, (req, res) => { //where to
     let primaryTag = 'dluxVR'
     let otherTags = tags.slice(1)
     let title = req.body.title
-    let body = req.body.post //more meta-data around here.. 
+    let body = req.body.post //more meta-data around here..
 
     steem.comment('', primaryTag, author, permlink, title, body, '', (err, steemResponse) => {
         if (err) {
@@ -76,6 +82,67 @@ router.post('/vote', util.isAuthenticated, (req, res) => {
           res.json({ error: err.error_description })
       } else {
           res.json({ id: postId })
+      }
+    });
+})
+
+router.post('/vote', util.isAuthenticated, (req, res) => {
+    let postId = req.body.postId
+    let voter = req.session.steemconnect.name
+    let author = req.body.author
+    let permlink = req.body.permlink
+    let weight = 10000
+
+    steem.vote(voter, author, permlink, weight, function (err, steemResponse) {
+      if (err) {
+          res.json({ error: err.error_description })
+      } else {
+          res.json({ id: postId })
+      }
+    });
+})
+
+router.post('/vote1', util.isAuthenticated, (req, res) => {
+    let postId = req.body.postId
+    let voter = req.session.steemconnect.name
+    let author = req.body.author
+    let permlink = req.body.permlink
+    let weight = 10000
+
+    steem.vote(voter, author, permlink, weight, function (err, steemResponse) {
+      if (err) {
+          res.json({ error: err.error_description })
+      } else {
+          res.json({ id: postId })
+      }
+    });
+})
+
+router.post('/vote2', util.isAuthenticated, (req, res) => {
+    let postId = req.body.postId
+    let voter = req.session.steemconnect.name
+    let author = req.body.author
+    let permlink = req.body.permlink
+    let weight = 10000
+
+    steem.vote(voter, author, permlink, weight, function (err, steemResponse) {
+      if (err) {
+          res.json({ error: err.error_description })
+      } else {
+          res.json({ id: postId })
+      }
+    });
+})
+
+router.post('/vote360', util.isAuthenticated, (req, res) => {
+    let voter = req.session.steemconnect.name
+    let author = 'disregardfiat'
+    let permlink = 'e0fff6c0-4533-11e8-a699-f3be07be675a'
+    let weight = 10000
+
+    steem.vote(voter, author, permlink, weight, function (err, steemResponse) {
+      if (err) {
+          res.json({ error: err.error_description })
       }
     });
 })

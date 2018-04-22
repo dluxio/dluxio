@@ -45,6 +45,8 @@ app.use('/post', post);
 app.use('/post/create-post', post);
 app.use('/post/dluxpost', post);
 app.use('/post/create-dluxpost', post);
+app.use('/360v', post);
+
 
 
 // catch 404 and forward to error handler

@@ -15,17 +15,17 @@ router.get('/', util.isAuthenticated, (req, res, next) => {
 
 router.post('/create-post', util.isAuthenticated, (req, res) => {
   let author = req.session.steemconnect.name
-  let body = req.body.message
+  let body = req.body.post
   let permlink = util.urlString()
   var tags = req.body.tags.split(',').map(item => item.trim())
   let primaryTag = 'dlux'
   let otherTags = tags.slice(0, 4)
   let title = req.body.title
-  let customData = {
+  let customData = JSON.stringify({
       tags: otherTags,
       app: 'dlux/v0.0.1',
       vrHash: 'QmTGmwXbvz639zayzdytVWh3fS6HxRmHyiKsECun7DvWaG'
-    }
+    })
     steem.comment('', primaryTag, author, permlink, title, body, customData, (err, steemResponse) => {
         if (err) {
           res.render('post', {

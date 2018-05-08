@@ -1,0 +1,49 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/css/style.css')
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous")
+    script(src='https://aframe.io/releases/0.8.2/aframe.min.js')
+    script(src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js")
+    script(src="https://cdn.steemjs.com/lib/latest/steem.min.js")
+    script(src="/js/main.js")
+    style.
+      html, body{
+      margin: 0;
+      height: 100%;
+      }
+      iframe{
+      border: 0;
+      }
+    script.
+      if (window.addEventListener) {
+      window.addEventListener("message", onMessage, false);
+      }
+      else if (window.attachEvent) {
+      window.attachEvent("onmessage", onMessage, false);
+      }
+      function onMessage(event) {
+      if (event.origin !== "https://ipfs.io") return;
+      var data = event.data;
+      if (typeof(window[data.func]) == "function") {
+      window[data.func].call(null, data.message);
+      }
+      }
+      function vote(message) {
+      $.post({
+      url: '/post/vote/',
+      dataType: 'json',
+      data: {
+      permlink: '#{permlink}',
+      author: '#{username}'
+      }
+      }, (response) => {
+      console.log(response)
+      })
+      }
+
+    body
+      iframe(allowvr='yes', id='theIframe', allowfullscreen='yes', scrolling='no', width='100%', height='100%', src='https://ipfs.io/ipfs/#{vrhash}')

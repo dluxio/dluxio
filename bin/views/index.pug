@@ -1,0 +1,23 @@
+doctype html
+html
+ head
+ meta(charset='utf-8')
+ title dlux | Decentralized Limitless User eXperiences
+ meta(name='dlux', content='crafting VR')
+ script(src='https://aframe.io/releases/0.8.2/aframe.min.js')
+ script(src='https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js')
+body
+ a-scene()
+  a-assets
+    a-asset-item(id='bf' src='https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json')
+    img#360t(crossorigin="anonymous" src="https://ipfs.io/ipfs/QmZwC5cCtkjmqMSkTd5Ln7ceogRevkX85u4FxeBwQgXaS6")
+    img#360s(crossorigin="anonymous" src="https://ipfs.io/ipfs/QmYcNJ8MdN3vC8UZJYaN5Xx13m4ne3z456UCeSTYjE9J5v")
+    img#360oe(crossorigin="anonymous" src="https://ipfs.io/ipfs/QmNuivxtiPHg6V6oVqQ5HtkzWWtkskRADu4NXhYzoww9bh")
+  a-camera(position='0 1.6 0')
+    a-cursor(position='0 0 -1')
+  a-entity(text-geometry='value: Welcome to' position='-1 1 -2' scale='.2 .2 1')
+  a-entity(text-geometry='value: dlux; font: #bf' position='0 1 -2' scale='2 2 .01')
+  a-entity(text-geometry='value: Sign in with SteemConnect | vote in VR' link='href: /auth; title: ~' position='0 .6 -2' scale='.4 .4 .01')
+  a-entity(text-geometry='value: [Sign up for STEEM]' link='href: https://staging.busy.org/i/@dlux-io; title: .' position='0 .3 -2' scale='.4 .4 .01')
+  a-link(position='-2.25 1 -2' href='https://ipfs.io/ipfs/QmdQAVZWAcA61TMkbjE4dHkDi8P2ci8uDaMFxyfYNvHC6F?ipfs-1524340839265' title='Gabba Gallery with P2P VR chat' image='#360t')
+  a-sky(src='#360s' rotation='0 -90 0')

@@ -12,6 +12,7 @@ router.get('/', util.isAuthenticated, (req, res, next) => {
 });
 
 /* POST a create post broadcast to STEEM network. */
+
 router.post('/create-post', util.isAuthenticated, (req, res) => {
   let author = req.session.steemconnect.name
   let body = req.body.message
@@ -20,6 +21,35 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
   let primaryTag = 'dlux'
   let otherTags = tags.slice(0, 4)
   let title = req.body.title
+  let customData = {
+      tags: otherTags,
+      app: 'dlux/v0.0.1',
+      vrHash: 'QmTGmwXbvz639zayzdytVWh3fS6HxRmHyiKsECun7DvWaG'
+    }
+    steem.comment('', primaryTag, author, permlink, title, body, customData, (err, steemResponse) => {
+        if (err) {
+          res.render('post', {
+            name: req.session.steemconnect.name,
+            msg: 'Error - ${err}'
+          })
+        } else {
+          res.render('post', {
+            name: req.session.steemconnect.name,
+            msg: 'Posted To Steem Network'
+          })
+        }
+    });
+});
+
+/*
+router.post('/create-post', util.isAuthenticated, (req, res) => {
+  let author = req.session.steemconnect.name
+  let body = 'testing'
+  let permlink = util.urlString()
+  var tags = req.body.tags.split(',').map(item => item.trim())
+  let primaryTag = 'dlux'
+  let otherTags = tags.slice(0, 4)
+  let title = 'hello world'
   let suBmetadata = JSON.stringify({
     app: 'dlux/0.0.1',
     vrHash: 'QmTGmwXbvz639zayzdytVWh3fS6HxRmHyiKsECun7DvWaG'
@@ -40,6 +70,7 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
         }
     });
 });
+*/
 
 /* POST a vote broadcast to STEEM network. */
 router.post('/vote', util.isAuthenticatedJSON, (req, res) => {

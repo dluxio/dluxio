@@ -28,23 +28,16 @@ function getTrendingTags(){
  * @param {Object} query - a steem feed query object - {tag: 'photography', 'limit': 20 }
  * @param {Boolean} initial - If this is an initial call or a call from 'get-more-posts' to add aditional posts to feed
  */
-function getTrending(query, initial){
-  steem.api.getDiscussionsByTrending(query, (err, result) => {
-    if (err === null) {
-      var filteredResults = []
-      for (i = 0; i < result.length; i++) {
-        let app = JSON.parse(result[i].json_metadata).app
-        if (app.includes('dlux')) {
-          filteredResults.push(result[i])
-        }
-      }
-      displayContent(filteredResults, initial)
-      getaccounts(filteredResults.map(post => post.author))
-    } else {
-      console.log(err)
-    }
-  })
-}
+ function getTrending(query, initial){
+   steem.api.getDiscussionsByTrending(query, (err, result) => {
+     if (err === null) {
+       displayContent(result,initial)
+       getaccounts(result.map(post => post.author))
+     } else {
+       console.log(err);
+     }
+   });
+ }
 
 /**
  * Gets a set of latest posts from the the steem api
@@ -52,23 +45,16 @@ function getTrending(query, initial){
  * @param {Object} query - a steem feed query object - e.g {tag: 'photography', 'limit': 20 }
  * @param {Boolean} initial - If this is an initial call or a call from 'get-more-posts' to add aditional posts to feed
  */
-function getLatest(query, initial){
-  steem.api.getDiscussionsByCreated(query, (err, result) => {
-    if (err === null) {
-      var filteredResults = []
-      for (i = 0; i < result.length; i++) {
-        let app = JSON.parse(result[i].json_metadata).app
-        if (app.includes('dlux')) {
-          filteredResults.push(result[i])
-        }
-      }
-      displayContent(filteredResults, initial)
-      getaccounts(filteredResults.map(post => post.author))
-    } else {
-      console.log(err)
-    }
-  })
-}
+ function getLatest(query, initial){
+   steem.api.getDiscussionsByCreated(query, (err, result) => {
+     if (err === null) {
+       displayContent(result, initial)
+       getaccounts(result.map(post => post.author))
+     } else {
+       console.log(err);
+     }
+   });
+ }
 
 /**
  * Gets a set of latest posts from specific author
@@ -76,22 +62,11 @@ function getLatest(query, initial){
  * @param {Object} query - a steem feed query object - e.g {tag: 'ausername', 'limit': 20 }
  * @param {Boolean} initial - If this is an initial call or a call from 'get-more-posts' to add aditional posts to feed
  */
-function getBlog(username, initial){
-  let query = {
-    tag: username,
-    limit: 10
-  }
-  steem.api.getDiscussionsByBlog(query, (err, result) => {
-    var filteredResults = []
-    for (i = 0; i < result.length; i++) {
-      let app = JSON.parse(result[i].json_metadata).app
-      if (app.includes('dlux')) {
-        filteredResults.push(result[i])
-      }
-    }
-    displayContent(filteredResults)
-  })
-}
+ function getBlog(query, initial){
+   steem.api.getDiscussionsByBlog(query, (err, result) => {
+       displayContent(result, initial)
+   })
+ }
 
 /**
  * Gets a set of latest posts from specific authors feed (who they follow)

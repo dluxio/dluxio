@@ -5,7 +5,7 @@
  */
 
 let app = require('../app');
-let debug = require('debug')('dlux:server');
+let debug = require('debug')('boilerplate:server');
 let http = require('http');
 let config = require('../config');
 

@@ -252,7 +252,9 @@ $ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods "[\"PUT\", \"P
 - [miscellaneous operations](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/MISCELLANEOUS.md)
   - [`ipfs.id([callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/MISCELLANEOUS.md#id)
   - [`ipfs.version([callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/MISCELLANEOUS.md#version)
-  - [`ipfs.ping()`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/MISCELLANEOUS.md#ping)
+  - [`ipfs.ping(id, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/MISCELLANEOUS.md#ping)
+  - `ipfs.pingPullStream(id, [options])`
+  - `ipfs.pingReadableStream(id, [options])`
   - [`ipfs.dns(domain, [callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/MISCELLANEOUS.md#dns)
   - [`ipfs.stop([callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/MISCELLANEOUS.md#stop). Alias to `ipfs.shutdown`.
   
@@ -277,7 +279,7 @@ $ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods "[\"PUT\", \"P
   - [`ipfs.repo.version([callback])`](https://github.com/ipfs/interface-ipfs-core/tree/master/SPEC/REPO.md#version)
   
 - [key](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/KEY.md)
-  - [`ipfs.key.gen(name, [options, callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/KEY.md#javascript---ipfskeygenname-options-callback)
+  - [`ipfs.key.gen(name, options, [callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/KEY.md#javascript---ipfskeygenname-options-callback)
   - [`ipfs.key.list([options, callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/KEY.md#javascript---ipfskeylistcallback)
   - [`ipfs.key.rm(name, [callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/KEY.md#javascript---ipfskeyrmname-callback)
   - [`ipfs.key.rename(oldName, newName, [callback])`](https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/KEY.md#javascript---ipfskeyrenameoldname-newname-callback)
@@ -305,6 +307,20 @@ This means:
   (in both the main process and the renderer process)
 - See https://github.com/ipfs/js-ipfs for details on
   pubsub in js-ipfs
+
+#### `Domain data types`
+
+A set of data types are exposed directly from the IPFS instance under `ipfs.types`. That way you're not required to import/require the following.
+
+- [`ipfs.types.Buffer`](https://www.npmjs.com/package/buffer)
+- [`ipfs.types.PeerId`](https://github.com/libp2p/js-peer-id)
+- [`ipfs.types.PeerInfo`](https://github.com/libp2p/js-peer-info)
+- [`ipfs.types.multiaddr`](https://github.com/multiformats/js-multiaddr)
+- [`ipfs.types.multibase`](https://github.com/multiformats/multibase)
+- [`ipfs.types.multihash`](https://github.com/multiformats/js-multihash)
+- [`ipfs.types.CID`](https://github.com/ipld/js-cid)
+- [`ipfs.types.dagPB`](https://github.com/ipld/js-ipld-dag-pb)
+- [`ipfs.types.dagCBOR`](https://github.com/ipld/js-ipld-dag-cbor)
 
 #### `Utility functions`
 
@@ -369,6 +385,24 @@ ipfs.util.addFromStream(<readable-stream>, (err, result) => {
   console.log(result)
 })
 ```
+
+##### Get endpoint configuration (host and port)
+
+> `ipfs.util.getEndpointConfig()`
+
+This returns an object containing the `host` and the `port`
+
+##### Get libp2p crypto primitives
+
+> `ipfs.util.crypto`
+
+This contains an object with the crypto primitives
+
+##### Get is-ipfs utilities
+
+> `ipfs.util.isIPFS`
+
+This contains an object with the is-ipfs utilities to help identifying IPFS resources
 
 ### Callbacks and Promises
 

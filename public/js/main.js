@@ -1,67 +1,156 @@
 let allUsers = []
 let allContent = []
 let converter = new showdown.Converter({ tables: true })
+let totalVestingShares, totalVestingFundSteem;
 
+/**
+ * gets totalVestingShares and totalVestingFundSteem from STEEM API to use later
+ */
+steem.api.getDynamicGlobalProperties((err, result) => {
+  totalVestingShares = result.total_vesting_shares;
+  totalVestingFundSteem = result.total_vesting_fund_steem;
+})
+
+/**
+ * Calls steem api for current top 20 trending tags
+ * @function
+ */
+function getTrendingTags(){
+  steem.api.getTrendingTags('', 20, (err, result) => {
+    if (err) return console.log(err);
+    displayTrendingTags(result)
+  });
+}
+
+/**
+ * Gets a set of posts trending from the the steem api
+ * @function
+ * @param {Object} query - a steem feed query object - {tag: 'photography', 'limit': 20 }
+ * @param {Boolean} initial - If this is an initial call or a call from 'get-more-posts' to add aditional posts to feed
+ */
 function getTrending(query, initial){
   steem.api.getDiscussionsByTrending(query, (err, result) => {
     if (err === null) {
-      displayContent(result,initial)
-      getaccounts(result.map(post => post.author))
+      var filteredResults = []
+      for (i = 0; i < result.length; i++) {
+        let app = JSON.parse(result[i].json_metadata).app
+        if (app.includes('dlux')) {
+          filteredResults.push(result[i])
+        }
+      }
+      displayContent(filteredResults, initial)
+      getaccounts(filteredResults.map(post => post.author))
     } else {
-      console.log(err);
+      console.log(err)
     }
-  });
+  })
 }
 
+/**
+ * Gets a set of latest posts from the the steem api
+ * @function
+ * @param {Object} query - a steem feed query object - e.g {tag: 'photography', 'limit': 20 }
+ * @param {Boolean} initial - If this is an initial call or a call from 'get-more-posts' to add aditional posts to feed
+ */
 function getLatest(query, initial){
-
   steem.api.getDiscussionsByCreated(query, (err, result) => {
     if (err === null) {
-      displayContent(result, initial)
-      getaccounts(result.map(post => post.author))
-    } else {
-      console.log(err);
-    }
-  });
-}
-
-function getMoreContent(filter, tag){
-  let lastItem = allContent[allContent.length - 1]
-  let query = {
-      'tag':
-      tag,
-      'limit': 24,
-      start_author: lastItem.author,
-      start_permlink: lastItem.permlink }
-
-      if(filter === 'trending'){
-        getTrending(query, false)
-      } else {
-        getLatest(query, false)
+      var filteredResults = []
+      for (i = 0; i < result.length; i++) {
+        let app = JSON.parse(result[i].json_metadata).app
+        if (app.includes('dlux')) {
+          filteredResults.push(result[i])
+        }
       }
+      displayContent(filteredResults, initial)
+      getaccounts(filteredResults.map(post => post.author))
+    } else {
+      console.log(err)
+    }
+  })
 }
 
-function getBlog(username){
+/**
+ * Gets a set of latest posts from specific author
+ * @function
+ * @param {Object} query - a steem feed query object - e.g {tag: 'ausername', 'limit': 20 }
+ * @param {Boolean} initial - If this is an initial call or a call from 'get-more-posts' to add aditional posts to feed
+ */
+function getBlog(username, initial){
   let query = {
     tag: username,
     limit: 10
   }
   steem.api.getDiscussionsByBlog(query, (err, result) => {
-      displayContent(result)
+    var filteredResults = []
+    for (i = 0; i < result.length; i++) {
+      let app = JSON.parse(result[i].json_metadata).app
+      if (app.includes('dlux')) {
+        filteredResults.push(result[i])
+      }
+    }
+    displayContent(filteredResults)
   })
 }
 
-function getUserFeed(username){
+/**
+ * Gets a set of latest posts from specific authors feed (who they follow)
+ * @function
+ * @param {Object} query - a steem feed query object - e.g {tag: 'username', 'limit': 20 }
+ * @param {Boolean} initial - If this is an initial call or a call from 'get-more-posts' to add aditional posts to feed
+ */
+function getUserFeed(username, initial){
   let query = {
     tag: username,
     limit: 20
   }
   steem.api.getDiscussionsByFeed(query, (err, result) => {
-    console.log(result)
-    displayContent(result)
-  });
+    var filteredResults = new Array()
+    for (i = 0; i < result.length; i++) {
+      let app = JSON.parse(result[i].json_metadata).app
+      if (app.includes('dlux')) {
+        filteredResults.push(result[i])
+      }
+    }
+    displayContent(filteredResults)
+  })
 }
 
+/**
+ * Adds more posts to the current feed view
+ * @function
+ * @param {String} filter - 'latest', 'trending', 'user-feed'
+ * @param {boolean} tag - a tag used on posts
+
+function getMoreContent(filter, tag){
+  let lastItem = allContent[allContent.length - 1]
+  let username = $('main').data('username')
+  let query = {
+      tag: tag,
+      limit: 24,
+      start_author: lastItem.author,
+      start_permlink: lastItem.permlink }
+
+      if(filter === 'trending'){
+        getTrending(query, false)
+      } else if(filter === 'latest'){
+        getLatest(query, false)
+      } else if(filter === 'user-feed'){
+        query.tag = username
+        console.log(query)
+        getUserFeed(query, false)
+      } else {
+        query.tag = username
+        getBlog(query, false)
+      }
+}
+
+
+ * Adds more posts to the current feed view
+ * @function
+ * @param {Array} result - An Array of Steem posts from the STEEM API
+ * @param {Boolean} initial - If this is an initial call or a call from 'get-more-posts' to add aditional posts to feed
+ */
 function displayContent(result, initial){
   if (!initial) result.shift()
   for (let i = 0; i < result.length ; i++) {
@@ -85,9 +174,9 @@ function displayContent(result, initial){
       let itemTemplate = `
         <div class="item " data-post-id="${post.id}" data-url="${post.url}" data-permlink="${ post.permlink }">
           <img class="item__image " src="https://steemitimages.com/520x520/${image}" onerror="">
-          <div class="item__author">
-            <a href="${post.url}"><h2>${post.title}</h2></a>
-            <a href="@${post.author}"><span>@${post.author}</span></a>
+          <div class="item__meta">
+            <a href="${post.url}"><h3>${post.title}</h3></a>
+            <a href="/@${post.author}"><span>@${post.author}</span></a>
             <form method="post">
               <input type="hidden" name="postId" value="${post.id}">
               <input type="hidden" name="author" value="${post.author}">
@@ -96,22 +185,43 @@ function displayContent(result, initial){
             </form>
           </div>
         </div>
-
-        <a-scene class="fullscreen" id="HologramScene-60196" transparent="true" canvas="" inspector="" keyboard-shortcuts="" screenshot="" vr-mode-ui=""><a-assets id="HologramAssets-86080" transparent="true"></a-assets><a-camera id="HologramCamera-70938" transparent="true" mouse-cursor="" position="" rotation="" scale="" visible="" camera="" look-controls="" wasd-controls=""></a-camera><canvas class="a-canvas a-grab-cursor" data-aframe-canvas="true" width="820" height="709" style="width: 820px; height: 709px;"></canvas><div class="a-enter-vr" aframe-injected=""><button class="a-enter-vr-button" title="Enter VR mode with a headset or fullscreen mode on a desktop. Visit https://webvr.rocks or https://webvr.info for more information." aframe-injected=""></button></div><div class="a-orientation-modal a-hidden" aframe-injected=""><button aframe-injected="">Exit VR</button></div><a-entity light="" data-aframe-default-light="" aframe-injected="" position="" rotation="" scale="" visible=""></a-entity><a-entity light="" position="" data-aframe-default-light="" aframe-injected="" rotation="" scale="" visible=""></a-entity><a-sky id="HologramSky-54839" transparent="true" material="" color="#d9f5ff" position="" rotation="" scale="" visible="" geometry=""></a-sky><a-plane id="HologramPlane-63976" transparent="true" material="" color="#259861" height="5000" geometry="" rotation="" width="5000" side="double" position="" scale="" visible=""></a-plane><a-link id="HologramPortal-55439" transparent="true" position="" href="index.html" link="" rotation="" scale="" visible="" geometry="" material=""><a-text id="HologramText-93979" transparent="true" text="" position="" value="$625.86" side="double" rotation="" scale="" visible=""></a-text><a-text id="HologramText-70457" transparent="true" text="" color="#0000ff" position="" value="@usergdname" side="double" rotation="" scale="" visible=""></a-text><a-box id="HologramBox-20505" transparent="true" material="" position="" scale="" rotation="" visible="" geometry=""></a-box><a-sphere id="HologramSphere-58196" transparent="true" material="" position="" scale="" rotation="" visible="" geometry=""></a-sphere><a-entity text="" position="" rotation="" scale="" visible=""></a-entity><a-entity geometry="" material="" rotation="" position="" visible="" scale=""></a-entity><a-entity geometry="" material="" visible="" position="" rotation="" scale=""></a-entity></a-link><a-link id="HologramPortal-99235" transparent="true" position="" href="index.html" link="" rotation="" scale="" visible="" geometry="" material=""><a-text id="HologramText-89247" transparent="true" text="" position="" value="$625.86" side="double" rotation="" scale="" visible=""></a-text><a-text id="HologramText-72456" transparent="true" text="" color="#0000ff" position="" value="@usergdname" side="double" rotation="" scale="" visible=""></a-text><a-box id="HologramBox-89969" transparent="true" material="" position="" scale="" rotation="" visible="" geometry=""></a-box><a-sphere id="HologramSphere-53774" transparent="true" material="" position="" scale="" rotation="" visible="" geometry=""></a-sphere><a-entity text="" position="" rotation="" scale="" visible=""></a-entity><a-entity geometry="" material="" rotation="" position="" visible="" scale=""></a-entity><a-entity geometry="" material="" visible="" position="" rotation="" scale=""></a-entity></a-link><a-link id="HologramPortal-52173" transparent="true" position="" href="index.html" link="" rotation="" scale="" visible="" geometry="" material=""><a-text id="HologramText-69970" transparent="true" text="" position="" value="$625.86" side="double" rotation="" scale="" visible=""></a-text><a-text id="HologramText-68223" transparent="true" text="" color="#0000ff" position="" value="@usergdname" side="double" rotation="" scale="" visible=""></a-text><a-box id="HologramBox-45704" transparent="true" material="" position="" scale="" rotation="" visible="" geometry=""></a-box><a-sphere id="HologramSphere-21634" transparent="true" material="" position="" scale="" rotation="" visible="" geometry=""></a-sphere><a-entity text="" position="" rotation="" scale="" visible=""></a-entity><a-entity geometry="" material="" rotation="" position="" visible="" scale=""></a-entity><a-entity geometry="" material="" visible="" position="" rotation="" scale=""></a-entity></a-link><a-cone id="HologramCone-50389" transparent="true" material="" color="#1997C6" opacity="0.6" position="" radius-bottom="0.5" geometry="" rotation="" scale="" visible=""></a-cone><a-cone id="HologramCone-58772" transparent="true" material="" color="#1997c6" opacity="0.6" position="" radius-bottom="0.5" geometry="" rotation="" scale="" visible=""></a-cone>
-          <a-text id="HologramText-60851" transparent="true" text="" font="exo2semibold" position="" scale="" value="FEED" side="double" rotation="" visible="">
-          </a-text>
-        </a-scene>
         `
         $('.feed-insert').append(itemTemplate)
   }
 }
 
+/**
+ * Adds an array of tags to the page
+ * @function
+ * @param {Array} tags - An Array of Steem tags from the STEEM API
+ */
+function displayTrendingTags(tags){
+  let feedType = $('main.feed').data('feed-type')
+
+  for (var i = 1; i < tags.length; i++) {
+    let tag = tags[i]
+    let template = `<a class="btn btn-outline-dark" href="/feed/${feedType}/${tag.name}">${tag.name}</a>`
+
+    $('.trending__tags').append(template)
+  }
+}
+
+/**
+ * calls the steem api for a list of accounts - adds them to allUsers global var
+ * @function
+ * @param {Array} username - an array of steem usernames e.g ['fred', 'bob', 'ned']
+ */
 function getaccounts(usernames){
   steem.api.getAccounts(usernames, (err, result) => {
     allUsers = allUsers.concat(result)
   })
 }
 
+/**
+ * Gets the first image from a set of markdown where possible
+ * @function
+ * @param {String} markdown - A String containing markdown formatted text
+ */
 function genImageInHTML(markdown){
     let placeholder = document.createElement('div');
     placeholder.innerHTML = converter.makeHtml(markdown)
@@ -123,57 +233,13 @@ function genImageInHTML(markdown){
     }
 }
 
-function getDlux(url) {
-  steem.api.getState(url, (err, result) => {
-    let users = result.accounts;
-    let resultsArray = [];
-    for ( post in result.content ){
-
-      var body = result.content[post].body;
-
-
-      resultsArray.push({
-        id: result.content[post].id,
-        title: result.content[post].root_title,
-        author: result.content[post].author,
-        body: body,
-        json: result.content[post].json_metadata,
-        permlink: result.content[post].permlink,
-        depth: result.content[post].depth,
-        root_comment: result.content[post].root_comment,
-        parent_permlink: result.content[post].parent_permlink,
-        created: result.content[post].created,
-        votes: result.content[post].net_votes,
-        voters: result.content[post].active_votes.map(vote => vote.voter),
-        value: Math.round( parseFloat(result.content[post].pending_payout_value.substring(0,5)) * 100) / 100
-      })
-    }
-
-    // Sort By Date/ID
-    resultsArray = resultsArray.sort((a,b) => {
-      return b.id - a.id
-    });
-
-    // Find Deepest Comment
-    let maxDepthComment = resultsArray.reduce((prev, current) => {
-      return (prev.depth > current.depth) ? prev : current
-    })
-
-    // Multi demention array by
-    let resultsByDepth = [];
-    for (var i = 0; i < maxDepthComment.depth + 1; i++) {
-      resultsByDepth.push(resultsArray.filter(elem => {
-        return elem.depth === i
-      }))
-    }
-    appendSinglePost(resultsByDepth[0][0], users)
-    appendComments(resultsByDepth)
-
-  })
-}
-
+/**
+ * Gets post and comment data for a url slug
+ * @function
+ * @param {String} url - '/category}/username/permlink'
+ */
 function getPostAndComments(url) {
-  steem.api.getState(url, (err, result) => { //
+  steem.api.getState(url, (err, result) => {
     let users = result.accounts;
     let resultsArray = [];
     for ( post in result.content ){
@@ -214,12 +280,17 @@ function getPostAndComments(url) {
         return elem.depth === i
       }))
     }
-    appendSinglePost(resultsByDepth[0][0], users)  //where metadata decisions about content delivery need to be made.
-    //appendComments(resultsByDepth) //this should become a menu function to display comments/
+    appendSinglePost(resultsByDepth[0][0], users)
+    //appendComments(resultsByDepth)
 
   })
 }
 
+/**
+ * gets a profile image from a steem users data where possible
+ * @function
+ * @param {Object} author - an author object from a steem api request
+ */
 function generateProfileImage(author){
   let profileImage = 'img/default-user.jpg';
 
@@ -238,6 +309,12 @@ function generateProfileImage(author){
   return profileImage
 }
 
+/**
+ * appends the main part of a post to the page
+ * @function
+ * @param {Object} post - steem post object from getPostAndComments()
+ * @param {Array} users - an Array of steem user accounts from steem api
+ */
 function appendSinglePost(post, users){
   let author = users[post.author]
   console.log(author)
@@ -246,11 +323,14 @@ function appendSinglePost(post, users){
 
   let tags = JSON.parse(post.json).tags.reduce( (all,tag) => all + `<span>${tag}</span>`, '')
   let header = `
-    <img src="${profileImage}" class="author-img" width="35" height="35" src="">
-    <span class="overlay__author-username">@${post.author}</span>
-    <div class="tags">${tags}</div>
-    <h2 class="title">${post.title}</h2>
+  <form method="post" id="vote">
+    <input type="hidden" name="postId" value="${post.id}">
+    <input type="hidden" name="author" value="${post.author}">
+    <input type="hidden" name="permlink" value="${post.permlink}">
+  </form>
   `
+  /*
+  <iframe allowvr="yes" src="https://ipfs.io/ipfs/${post.json_metadata.ipfsHash}"style="border: 0; width: 100%; height: 100%"></iframe>
   let voteButton = `
   <form method="post">
     <input type="hidden" name="postId" value="${post.id}">
@@ -264,26 +344,37 @@ function appendSinglePost(post, users){
     <span class="send-comment" data-parent="${post.author}" data-parent-permlink="${post.permlink}" data-parent-title="${post.title}">Post Comment</span>
   </div>
   `
-  $('main').append(header + html + voteButton)
+  */
+
+  $('main').append(header)
 }
 
-function appendComments(posts){
+/**
+ * appends comments to single page after main content
+ * @function
+ * @param {Array} comments - an Array of comments to a steem post
+ */
+function appendComments(comments){
   $('main').append('<div class="comments"></div>')
 
-    posts.forEach( (postsAtDepth, i, arr) => {
-      postsAtDepth.forEach( (post, i, arr) => {
-        let template = createCommentTemplate(post)
-        if ( post.depth === 1 ) {
+    comments.forEach( (postsAtDepth, i, arr) => {
+      postsAtDepth.forEach( (comment, i, arr) => {
+        let template = createCommentTemplate(comment)
+        if ( comment.depth === 1 ) {
           $('.comments').prepend( template)
-        } else if ( post.depth  > 1) {
-          var permlink = post.parent_permlink
+        } else if ( comment.depth  > 1) {
+          var permlink = comment.parent_permlink
           $('.' + permlink ).append( template)
         }
       })
     })
 }
 
-
+/**
+ * creates the HTML for a comment from a comment object
+ * @function
+ * @param {Object} post - a comment object from STEEM  getState API
+ */
 createCommentTemplate = (post) => {
       var permlink = post.parent_permlink
       var html = converter.makeHtml(post.body)
@@ -297,8 +388,8 @@ createCommentTemplate = (post) => {
       data-post-depth="${post.depth}"
       class="comment comment-level-${post.depth} ${post.permlink}">
         <h4>
-          <a href="https://steemit.com/@${post.author}" target="_blank">@${post.author}</a>
-          <span> &middot; </span> <span> ${ post.created } </span>
+          <a href="/@${post.author}" target="_blank">@${post.author}</a>
+          <span> &middot; </span> <span> ${ moment(post.created).fromNow() } </span>
         </h4>
         <p>${ html }</p>
         <div class="meta">
@@ -310,22 +401,18 @@ createCommentTemplate = (post) => {
           </form>
           <span class="sc-item__divider">|</span>
           <span class="sc-item__votecount">${post.votes} ${voteMessage} </span>
-          <span class="sc-item__divider">|</span>
-          <span class="sc-item__reply">Reply</span>
         </div>
       </div>`
       return template;
     }
 
-getAccountInfo = (username) => {
-
-    let totalVestingShares, totalVestingFundSteem;
+/**
+ * format raw user accoutn data from Steem api
+ * @function
+ * @param {String} username - a single steem username
+ */
+function getAccountInfo(username) {
     let userInfo;
-
-    steem.api.getDynamicGlobalProperties((err, result) => {
-      totalVestingShares = result.total_vesting_shares;
-      totalVestingFundSteem = result.total_vesting_fund_steem;
-    })
 
     return new Promise((resolve, reject) => {
 
@@ -333,8 +420,10 @@ getAccountInfo = (username) => {
 
         let user = result[0]
 
-        let jsonData = user.json_metadata ? JSON.parse(user.json_metadata).profile : {}
+        let jsonData;
 
+        try {jsonData = JSON.parse(user.json_metadata).profile} catch(err) { console.log(err)}
+        console.log(jsonData)
         // steem power calc
         let vestingShares = user.vesting_shares;
         let delegatedVestingShares = user.delegated_vesting_shares;
@@ -351,6 +440,7 @@ getAccountInfo = (username) => {
         let data = {
           name: user.name,
           image: jsonData.profile_image ? 'https://steemitimages.com/512x512/' + jsonData.profile_image : '',
+          cover: jsonData.cover_image,
           rep: steem.formatter.reputation(user.reputation),
           effectiveSp: parseInt(steemPower  + delegatedSteemPower - -outgoingSteemPower),
           sp: parseInt(steemPower).toLocaleString(),
@@ -375,16 +465,60 @@ getAccountInfo = (username) => {
     });
 }
 
+/**
+ * adds account transactions to user transfers page
+ * @function
+ * @param {String} username - a single steem username
+ */
+function getAccountTransactions(username) {
+  steem.api.getAccountHistory(username, -1, 10000, function(err, result){
+    if (err) throw err
 
-// ----------------------------------------------------
+    result.forEach((tx, i) => {
+      let txTime = new Date(tx[1].timestamp).valueOf()
+      if(tx[1].op[0] === 'transfer') {
+        let row = `<tr>
+          <td>${moment(txTime).fromNow()}</td>
+          <td>Transfer: ${tx[1].op[1].amount} from: ${tx[1].op[1].from} To: ${tx[1].op[1].to}
+          <td class="table-cell-break">${tx[1].op[1].memo}</td>
+        </tr>`
+        $('.account-history tbody').append(row)
+      }
+      if(tx[1].op[0] == 'claim_reward_balance'){
+        let row = `<tr>
+        <td>${moment(txTime).fromNow()}</td>
+        <td>Claim Reward ${tx[1].op[1].reward_sbd} ${tx[1].op[1].reward_steem} ${vestsToSteem(parseFloat(tx[1].op[1].reward_vests)).toFixed(3)}SP</td>
+        <td></td>
+        </tr>`
+        $('.account-history tbody').append(row)
+      }
+    })
+  })
+}
+
+/**
+ * helper to format vests to readable Steem power number
+ * @function
+ * @param {String} username - a single steem username
+ */
+function vestsToSteem(vests){
+  return steem.formatter.vestToSteem(vests, totalVestingShares, totalVestingFundSteem);
+}
+
+// On Page Load
 
 if ($('main').hasClass('feed') ) {
     let feedType = $('main.feed').data('feed-type')
-
+    let tag = $('main.feed').data('tag') || ''
     if(feedType === 'trending'){
-      getTrending({'limit': 20 })
+      getTrendingTags()
+      getTrending({tag, 'limit': 20 }, true)
+    } else if (feedType === 'user-feed'){
+      let username = $('main').data('username')
+      getUserFeed({ tag: username, limit: 20 }, true)
     } else {
-      getLatest({'limit': 20 })
+      getTrendingTags()
+      getLatest({tag, 'limit': 20 }, true)
     }
 }
 
@@ -393,37 +527,45 @@ if ($('main').hasClass('single')) {
   getPostAndComments(`/${data.category}/@${data.username}/${data.permlink}`)
 }
 
-if ($('main').hasClass('dlux')) {
-  let data = $('main').data()
-  getDlux(`/${data.category}/@${data.username}/${data.permlink}`)
-}
-
 if ($('main').hasClass('dashboard')) {
   let username = $('main').data('username')
   getUserFeed(username)
 }
 
+if ($('main').hasClass('transfers')){
+  let username = $('main').data('username')
+  getAccountTransactions(username)
+  getAccountInfo(username).then(data => {
+    console.log(data)
+    let template =`
+      <div class="balances">
+        <h5>STEEM: ${data.steem} </h5>
+        <h5>STEEM Power: ${data.sp}</h5>
+        <h5>SBD: ${data.sbd} </h5>
+      </div>
+    `
+    $('.wallet').append(template)
+  })
+}
+
 if ($('main').hasClass('profile') ) {
   let username = $('.profile').data('username')
   getAccountInfo(username).then(data => {
+    data.cover = data.cover || 'http://placehold.it/1200x300?text=-'
     let template =
-    `<section class="profile">
-    <h2>${data.name} [${data.rep}]</h2>
-    <img src="${data.image}" width="100px">
-    <h5>Followers: ${data.followerCount}</h5>
-    <h5>Following: ${data.followingCount}</h5>
-    <h5>Effective Steem Power: ${data.effectiveSp}</h5>
-    <h5>Steem Power: ${data.sp}</h5>
-    <h5>STEEM: ${data.steem}</h5>
-    <h5>SBD: ${data.sbd}</h5>
-    <h5>Vote Power: ${data.vp}%</h5>
-    </section>
+    `<header class="profile__header" style="background-image: url(${data.cover})">
+      <h2>${data.name} [${data.rep}]</h2>
+      <img src="${data.image}" width="100px">
+      <h5>Followers: ${data.followerCount} - Following: ${data.followingCount}</h5>
+      </header>
     `
     $('main').prepend(template)
   })
-  getBlog(username)
+  let query = { tag: username, limit: 10 }
+  getBlog(query, true)
 }
 
+// UI Actions
 
 $('main').on('click', '.vote',(e) => {
   let $voteButton = $(e.currentTarget)
@@ -455,6 +597,17 @@ $('main').on('click', '.send-comment', (e) => {
         }
       }, (response) => {
           console.log(response)
-          $(`<p>${response.msg}</p>`).insertAfter($comment)
+          if (response.error) {
+            $(`<span>${response.error.error_description}</span>`).insertAfter($comment)
+          } else {
+            $(`<p>${response.msg}</p>`).insertAfter($comment)
+          }
       })
+})
+
+
+$('.load-more-posts').on('click', (e) => {
+  let filter = $('main').data('feed-type')
+  let tag = $('main').data('tag') || ''
+  getMoreContent(filter, tag)
 })

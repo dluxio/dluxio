@@ -4,37 +4,48 @@ let router = express.Router();
 /* GET home page. */
 router.get('/', (req, res, next) =>  {
   if(req.session.steemconnect){
-    res.redirect('/dashboard')
+    res.redirect(`/@${req.session.steemconnect.name}`)
   } else {
-    res.render('index', { title: 'Decentralized Limitless User eXperiences' });
+    res.render('index', { title: 'SteemConnect Boilerplate' });
   }
 });
 
-router.get('/@:username?', (req, res, next) => {
+/* GET a users blog profile page. */
+router.get('/@:username', (req, res, next) => {
       let username = req.params.username
-      console.log(username)
       res.render('profile', {
-        name: username
+        username: username
       });
 });
 
+/* GET a users blog feed page. */
+router.get('/@:username/feed', (req, res, next) => {
+      let username = req.params.username
+      res.render('feed', {
+        feed: 'user-feed',
+        username: username
+      });
+});
+
+/* GET a users transfers profile page. */
+router.get('/@:username/transfers', (req, res, next) => {
+      let username = req.params.username
+      res.render('transfers', {
+        username: username,
+        user: req.session.steemconnect ? req.session.steemconnect.name : ''
+      });
+});
+
+/* GET a single post page page. */
 router.get('/:category/@:username/:permlink', (req, res, next) => {
       let category = req.params.category
       let username = req.params.username
       let permlink = req.params.permlink
-      if (category == "dluxVR") { //to render our VR scene
-        res.render('dlux', {
-          category: category,
-          username: username,
-          permlink: permlink
-        });
-      } else {
       res.render('single', {
         category: category,
         username: username,
         permlink: permlink
       });
-    }
 });
 
 module.exports = router;

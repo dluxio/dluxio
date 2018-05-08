@@ -21,6 +21,7 @@ function requireCommands () {
     bootstrap: require('../bootstrap'),
     commands: require('../commands'),
     config: require('../config'),
+    dag: require('../dag'),
     dht: require('../dht'),
     diag: require('../diag'),
     id: require('../id'),
@@ -31,6 +32,8 @@ function requireCommands () {
     object: require('../object'),
     pin: require('../pin'),
     ping: require('../ping'),
+    pingReadableStream: require('../ping-readable-stream'),
+    pingPullStream: require('../ping-pull-stream'),
     refs: require('../refs'),
     repo: require('../repo'),
     stop: require('../stop'),
@@ -39,6 +42,7 @@ function requireCommands () {
     pubsub: require('../pubsub'),
     update: require('../update'),
     version: require('../version'),
+    types: require('../types'),
     dns: require('../dns')
   }
 
@@ -53,11 +57,14 @@ function requireCommands () {
     return files
   }
 
-  cmds.util = function (send) {
+  cmds.util = function (send, config) {
     const util = {
       addFromFs: require('../util/fs-add')(send),
       addFromStream: require('../files/add')(send),
-      addFromURL: require('../util/url-add')(send)
+      addFromURL: require('../util/url-add')(send),
+      getEndpointConfig: require('../util/get-endpoint-config')(config),
+      crypto: require('libp2p-crypto'),
+      isIPFS: require('is-ipfs')
     }
     return util
   }
@@ -65,12 +72,12 @@ function requireCommands () {
   return cmds
 }
 
-function loadCommands (send) {
+function loadCommands (send, config) {
   const files = requireCommands()
   const cmds = {}
 
   Object.keys(files).forEach((file) => {
-    cmds[file] = files[file](send)
+    cmds[file] = files[file](send, config)
   })
 
   return cmds

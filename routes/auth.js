@@ -2,25 +2,25 @@ let express = require('express');
 let steem = require('../modules/steemconnect')
 let router = express.Router();
 
-/* GET auth listing. */
+/* GET authenticate a user/redirect to steemconnect. */
 router.get('/', (req, res, next) => {
     if (!req.query.access_token ) {
-        let uri = steem.getLoginURL()
-        res.redirect(uri)
+        let uri = steem.getLoginURL();
+        res.redirect(uri);
     } else {
-        steem.setAccessToken(req.query.access_token)
+        steem.setAccessToken(req.query.access_token);
         steem.me((err, steemResponse) => {
-          if (err) console.log(err)
-          req.session.token = req.query.access_token
-          req.session.steemconnect = steemResponse.account
-          res.redirect('/dashboard')
-        })
+          req.session.steemconnect = steemResponse.account;
+          req.session.access_token = req.query.access_token;
+          res.redirect(`/@disregardfiat`)
+        });
     }
-})
+});
 
+/* GET authenticate a user/redirect to steemconnect. */
 router.get('/logout', (req, res) => {
-   req.session.destroy()
+   req.session.destroy();
    res.redirect("/")
-})
+});
 
-module.exports = router
+module.exports = router;

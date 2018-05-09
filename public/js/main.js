@@ -51,6 +51,7 @@ function getTrendingTags(){
    steem.api.getDiscussionsByCreated(query, (err, result) => {
      if (err === null) {
        displayContent(result, initial)
+       result = result.filter(post => post.parent_permlink === 'dlux')
        getaccounts(result.map(post => post.author))
      } else {
        console.log(err);
@@ -495,7 +496,7 @@ if ($('main').hasClass('feed') ) {
 }
 
 if ($('main').hasClass('single')) {
-  let data = $('body').data()
+  let data = $('main').data()
   getPostAndComments(`/${data.category}/@${data.username}/${data.permlink}`)
 }
 

@@ -4,7 +4,6 @@ html
     title= title
     link(rel='stylesheet', href='/css/style.css')
     link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous")
-    script(src='https://aframe.io/releases/0.8.2/aframe.min.js')
     script(src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js")
@@ -44,6 +43,20 @@ html
       console.log(response)
       })
       }
+    script.
+      steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
+      console.log(result)
+      var sux = `#{username}/#{permlink}`
+      var hashy = JSON.parse(result.content.sux.json_metadata).vrHash
+      var iframe = document.createElement('iframe');
+      iframe.allowvr = 'yes'
+      iframe.id = 'theIframe'
+      iframe.allowfullscreen = 'yes'
+      iframe.scrolling = 'no'
+      iframe.width = '100%'
+      iframe.height = '100%'
+      iframe.src = 'https://ipfs.io/ipfs/' + hashy;
+      document.body.appendChild(iframe);
+      })
 
     body
-      iframe(allowvr='yes', id='theIframe', allowfullscreen='yes', scrolling='no', width='100%', height='100%', src=`https://ipfs.io/ipfs/QmTGmwXbvz639zayzdytVWh3fS6HxRmHyiKsECun7DvWaG`)

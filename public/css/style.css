@@ -2,13 +2,16 @@
 .profile-feed,
 .trending__tags,
 .balances,
-.create-post,
 .single {
   padding: 30px 0;
   max-width: 520px;
   margin: 0 auto;
 }
-
+.create-post {
+  padding: 30px 0;
+  max-width: 1000px;
+  margin: 0 auto;
+}
 .wallet {
   padding: 50px;
   background: #f3f3f3;

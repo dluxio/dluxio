@@ -6,7 +6,7 @@ router.get('/', (req, res, next) =>  {
   if(req.session.steemconnect){
     res.redirect(`/@${req.session.steemconnect.name}`)
   } else {
-    res.render('index', { title: 'SteemConnect Boilerplate' });
+    res.render('index', { title: 'dlux'});
   }
 });
 
@@ -41,12 +41,10 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
       let category = req.params.category
       let username = req.params.username
       let permlink = req.params.permlink
-      let ipfsHash = JSON.parse(post.json).vrHash
       res.render('single', {
         category: category,
         username: username,
         permlink: permlink,
-        vrHash: ipfsHash
       });
 });
 

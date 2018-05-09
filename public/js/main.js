@@ -297,15 +297,10 @@ function appendSinglePost(post, users){
   let profileImage = generateProfileImage(author)
 
   let tags = JSON.parse(post.json).tags.reduce( (all,tag) => all + `<span>${tag}</span>`, '')
-  let header = `
-  <form method="post" id="vote">
-    <input type="hidden" name="postId" value="${post.id}">
-    <input type="hidden" name="author" value="${post.author}">
-    <input type="hidden" name="permlink" value="${post.permlink}">
-  </form>
+  let iframe = `
+  <iframe allowvr="yes" src="https://ipfs.io/ipfs/${JSON.parse(post.json).vrHash}"style="border: 0; width: 100%; height: 100%"></iframe>
   `
   /*
-  <iframe allowvr="yes" src="https://ipfs.io/ipfs/${post.json_metadata.ipfsHash}"style="border: 0; width: 100%; height: 100%"></iframe>
   let voteButton = `
   <form method="post">
     <input type="hidden" name="postId" value="${post.id}">
@@ -321,7 +316,7 @@ function appendSinglePost(post, users){
   `
   */
 
-  $('main').append(header)
+  $body.append(iframe)
 }
 
 /**
@@ -497,7 +492,7 @@ if ($('main').hasClass('feed') ) {
     }
 }
 
-if ($('main').hasClass('single')) {
+if ($('body').hasClass('single')) {
   let data = $('main').data()
   getPostAndComments(`/${data.category}/@${data.username}/${data.permlink}`)
 }

@@ -22,16 +22,12 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
   let otherTags = tags.slice(0, 4)
   let title = req.body.title
   let hashy = req.body.vrHash
-  let customData = {
-      'tags': otherTags,
-      'app': 'dlux/v0.0.1',
-      'vrHash': hashy
-    }
+  let customData = JSON.stringify({"app": "dlux/v0.0.1","vrHash": hashy})
     steem.comment('', primaryTag, author, permlink, title, body, customData, (err, steemResponse) => {
         if (err) {
           res.render('post', {
             name: req.session.steemconnect.name,
-            msg: 'Error - ${err}'
+            msg: customData + permlink + body
           })
         } else {
           res.render('post', {

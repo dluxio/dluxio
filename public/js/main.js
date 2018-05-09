@@ -18,6 +18,7 @@ steem.api.getDynamicGlobalProperties((err, result) => {
 function getTrendingTags(){
   steem.api.getTrendingTags('', 20, (err, result) => {
     if (err) return console.log(err);
+    result = result.filter(post => post.parent_permlink === 'dlux')
     displayTrendingTags(result)
   });
 }
@@ -32,6 +33,7 @@ function getTrendingTags(){
    steem.api.getDiscussionsByTrending(query, (err, result) => {
      if (err === null) {
        displayContent(result,initial)
+       result = result.filter(post => post.parent_permlink === 'dlux')
        getaccounts(result.map(post => post.author))
      } else {
        console.log(err);
@@ -293,10 +295,10 @@ function generateProfileImage(author){
 function appendSinglePost(post, users){
   let author = users[post.author]
   console.log(author)
-  let html = converter.makeHtml(post.body)
-  let profileImage = generateProfileImage(author)
+  //let html = converter.makeHtml(post.body)
+  //let profileImage = generateProfileImage(author)
 
-  let tags = JSON.parse(post.json).tags.reduce( (all,tag) => all + `<span>${tag}</span>`, '')
+  //let tags = JSON.parse(post.json).tags.reduce( (all,tag) => all + `<span>${tag}</span>`, '')
   let iframe = `
   <iframe allowvr="yes" src="https://ipfs.io/ipfs/${JSON.parse(post.json).vrHash}"style="border: 0; width: 100%; height: 100%"></iframe>
   `
@@ -492,8 +494,8 @@ if ($('main').hasClass('feed') ) {
     }
 }
 
-if ($('body').hasClass('single')) {
-  let data = $('main').data()
+if ($('main').hasClass('single')) {
+  let data = $('body').data()
   getPostAndComments(`/${data.category}/@${data.username}/${data.permlink}`)
 }
 

@@ -41,10 +41,12 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
       let category = req.params.category
       let username = req.params.username
       let permlink = req.params.permlink
+      let ipfsHash = JSON.parse(post.json).vrHash
       res.render('single', {
         category: category,
         username: username,
-        permlink: permlink
+        permlink: permlink,
+        vrHash: ipfsHash
       });
 });
 

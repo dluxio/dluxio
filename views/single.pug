@@ -46,8 +46,9 @@ html
     script.
       steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
       console.log(result)
-      var sux = `#{username}/#{permlink}`
-      var hashy = JSON.parse(result.content.sux.json_metadata).vrHash
+      var sux = '#{username}/#{permlink}'
+      var metadata = result.content[sux].json_metadata
+      var hashy = JSON.parse(metadata).vrHash
       var iframe = document.createElement('iframe');
       iframe.allowvr = 'yes'
       iframe.id = 'theIframe'

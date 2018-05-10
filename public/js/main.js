@@ -67,6 +67,13 @@ function getTrendingTags(){
  */
  function getBlog(query, initial){
    steem.api.getDiscussionsByBlog(query, (err, result) => {
+     var filteredResults = new Array()
+     for (i = 0; i < result.length; i++) {
+       let app = JSON.parse(result[i].json_metadata).app
+       if (app.includes('dlux')) {
+         filteredResults.push(result[i])
+       }
+     }
        displayContent(result, initial)
    })
  }

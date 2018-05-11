@@ -22,7 +22,7 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
   let otherTags = tags.slice(0, 4)
   let title = req.body.title
   let hashy = req.body.vrHash
-  let customData = JSON.stringify({"app": "dlux/v0.0.1","vrHash": hashy})
+  let customData = {'app': 'dlux/v0.0.1','vrHash': hashy}
     steem.comment('', primaryTag, author, permlink, title, body, customData, (err, steemResponse) => {
         if (err) {
           res.render('post', {
@@ -75,11 +75,11 @@ router.post('/vote', util.isAuthenticatedJSON, (req, res) => {
     let voter = req.session.steemconnect.name
     let author = req.body.author
     let permlink = req.body.permlink
-    let weight = 10000
+    let weight = req.body.weight
 
     steem.vote(voter, author, permlink, weight, function (err, steemResponse) {
       if (err) {
-          res.json({ error: err.error_description })
+          res.json({ id: err.error_description })
       } else {
           res.json({ id: postId })
       }

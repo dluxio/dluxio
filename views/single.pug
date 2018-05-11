@@ -37,10 +37,37 @@ html
       dataType: 'json',
       data: {
       permlink: '#{permlink}',
-      author: '#{username}'
+      author: '#{username}',
+      weight: message
       }
       }, (response) => {
       console.log(response)
+      let stateObject = response
+      window.frames.theIframe.postMessage({
+      'func': 'voteMsg',
+      'message': stateObject
+      }, "*");
+      })
+      }
+      function aVote(message) {
+      $.post({
+      url: '/post/vote/',
+      dataType: 'json',
+      data: {
+      permlink: message.permlink,
+      author: message.author,
+      weight: message.weight
+      }}, "*");
+      }
+      function sendLink(link) {
+      location.href = link;
+      }
+      function iloaded(){
+      steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
+      window.frames.theIframe.postMessage({
+      'func': 'steemState',
+      'message': result,
+      }, "*");
       })
       }
     script.

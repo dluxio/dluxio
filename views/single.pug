@@ -36,14 +36,14 @@ html
       url: '/post/vote/',
       dataType: 'json',
       data: {
-      permlink: '#{permlink}',
-      author: '#{username}',
-      weight: message
+      'permlink': '#{permlink}',
+      'author': '#{username}',
+      'weight': message
       }
       }, (response) => {
       console.log(response)
       let stateObject = response
-      window.frames.theIframe.postMessage({
+      window.theIframe.postMessage({
       'func': 'voteMsg',
       'message': stateObject
       }, "*");
@@ -54,9 +54,9 @@ html
       url: '/post/vote/',
       dataType: 'json',
       data: {
-      permlink: message.permlink,
-      author: message.author,
-      weight: message.weight
+      'permlink': message.permlink,
+      'author': message.author,
+      'weight': message.weight
       }}, "*");
       }
       function sendLink(link) {
@@ -64,7 +64,7 @@ html
       }
       function iloaded(){
       steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
-      window.frames.theIframe.postMessage({
+      window.theIframe.postMessage({
       'func': 'steemState',
       'message': result,
       }, "*");

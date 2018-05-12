@@ -16,7 +16,7 @@
     window.attachEvent("onmessage", onMessage, false);
     }
     function onMessage(event) {
-    if (event.origin !== "https://dlux.io" || "localhost") return;
+    //if (event.origin !== "https://dlux.io" || "localhost:3000") return;
     var data = event.data;
     if (typeof(window[data.func]) == "function") {
     window[data.func].call(null, data.message);
@@ -24,10 +24,10 @@
     }
     function voteMsg(message) {
       console.log(message)
-      document.querySelector('voteMsg').value = message;
+      document.querySelector('voteMsg').text= message;
     }
     function voteButton() {
-      voteAmt = '10000';
+      voteAmt = parseInt(10000);
     window.parent.postMessage({
         'func': 'vote',
         'message': voteAmt
@@ -53,13 +53,17 @@
     'message': {
       'permlink': 'dlux-seed',
       'author': 'disregardfiat',
-      'weight': 10000,
+      'weight': parseInt(10000),
     }
     }, "*");
     }
     function steemState(message) {
       $("body").data("steemState", message);
       console.log(message)
+    }
+    function iAm(message) {
+      var targetLabel = document.querySelector('usernameText')
+      targetLabel.text = message;
     }
     function onpageloaded() {
       window.parent.postMessage({

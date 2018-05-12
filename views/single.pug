@@ -43,7 +43,8 @@ html
       }, (response) => {
       console.log(response)
       let stateObject = response
-      window.theIframe.postMessage({
+      var target = document.getElementById('theIframe').contentWindow
+      target.postMessage({
       'func': 'voteMsg',
       'message': stateObject
       }, "*");
@@ -57,16 +58,24 @@ html
       'permlink': message.permlink,
       'author': message.author,
       'weight': message.weight
-      }}, "*");
+      }}, (response) => {
+      console.log(response)
+      var target = document.getElementById('theIframe').contentWindow
+      target.postMessage({
+      'func': 'voteMsg',
+      'message': stateObject
+      }, "*");
+      });
       }
       function sendLink(link) {
       location.href = link;
       }
       function iloaded(){
       steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
-      window.theIframe.postMessage({
-      'func': 'steemState',
-      'message': result,
+      var target = document.getElementById('theIframe').contentWindow
+      target.postMessage({
+      'func': 'iAm',
+      'message': '#{iAm}',
       }, "*");
       })
       }

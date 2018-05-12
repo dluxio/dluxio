@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+    <meta charset="utf-8">
+    <title>Initiation of self-incentive software</title>
+    <meta name="0.0.9" content="Decentralized Program Seed">
+    <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+    <script src="https://rawgit.com/rdub80/aframe-gui/master/dist/aframe-gui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.map"></script>
+    <script src="//cdn.steemjs.com/lib/latest/steem.min.js"></script>
+    <script type="text/javascript">
+    if (window.addEventListener) {
+    window.addEventListener("message", onMessage, false);
+    }
+    else if (window.attachEvent) {
+    window.attachEvent("onmessage", onMessage, false);
+    }
+    function onMessage(event) {
+    //if (event.origin !== "https://dlux.io" || "localhost:3000") return;
+    var data = event.data;
+    if (typeof(window[data.func]) == "function") {
+    window[data.func].call(null, data.message);
+    }
+    }
+    function voteMsg(message) {
+      console.log(message)
+      document.querySelector('voteMsg').text= message;
+    }
+    function voteButton() {
+      voteAmt = parseInt(10000);
+    window.parent.postMessage({
+        'func': 'vote',
+        'message': voteAmt
+    }, "*");
+    }
+    function flagButton() {
+    var voteAmt = -1;
+    window.parent.postMessage({
+      'func': 'vote',
+      'message': voteAmt
+    }, "*");
+    }
+    function sendLink() {
+    //  var link = document.querySelector('link').value
+    window.parent.postMessage({
+    'func': 'sendLink',
+    'message': '/@dlux-io'
+    }, "*");
+    }
+    function aVote() {
+    window.parent.postMessage({
+    'func': 'aVote',
+    'message': {
+      'permlink': 'dlux-seed',
+      'author': 'disregardfiat',
+      'weight': parseInt(10000),
+    }
+    }, "*");
+    }
+    function steemState(message) {
+      $("body").data("steemState", message);
+      console.log(message)
+    }
+    function iAm(message) {
+      var targetLabel = document.querySelector('usernameText')
+      targetLabel.text = message;
+    }
+    function onpageloaded() {
+      window.parent.postMessage({
+      'func': 'iloaded',
+      'message': ''
+    }, "*");
+    }
+    </script>
+  </head>
+  <body onload="onpageloaded()">
+    <a-scene>
+      <a-assets>
+        <video id="oe360" crossorigin="anonymous" autoplay="true" src="https://ipfs.io/ipfs/QmXwNQmiyYhgDTtpLa6Xv3gyooQEjVhamSYoSSn4TJ7QTv"></video>
+      </a-assets>
+      <a-videosphere src="#oe360"></a-videosphere>
+    </a-scene>
+  </body>
+</html>

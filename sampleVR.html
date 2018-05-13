@@ -24,7 +24,7 @@
     }
     function voteMsg(message) {
       console.log(message)
-      document.querySelector('voteMsg').text= message;
+      document.querySelector('voteMsgR').value = message;
     }
     function voteButton() {
       voteAmt = parseInt(10000);
@@ -63,7 +63,7 @@
     }
     function iAm(message) {
       var targetLabel = document.querySelector('usernameText')
-      targetLabel.text = message;
+      targetLabel.value = message;
     }
     function onpageloaded() {
       window.parent.postMessage({
@@ -119,7 +119,7 @@
         </a-gui-button>
         <a-gui-label
                 width="6.5" height="0.75"
-                id="voteMsg"
+                id="voteMsgR"
                 value="Hover to active slider and sign Vote"
                 font-family="Arial"
                 margin="0 0 0.05 0">

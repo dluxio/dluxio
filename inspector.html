@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+    <meta charset="utf-8">
+    <title>Secure Round Table by @disregardfiat</title>
+    <meta name="VR Sandbox" content="Create a dlux social blockchain VR">
+    <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-sharedspace-component@1.0.1/dist/aframe-sharedspace-component.min.js"></script>
+    <script>
+  if (window.addEventListener) {
+  window.addEventListener("message", onMessage, false);
+  }
+  else if (window.attachEvent) {
+  window.attachEvent("onmessage", onMessage, false);
+  }
+  function onMessage(event) {
+  if (event.origin !== "https://ipfs.io") return;
+  var data = event.data;
+  if (typeof(window[data.func]) == "function") {
+  window[data.func].call(null, data.message);
+  }
+  }
+  function vote(message) {
+  $.post({
+  url: '/post/vote/',
+  dataType: 'json',
+  data: {
+  permlink: '',
+  author: ''
+  }
+  }, (response) => {
+  console.log(response)
+  })
+  }
+</script>
+  </head>
+  <body>
+    <a-scene inspector="url: https://ipfs.io/ipfs/QmbScVu9tpr1YRUyfg2GvdEknmoAXpqu1dimCdM5RxH6T2">
+      <a-entity sharedspace="hold: true; audio: true" avatars="onmyself: user"></a-entity>
+      <a-assets>
+        <a-mixin id="user" visible="false" look-controls wasd-controls share="position, rotation"></a-mixin>
+      </a-assets>
+      <a-cylinder color="#732222" height="0.9" position="0 .45 0" radius="2.5"></a-cylinder>
+      <a-video id="NVideo" vidS src="#videoscreen" autoplay="true" height="0.9" position="0 2.45 0.95" rotation="15 0 0" width="1.6"></a-video>
+      <a-video id="SVideo" vidS src="#videoscreen" autoplay="true" height="0.9" position="0 2.45 -0.95" rotation="15 180 0" width="1.6"></a-video>
+      <a-video id="WVideo" vidS src="#videoscreen" autoplay="true" height="0.9" position="0.95 2.45 0" rotation="15 90 0" width="1.6"></a-video>
+      <a-video id="EVideo" vidS src="#videoscreen" autoplay="true" height="0.9" position="-0.95 2.45 0" rotation="15 270 0" width="1.6"></a-video>
+      <a-plane id="floor" color="#776e4e" height="100" rotation="-90 0 0" width="100" side="double" position="0 0 0"></a-plane>
+      <a-box id="NWall" height="1000" position="0 500 -10" width="20" depth="1"></a-box>
+      <a-box id="SWall" height="1000" position="0 500 10" width="20" depth="1"></a-box>
+      <a-box id="WWall" height="1000" position="-10 500 0" width="1" depth="20"></a-box>
+      <a-box id="EWall" height="1000" position="10 500 0" width="1" depth="20"></a-box>
+      <a-light id="WNWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="-9 2 -5" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="WCWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="-9 2 0" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="WSWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="-9 2 5" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="ENWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="9 2 -5" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="ECWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="9 2 0" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="ESWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="9 2 5" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="NWWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="-5 2 -9" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="NCWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="0 2 -9" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="NEWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="5 2 -9" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="SWWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="-5 2 9" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="SCWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="0 2 9" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="SEWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="5 2 9" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="TableLight" angle="30" light="" color="#bab39b" decay="2.3" penumbra="0.66" position="0 10 0" rotation="-90 0 0" type="spot"></a-light>
+      <a-light id="TableLight" intensity=".2" light="" color="#bab39b"position="0 100 0" rotation="-90 0 0" type="ambient"></a-light>
+      <a-light id="TableLight" intensity=".1" light="" color="#bab39b"position="0 1.5 0" rotation="-90 0 0" type="ambient"></a-light>
+      <a-sky id="Sky" transparent="true" material="" color="#191040" position="" rotation="" scale="" visible="" geometry=""></a-sky>
+    </a-scene>
+    <template>
+      <a-sphere radius="0.1" color="#ffffff">
+        <a-sphere position="0.05 0.03 -0.08" radius="0.02" segments-width="8" segments-height="8" color="#000000"></a-sphere>
+        <a-sphere position="-0.05 0.03 -0.08" radius="0.02" segments-width="8" segments-height="8" color="#000000"></a-sphere>
+        <a-sphere class="themable" position="0 -0.07 -0.1" scale="1 1 0.5" segments-width="4" segments-height="4" radius="0.02" color="#11fd3e"></a-sphere>
+        <a-cone class="themable" position="0.03 -0.07 -0.1" rotation="0 0 90" scale="1 1 0.5" segments-radial="8" segments-height="1" height="0.03" radius-bottom="0.03"  color="#1cff3c"></a-cone>
+        <a-cone class="themable" position="-0.03 -0.07 -0.1" rotation="0 0 -90" scale="1 1 0.5" segments-radial="8" segments-height="1" height="0.03" radius-bottom="0.03"  color="#1cff3c"></a-cone>
+      </a-sphere>
+    </template>
+    <script>
+  var room = document.querySelector('[sharedspace]');
+  var roomName = window.location.search.substr(1);
+  if (!roomName) {
+    roomName = Date.now() + '';
+    history.pushState({}, '', window.location + '?' + roomName);
+  }
+  connect();
+
+  function connect() {
+    var scene = document.querySelector('a-scene');
+    if (!scene.hasLoaded) {
+      scene.addEventListener('loaded', connect);
+      return;
+    }
+    room.setAttribute('sharedspace', { room: roomName, hold: false });
+  }
+
+    </script>
+  </body>
+</html>

@@ -32,6 +32,7 @@ html
       }
       }
       function haveSomeVR(message) {
+      /*
       var form = new FormData();
       form.append("", message);
       var settings = {
@@ -39,9 +40,7 @@ html
       "crossDomain": true,
       "url": "https://ipfs-dev.dlux.io/api/v0/add?stream-channels=true",
       "method": "POST",
-      "headers": {
-      "Cache-Control": "no-cache"
-      },
+      "headers": {"Cache-Control": "no-cache"},
       "processData": false,
       "contentType": false,
       "mimeType": "multipart/form-data",
@@ -57,17 +56,17 @@ html
       iframe.scrolling = 'no'
       iframe.width = '100%'
       iframe.height = '50%'
-      iframe.src = 'https://ipfs.io/ipfs/' + return.Hash;
-      document.body.appendChild(iframe);
+      iframe.src = 'https://ipfs.io/ipfs/' + response.Hash;
+      document.body.removeChild(iframe);
       var main = document.createElement('main');
       main.class = 'create-post'
       main.id = 'mainthing'
       document.body.appendChild(main);
-      var poster = document.createElement('form');
-      poster.id = 'poster'
-      poster.method = 'post'
-      poster.action = '/post/create-post'
-      document.body.mainthing.appendChild(poster);
+      var post = document.createElement('form');
+      post.id = 'poster'
+      post.method = 'post'
+      post.action = '/post/create-post'
+      document.body.mainthing.appendChild(post);
       var label = document.createElement('label');
       label.value = 'Title'
       document.body.mainthing.poster.appendChild(label);
@@ -89,12 +88,12 @@ html
       document.body.mainthing.poster.appendChild(label);
       input.type = 'hidden'
       input.name = vrHash
-      input.value = return.Hash
+      input.value = response.Hash
       document.body.mainthing.poster.appendChild(input);
       input.name = image
       input.value = '' //get normal aspect screengrab
       document.body.mainthing.poster.appendChild(input);
-      input.name = 360Hash
+      input.name = Hash360
       input.value = '' //screengrabhash
       document.body.mainthing.poster.appendChild(input);
       var button = document.createElement('button');
@@ -102,8 +101,7 @@ html
       button.type = 'submit'
       button.value = 'Post to Steem'
       document.body.mainthing.poster.appendChild(button);
-      })
       });
       }
     body
-      iframe(allowvr='yes', id='theIframe', allowfullscreen='yes', scrolling='no', width='100%', height='100%', src=`https://ipfs.io/ipfs/QmaXBuKbDiYJp7S1T8Foo2CnUGTJWSjoHb6A48GXuhurJG`)
+      iframe(allowvr='yes', id='theIframe', allowfullscreen='yes', scrolling='no', width='100%', height='100%', src=`https://ipfs.io/ipfs/QmX5kbNAeiHNGDeQzEYgZppMNxBhx7YKfRtnB2VCxgpZRc`)

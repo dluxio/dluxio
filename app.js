@@ -6,6 +6,7 @@ let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 let session = require('express-session');
 let expressSanitized = require('express-sanitize-escape');
+let cors = require('cors')
 
 let index = require('./routes/index');
 let auth = require('./routes/auth');
@@ -18,6 +19,7 @@ let util = require('./modules/util')
 
 let app = express();
 
+app.use(cors())
 app.use(session({
     secret: config.session.secret,
     saveUninitialized: true,

@@ -1,22 +1,109 @@
-extends layout
-
-block content
-  include partials/nav
-
-  main.create-post
-    h1 New WebVR Post
-    form(action="/post/create-post/" method="post")
-      label Title
-      input(type="text" name="title")
-      label VR Scene (Press CTL + ALT + i to open the inspector)
-      iframe(allowvr='yes', id='theIframe', allowfullscreen='yes', scrolling='no', width='1000', height='1000', src=`https://ipfs.io/ipfs/QmTGmwXbvz639zayzdytVWh3fS6HxRmHyiKsECun7DvWaG`)
-      label VR IPFS Hash
-      input(type="text" name="vrHash")
-      label Blog Post
-      textarea(name="post")
-      label Tags
-      input(type="text" name="tags")
-      label
-      button.btn.btn-primary(type="submit") Post to STEEM
-      p Posting as #{name}
-      p #{msg}
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/css/style.css')
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous")
+    script(src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js")
+    script(src="https://cdn.steemjs.com/lib/latest/steem.min.js")
+    script(src="/js/main.js")
+    style.
+      html, body{
+      margin: 0;
+      height: 100%;
+      }
+      iframe{
+      border: 0;
+      }
+    script.
+      if (window.addEventListener) {
+      window.addEventListener("message", onMessage, false);
+      }
+      else if (window.attachEvent) {
+      window.attachEvent("onmessage", onMessage, false);
+      }
+      function onMessage(event) {
+      if (event.origin !== "https://ipfs.io") return;
+      var data = event.data;
+      if (typeof(window[data.func]) == "function") {
+      window[data.func].call(null, data.message);
+      }
+      }
+      function haveSomeVR(message) {
+      var form = new FormData();
+      form.append("", message);
+      var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "https://ipfs-dev.dlux.io/api/v0/add?stream-channels=true",
+      "method": "POST",
+      "headers": {
+      "Cache-Control": "no-cache"
+      },
+      "processData": false,
+      "contentType": false,
+      "mimeType": "multipart/form-data",
+      "data": form
+      }
+      $.ajax(settings).done(function (response) {
+      console.log(response);
+      document.body.removeChild(iframe);
+      var iframe = document.createElement('iframe');
+      iframe.allowvr = 'yes'
+      iframe.id = 'previewIframe'
+      iframe.allowfullscreen = 'yes'
+      iframe.scrolling = 'no'
+      iframe.width = '100%'
+      iframe.height = '50%'
+      iframe.src = 'https://ipfs.io/ipfs/' + return.Hash;
+      document.body.appendChild(iframe);
+      var main = document.createElement('main');
+      main.class = 'create-post'
+      main.id = 'mainthing'
+      document.body.appendChild(main);
+      var poster = document.createElement('form');
+      poster.id = 'poster'
+      poster.method = 'post'
+      poster.action = '/post/create-post'
+      document.body.mainthing.appendChild(poster);
+      var label = document.createElement('label');
+      label.value = 'Title'
+      document.body.mainthing.poster.appendChild(label);
+      var input = document.createElement('input');
+      input.type = 'text'
+      input.name = 'title'
+      document.body.mainthing.poster.appendChild(input);
+      label.value = 'Classic Post'
+      document.body.mainthing.poster.appendChild(label);
+      var textarea = document.createElement('textarea');
+      textarea.type = 'text'
+      textarea.name = 'post'
+      document.body.mainthing.poster.appendChild(textarea);
+      label.value = 'Tags separated by commas'
+      document.body.mainthing.poster.appendChild(label);
+      input.name = 'tags'
+      document.body.mainthing.poster.appendChild(input);
+      label.value = 'Posting as #{name}'
+      document.body.mainthing.poster.appendChild(label);
+      input.type = 'hidden'
+      input.name = vrHash
+      input.value = return.Hash
+      document.body.mainthing.poster.appendChild(input);
+      input.name = image
+      input.value = '' //get normal aspect screengrab
+      document.body.mainthing.poster.appendChild(input);
+      input.name = 360Hash
+      input.value = '' //screengrabhash
+      document.body.mainthing.poster.appendChild(input);
+      var button = document.createElement('button');
+      button.class = 'btn btn-primary'
+      button.type = 'submit'
+      button.value = 'Post to Steem'
+      document.body.mainthing.poster.appendChild(button);
+      })
+      });
+      }
+    body
+      iframe(allowvr='yes', id='theIframe', allowfullscreen='yes', scrolling='no', width='100%', height='100%', src=`https://ipfs.io/ipfs/QmaXBuKbDiYJp7S1T8Foo2CnUGTJWSjoHb6A48GXuhurJG`)

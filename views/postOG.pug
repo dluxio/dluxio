@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  include partials/nav
+
+  main.create-post
+    h1 New WebVR Post
+    form(action="/post/create-post/" method="post")
+      label Title
+      input(type="text" name="title")
+      label VR Scene (Press CTL + ALT + i to open the inspector)
+      iframe(allowvr='yes', id='theIframe', allowfullscreen='yes', scrolling='no', width='1000', height='1000', src=`https://ipfs.io/ipfs/QmTGmwXbvz639zayzdytVWh3fS6HxRmHyiKsECun7DvWaG`)
+      label VR IPFS Hash
+      input(type="text" name="vrHash")
+      label Blog Post
+      textarea(name="post")
+      label Tags
+      input(type="text" name="tags")
+      label
+      button.btn.btn-primary(type="submit") Post to STEEM
+      p Posting as #{name}
+      p #{msg}

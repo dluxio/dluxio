@@ -14,6 +14,11 @@ html
       margin: 0;
       height: 100%;
       }
+      main{
+      padding: 30px 0;
+      max-width: 1000px;
+      margin: 0 auto;
+      }
       iframe{
       border: 0;
       }
@@ -32,22 +37,10 @@ html
       }
       }
       function haveSomeVR(message) {
-      var form = new FormData();
-      form.append("", message);
-      var settings = {
-      "async": true,
-      "crossDomain": true,
-      "url": "https://ipfs-dev.dlux.io/api/v0/add?stream-channels=true",
-      "method": "POST",
-      "headers": {"Cache-Control": "no-cache"},
-      "processData": false,
-      "contentType": false,
-      "mimeType": "multipart/form-data",
-      "data": form
+      var iframes = document.querySelectorAll('iframe');
+      for (var i = 0; i < iframes.length; i++) {
+      iframes[i].parentNode.removeChild(iframes[i]);
       }
-      $.ajax(settings).done(function (response) {
-      console.log(response);
-      document.body.removeChild(iframe);
       var iframe = document.createElement('iframe');
       iframe.allowvr = 'yes'
       iframe.id = 'previewIframe'
@@ -55,8 +48,8 @@ html
       iframe.scrolling = 'no'
       iframe.width = '100%'
       iframe.height = '50%'
-      iframe.src = 'https://ipfs.io/ipfs/' + response.Hash;
-      document.body.removeChild(iframe);
+      iframe.srcdoc = message
+      document.body.appendChild(iframe);
       var main = document.createElement('main');
       main.class = 'create-post'
       main.id = 'mainthing'
@@ -65,42 +58,75 @@ html
       post.id = 'poster'
       post.method = 'post'
       post.action = '/post/create-post'
-      document.body.mainthing.appendChild(post);
-      var label = document.createElement('label');
-      label.value = 'Title'
-      document.body.mainthing.poster.appendChild(label);
-      var input = document.createElement('input');
-      input.type = 'text'
-      input.name = 'title'
-      document.body.mainthing.poster.appendChild(input);
-      label.value = 'Classic Post'
-      document.body.mainthing.poster.appendChild(label);
+      document.getElementById('mainthing').appendChild(post);
+      var labelT = document.createElement('label');
+      labelT.text = 'Title'
+      document.getElementById('poster').appendChild(labelT);
+      var inputT = document.createElement('input');
+      inputT.type = 'text'
+      inputT.name = 'title'
+      document.getElementById('poster').appendChild(inputT);
+      var labelP = document.createElement('label');
+      labelP.textValue = 'Classic Post'
+      labelP.for = 'post'
+      document.getElementById('poster').appendChild(labelP);
       var textarea = document.createElement('textarea');
       textarea.type = 'text'
       textarea.name = 'post'
-      document.body.mainthing.poster.appendChild(textarea);
-      label.value = 'Tags separated by commas'
-      document.body.mainthing.poster.appendChild(label);
-      input.name = 'tags'
-      document.body.mainthing.poster.appendChild(input);
-      label.value = 'Posting as #{name}'
-      document.body.mainthing.poster.appendChild(label);
-      input.type = 'hidden'
-      input.name = vrHash
-      input.value = response.Hash
-      document.body.mainthing.poster.appendChild(input);
-      input.name = image
-      input.value = '' //get normal aspect screengrab
-      document.body.mainthing.poster.appendChild(input);
-      input.name = Hash360
-      input.value = '' //screengrabhash
-      document.body.mainthing.poster.appendChild(input);
+      document.getElementById('poster').appendChild(textarea);
+      var labelC = document.createElement('label');
+      labelC.textValue = 'Tags separated by commas'
+      labelC.for = 'tags'
+      document.getElementById('poster').appendChild(labelC);
+      var inputC = document.createElement('input');
+      inputC.type = 'text'
+      inputC.name = 'tags'
+      document.getElementById('poster').appendChild(inputC);
+      var p = document.createElement('p');
+      p.value = 'Posting as #{name}'
+      document.getElementById('poster').appendChild(p);
+      //maybe establish a loading applet here
+      var form = new FormData();
+      form.append("", message);
+      var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "https://ipfs-dev.dlux.io/api/v0/add?stream-channels=true",
+      "method": "POST",
+      "headers": {
+      "Cache-Control": "no-cache"
+      },
+      "processData": false,
+      "contentType": false,
+      "mimeType": "multipart/form-data",
+      "data": form
+      }
+      $.ajax(settings).done(function (response) {
+      console.log(response);
+      //satisfy loading applet
+      var inputV = document.createElement('input');
+      inputV.type = 'hidden'
+      inputV.name = vrHash
+      inputV.value = response.Hash
+      document.getElementById('poster').appendChild(inputV);
+      var inputI = document.createElement('input');
+      inputI.type = 'hidden'
+      inputI.name = vrHash
+      inputI.name = image
+      inputI.value = '' //get normal aspect screengrab
+      document.getElementById('poster').appendChild(inputI);
+      var input3 = document.createElement('input');
+      input3.type = 'hidden'
+      input3.name = vrHash
+      input3.name = Hash360
+      input3.value = '' //screengrabhash
+      document.getElementById('poster').appendChild(input3);
       var button = document.createElement('button');
       button.class = 'btn btn-primary'
       button.type = 'submit'
       button.value = 'Post to Steem'
-      document.body.mainthing.poster.appendChild(button);
+      document.getElementById('poster').appendChild(button);
       });
       }
     body
-      iframe(allowvr='yes', id='theIframe', allowfullscreen='yes', scrolling='no', width='100%', height='100%', src=`https://ipfs.io/ipfs/QmX5kbNAeiHNGDeQzEYgZppMNxBhx7YKfRtnB2VCxgpZRc`)
+      iframe(allowvr='yes', id='theIframe', allowfullscreen='yes', scrolling='no', width='100%', height='100%', src=`https://ipfs.io/ipfs/QmSo1ECHbziLnv5e3fRhdgC2mBycdvekQbugpGU83sGaoK`)

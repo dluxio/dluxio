@@ -9,6 +9,7 @@ html
     script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js")
     script(src="https://cdn.steemjs.com/lib/latest/steem.min.js")
     script(src="/js/main.js")
+    script(src="https://unpkg.com/ipfs/dist/index.min.js")
     style.
       html, body{
       margin: 0;
@@ -37,19 +38,11 @@ html
       }
       }
       function haveSomeVR(message) {
-      var iframes = document.querySelectorAll('iframe');
-      for (var i = 0; i < iframes.length; i++) {
-      iframes[i].parentNode.removeChild(iframes[i]);
-      }
-      var iframe = document.createElement('iframe');
-      iframe.allowvr = 'yes'
-      iframe.id = 'previewIframe'
-      iframe.allowfullscreen = 'yes'
-      iframe.scrolling = 'no'
-      iframe.width = '100%'
-      iframe.height = '50%'
-      iframe.srcdoc = message
-      document.body.appendChild(iframe);
+      // var buf = bufferize(message)
+      //window.ipfs.files.add(buf, function (err, files) {
+      // 'files' will be an array of objects containing paths and the multihashes of the files added
+      //})
+      document.getElementById('theIframe').height = '50%';
       var main = document.createElement('main');
       main.class = 'create-post'
       main.id = 'mainthing'

@@ -6,7 +6,11 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "aws-sdk": "^2.239.1",
+    "aws-serverless-express": "^3.2.0",
     "body-parser": "~1.18.2",
+    "bower": "^1.8.4",
+    "claudia-api-builder": "^4.0.0",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",
     "debug": "~2.6.9",
@@ -20,6 +24,7 @@
     "serve-favicon": "~2.4.5"
   },
   "devDependencies": {
+    "claudia": "^4.0.0",
     "webpack": "^4.8.3",
     "webpack-cli": "^2.1.3"
   }

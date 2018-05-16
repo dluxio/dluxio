@@ -1,2 +1,12 @@
 node_modules/
+package-lock.json
 config.js
+.env
+deploy.env
+event.json
+.lambda
+claudia.json
+context.json
+event_sources.json
+lambda.js
+dlux.zip

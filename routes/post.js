@@ -22,20 +22,59 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
   let otherTags = tags.slice(0, 4)
   let title = req.body.title
   let hashy = req.body.vrHash
-  let customData = {'app': 'dlux/v0.0.1','vrHash': hashy}
-    steem.comment('', primaryTag, author, permlink, title, body, customData, (err, steemResponse) => {
-        if (err) {
-          res.render('post', {
-            name: req.session.steemconnect.name,
-            msg: customData + permlink + body
-          })
-        } else {
-          res.render('post', {
-            name: req.session.steemconnect.name,
-            msg: 'Posted To Steem Network'
-          })
-        }
-    });
+  let image = req.body.image
+  let Hash360 = req.body.Hash360
+  let customData = {
+    'app': 'dlux/v0.0.1',
+    'vrHash': hashy,
+    'image': '',
+    'Hash360': ''
+  }
+  steem.broadcast([
+  [
+    "comment",
+    {
+      "parent_author": "",
+      "parent_permlink": "dlux",
+      "author": "example",
+      "permlink": "example",
+      "title": "example",
+      "body": "example",
+      "json_metadata": customData
+    }
+  ],
+  [
+    "comment_options",
+    {
+      "author": "example",
+      "permlink": "example",
+      "max_accepted_payout": "1000000.000 SBD",
+      "percent_steem_dollars": 10000,
+      "allow_votes": true,
+      "allow_curation_rewards": true,
+      "extensions": [
+        [
+          0,
+          {
+            "beneficiaries": [
+              {
+                "account": "dlux-io",
+                "weight": 1000
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+], function (err, response) {
+  if (err) {
+    console.log(err)
+    //res.redirect(`/@${parentAuthor}/${parentPermlink}`)
+  } else {
+    res.redirect(`/@${parentAuthor}`)
+  }
+})
 });
 
 /*
@@ -75,7 +114,7 @@ router.post('/vote', util.isAuthenticatedJSON, (req, res) => {
     let voter = req.session.steemconnect.name
     let author = req.body.author
     let permlink = req.body.permlink
-    let weight = req.body.weight
+    let weight = 10000
 
     steem.vote(voter, author, permlink, weight, function (err, steemResponse) {
       if (err) {

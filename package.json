@@ -1,9 +1,10 @@
 {
-  "name": "dlux",
+  "name": "dlux.io",
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "production": "NODE_ENV=production"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
@@ -11,7 +12,7 @@
     "cors": "^2.8.4",
     "debug": "~2.6.9",
     "ejs": "^2.6.1",
-    "express": "^4.15.5",
+    "express": "^4.16.3",
     "express-sanitize-escape": "^1.1.0",
     "express-session": "^1.15.6",
     "morgan": "~1.9.0",
@@ -21,7 +22,8 @@
     "serve-favicon": "~2.4.5"
   },
   "devDependencies": {
-    "webpack": "^4.8.1",
+    "claudia": "^4.0.0",
+    "webpack": "^4.8.3",
     "webpack-cli": "^2.1.3"
   }
 }

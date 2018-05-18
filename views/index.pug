@@ -1,23 +1,49 @@
-doctype html
-html
- head
- meta(charset='utf-8')
- title dlux | Decentralized Limitless User eXperiences
- meta(name='dlux', content='crafting VR')
- script(src='https://aframe.io/releases/0.8.2/aframe.min.js')
- script(src='https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js')
-body
- a-scene()
-  a-assets
-    a-asset-item(id='bf' src='https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json')
-    img#360t(crossorigin="anonymous" src="https://ipfs.io/ipfs/QmZwC5cCtkjmqMSkTd5Ln7ceogRevkX85u4FxeBwQgXaS6")
-    img#360s(crossorigin="anonymous" src="https://ipfs.io/ipfs/QmYcNJ8MdN3vC8UZJYaN5Xx13m4ne3z456UCeSTYjE9J5v")
-    img#360oe(crossorigin="anonymous" src="https://ipfs.io/ipfs/QmNuivxtiPHg6V6oVqQ5HtkzWWtkskRADu4NXhYzoww9bh")
-  a-camera(position='0 1.6 0')
-    a-cursor(position='0 0 -1')
-  a-entity(text-geometry='value: Welcome to' position='-1 1 -2' scale='.2 .2 1')
-  a-entity(text-geometry='value: dlux; font: #bf' position='0 1 -2' scale='2 2 .01')
-  a-entity(text-geometry='value: Sign in with SteemConnect | vote in VR' link='href: /auth; title: ~' position='0 .6 -2' scale='.4 .4 .01')
-  a-entity(text-geometry='value: [Sign up for STEEM]' link='href: https://staging.busy.org/i/@dlux-io; title: .' position='0 .3 -2' scale='.4 .4 .01')
-  a-link(position='-2.25 1 -2' href='https://ipfs.io/ipfs/QmdQAVZWAcA61TMkbjE4dHkDi8P2ci8uDaMFxyfYNvHC6F?ipfs-1524340839265' title='Gabba Gallery with P2P VR chat' image='#360t')
-  a-sky(src='#360s' rotation='0 -90 0')
+html(xmlns='http://www.w3.org/1999/xhtml')
+  head
+    meta(charset='utf-8')
+    title dlux | vr blockchain explorer
+    meta(name='dlux', content='Experience VR')
+    script(src='https://aframe.io/releases/0.8.2/aframe.min.js')
+    script(src='https://unpkg.com/aframe-text-geometry-component@0.5.0/dist/aframe-text-geometry-component.min.js')
+    script.
+      AFRAME.registerComponent('url', {
+      schema: {default: ''},
+      init: function () {
+      var url = this.data;
+      this.el.addEventListener('click', function () {
+      window.location.href = url;
+      });
+      }
+      });
+  body.a-body
+    a-scene
+      a-assets
+        a-asset-item#bf(src='https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json')
+        img#360t(crossorigin='anonymous', src='https://ipfs.io/ipfs/QmZwC5cCtkjmqMSkTd5Ln7ceogRevkX85u4FxeBwQgXaS6')
+        img#360s(crossorigin='anonymous', src='https://ipfs.io/ipfs/QmYcNJ8MdN3vC8UZJYaN5Xx13m4ne3z456UCeSTYjE9J5v')
+        img#sky(src='vp_sky_v2_032.jpg')
+        // free use by vizpeople
+        img#sclogo(src='/viz/steemconnectlogo.jpg')
+        img#jslogo(src='/viz/joinsteemlogo.jpg')
+        img#adlogo(src='/viz/aboutdluxlogo.jpg')
+      a-sky(src='#360s')
+      a-camera(position='-1.1 1.6 5', rotation='0 0 0', look-controls='', wasd-controls='', data-aframe-inspector-original-camera='')
+        a-cursor(fuse='true', timeout='500', material='', raycaster='', cursor='', geometry='')
+      // mountains ©olcaytoibili – 2015 royalty free license
+      a-entity(obj-model='obj:mtns.obj;mtl:mtns.mtl')
+      a-entity#box-1(geometry='', position='-2.550904667295574 4.209 -6.6974128743945744', material='color:#ffff00')
+      a-entity#box-2(geometry='', mixin='null', material='color:#ff8000', position='-0.15664445620364909 3.7513597676739376 -7.126213875581079', scale='2.510708693442104 2.510708693442104 2.510708693442104')
+      a-entity#box-3(geometry='', position='2.3279528535012792 3.182995476949067 -5.683563666851351', material='color:#00ff80')
+      a-entity#box-4(geometry='', position='-4.884657546014574 4.6913579379938195 -7.544614208662843', scale='1.77 1.77 1.77', material='color:#0080ff')
+      a-entity(text-geometry='value:Welcome to', position='-1 1 -2', scale='0.2 0.2 1', visible='')
+      // dlux
+      a-entity#dlux(text-geometry='value:dlux;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json', position='-2.3 3.7256771551780865 -3.1318564542952747', scale='2 2 0.01', visible='', material='')
+      a-entity#tag(text-geometry='value:blockchain vr experiences;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.26', position='-5.1 3 -3.1318564542952747', scale='2 2 0.01', visible='', material='color:#df0070')
+      // steemconnect
+      a-plane#steemconnect.link(height='.5', width='2', color='', rotation='0 0 0', position='.3 2 -1.83', material='shader: flat; src: #sclogo', url='/auth')
+      // getsteem
+      a-plane#getsteem.link(height='.5', width='2', color='', rotation='0 0 0', position='.3 1.4 -1.83', material='shader: flat; src: #jslogo', url='https://signup.steemit.com/')
+      // aboutdlux
+      a-plane#aboutdlux.link(height='.5', width='2', color='', rotation='0 0 0', position='.3 .8 -1.83', material='shader: flat; src: #adlogo', url='https://about.dlux.io')
+      // gabbagallery
+      a-link(position='-2.25 1.4 -2', href='https://ipfs.io/ipfs/QmbRzX3FrcMXF8gj3CgYaKVGSDiLNCqQzV4oPrzLgHEFE5', title='.', image='#360t', geometry='primitive:circle;segments:64', material='shader:portal;pano:https://ipfs.io/ipfs/QmZwC5cCtkjmqMSkTd5Ln7ceogRevkX85u4FxeBwQgXaS6;side:double', link='')

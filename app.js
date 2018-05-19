@@ -6,20 +6,20 @@ let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 let session = require('express-session');
 let expressSanitized = require('express-sanitize-escape');
-let cors = require('cors')
+let cors = require('cors');
 
 let index = require('./routes/index');
 let auth = require('./routes/auth');
 let feed = require('./routes/feed');
 let post = require('./routes/post');
 
-let config = require('./config')
+let config = require('./config');
 
-let util = require('./modules/util')
+let util = require('./modules/util');
 
 let app = express();
 
-app.use(cors())
+app.use(cors());
 app.use(session({
     secret: config.session.secret,
     saveUninitialized: true,

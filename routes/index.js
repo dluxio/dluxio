@@ -14,7 +14,7 @@ router.get('/', (req, res, next) =>  {
 router.get('/@:username', (req, res, next) => {
       let username = req.params.username
       res.render('profile', {
-        username: username
+        username: username,
       });
 });
 

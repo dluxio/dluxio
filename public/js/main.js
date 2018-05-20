@@ -67,11 +67,16 @@ function getTrendingTags(){
  */
  function getBlog(query, initial){
    steem.api.getDiscussionsByBlog(query, (err, result) => {
-     var filteredResults = new Array()
-     for (i = 0; i < result.length; i++) {
-         filteredResults.push(result[i])
-     }
-       displayContent(result, initial)
+     var filteredResults = []
+    for (i = 0; i < result.length; i++) {
+      let vr = JSON.parse(result[i].json_metadata).vrHash
+      console.log(vr)
+
+      if (vr) {
+        filteredResults.push(result[i])
+      }
+    }
+    displayContent(filteredResults)
    })
  }
 

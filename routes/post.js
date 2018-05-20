@@ -27,8 +27,8 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
   let customData = {
     'app': 'dlux/v0.0.1',
     'vrHash': hashy,
-    'image': '',
-    'Hash360': ''
+    'image': image,
+    'Hash360': Hash360
   }
   steem.broadcast([
   [
@@ -36,10 +36,10 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
     {
       "parent_author": "",
       "parent_permlink": "dlux",
-      "author": "example",
-      "permlink": "example",
-      "title": "example",
-      "body": "example",
+      "author": author,
+      "permlink": permlink,
+      "title": title,
+      "body": body,
       "json_metadata": customData
     }
   ],

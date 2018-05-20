@@ -1,0 +1,37 @@
+doctype html
+html
+  head
+  meta(charset='utf-8')
+  title dlux vr | decentralized WebVR
+  meta(name='dlux', content='crafting VR')
+  script(src='https://aframe.io/releases/0.8.2/aframe.min.js')
+  script(src='https://unpkg.com/aframe-text-geometry-component@0.5.0/dist/aframe-text-geometry-component.min.js')
+  script(src='https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js')
+  script.
+    AFRAME.registerComponent('url', {
+    schema: {default: ''},
+    init: function () {
+    var url = this.data;
+    this.el.addEventListener('click', function () {
+    window.location.href = url;
+    });
+    }
+    });
+  body
+    a-scene
+      a-assets
+        a-asset-item#bf(src='https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json')
+        img#360t(crossorigin='anonymous', src='https://ipfs.io/ipfs/QmZwC5cCtkjmqMSkTd5Ln7ceogRevkX85u4FxeBwQgXaS6')
+        img#logout-logo(src='viz/logout.png')
+      a-camera(position='0 1.6 0')
+        a-cursor(position='0 0 -1')
+      a-entity(environment='preset: arches; grid: cross', position='0 0 0', rotation='0 -100 0')
+      a-entity#logout-button(url='/auth/logout', geometry='primitive:plane', material='src:#logout-logo;transparent:true', rotation='', scale='1.87 1.87 1.87', position='0 5.2 -11.65')
+      a-entity#text-dlux(text-geometry='value:dlux;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json', position='-1.5 2.8 -12.7', rotation='0 0 0', scale='2 2 0.01', material='color:#ffffff')
+      a-entity#text-age(text-geometry='value:stone age;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.30000000000000004', position='-2 2 -12.7', rotation='0 0 0', scale='2 2 0.01', material='color:#ffffff')
+      a-link#portal1(position='-4.5 2 -5', scale='1 1 1', href='https://ipfs.io/ipfs/QmdQAVZWAcA61TMkbjE4dHkDi8P2ci8uDaMFxyfYNvHC6F?ipfs-1524340839265', title='Gabba Gallery', image='#360t')
+      a-link#portal2(position='-2 2 -5', scale='1 1 1', href='https://ipfs.io/ipfs/QmdQAVZWAcA61TMkbjE4dHkDi8P2ci8uDaMFxyfYNvHC6F?ipfs-1524340839265', title='Oregon Eclipse', image='#360t')
+      a-link#portal3(position='2 2 -5', scale='1 1 1', href='/@disregardfiat', title='Panda', image='#360t')
+      a-link#portal4(position='4.5 2 -5', scale='1 1 1', href='/@markegiles', title='Mark', image='#360t')
+      a-sky(src='#360s', rotation='0 -90 0')
+      a-entity#spotlight(light='type:spot;angle:30;intensity:0.5', rotation='-13.079119765470512 -7.053719572429054 -2.0918682827625292', position='-4.957638886550869 12.21869592309272 13.680728857980178')

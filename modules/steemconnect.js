@@ -1,5 +1,5 @@
 let steemconnect2 = require('sc2-sdk');
-let config = require('../config')
+let config = require('../config');
 
 let steem = steemconnect2.Initialize({
     app: config.auth.client_id,

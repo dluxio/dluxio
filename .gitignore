@@ -6,7 +6,7 @@ context.json
 event_sources.json
 lambda.js
 dlux.zip
-
+config.js
 # Created by https://www.gitignore.io/api/node,linux,macos,windows,webstorm+all
 
 ### Linux ###

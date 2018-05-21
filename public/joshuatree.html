@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <meta charset="utf-8">
+  <title>dlux vr | decentralized WebVR</title>
+  <meta name="dlux" content="crafting VR">
+  <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+  <script src="https://unpkg.com/aframe-text-geometry-component@0.5.0/dist/aframe-text-geometry-component.min.js"></script>
+   <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+</html>
+<body>
+  <a-scene>
+    <a-videosphere rotation="0 180 0" src="#video" play-on-window-click play-on-vrdisplayactivate-or-enter-vr></a-videosphere>
+    <a-assets>
+      <a-asset-item id="bf" src="https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json"></a-asset-item>
+      <img id="360t" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmZwC5cCtkjmqMSkTd5Ln7ceogRevkX85u4FxeBwQgXaS6">
+      <img id="author" src="markegiles.jpg">
+      <img id="rank" src="plankton.png">
+      <video id="video" style="display:none" autoplay loop crossorigin="anonymous" playsinline webkit-playsinline>
+          <source type="video/mp4" src="https://player.vimeo.com/external/224022953.hd.mp4?s=7e772ee219b452e666dd7a31847c3547c2881488&profile_id=175" /></video>
+    </a-assets>
+    <a-camera position="0 1.6 0">
+      <a-cursor position="0 0 -1"></a-cursor>
+    </a-camera>
+    <a-entity id="portals" visible="false">
+      <a-link id="portal1" position="-10.5 3.6 -10" scale="3 3 3" href="https://ipfs.io/ipfs/QmdQAVZWAcA61TMkbjE4dHkDi8P2ci8uDaMFxyfYNvHC6F?ipfs-1524340839265" title="Gabba Gallery" image="#360t"></a-link>
+      <a-link id="portal2" position="-3.5 3.6 -10" scale="3 3 3" href="https://ipfs.io/ipfs/QmdQAVZWAcA61TMkbjE4dHkDi8P2ci8uDaMFxyfYNvHC6F?ipfs-1524340839265" title="Oregon Eclipse" image="#360t"></a-link>
+      <a-link id="portal3" position="3.5 3.6 -10" scale="3 3 3" href="https://staging.dlux.io/@disregardfiat" title="Panda" image="#360t"></a-link>
+      <a-link id="portal4" position="10.5 3.6 -10" scale="3 3 3" href="https://staging.dlux.io/@markegiles" title="Mark" image="#360t"></a-link>
+    </a-entity>
+    <!-- column 1 profile & info -->
+    <a-entity id="author-pin" position="-1.552 4 -15">
+    <a-entity id="rank-pin" geometry="primitive:circle" material="side:double;color:#3F8BF8;opacity:0.7" position="" scale="">
+      <a-entity id="rank-icon" geometry="primitive:circle" material="side:double;src:#rank;transparent:true;alphaTest:0.3" position="0 0 0.1"></a-entity>
+    </a-entity>
+    <a-entity id="col-1" position="-10 -1 -0.1">
+      <a-entity id="r1-title" geometry="primitive:plane;width:20.04;height:5" material="side:double;color:#16398D;opacity:0.7" position="0 3.5 0">
+        <a-entity id="title-text" text-geometry="value:Joshua Tree;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:1.1" position="-7.762918206181031 -1.0879687095128694 0.1" rotation="" scale="2 2 0.01" material=""></a-entity>
+      </a-entity>
+      <a-entity id="r2-author" geometry="primitive:plane;width:20;height:5" material="side:double;color:#25D193;opacity:0.7" position="0 -1.5 0" rotation="">
+        <a-entity id="author-pic" geometry="primitive:circle" material="side:double;src:#author" position="-4.5 0 0.1" scale="2 2 2"></a-entity>
+        <a-entity id="nickname" text-geometry="value:Mark (39);font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json" position="-1.75 0.25 0.1" rotation="" scale="2 2 0.01" material=""></a-entity><a-entity id="by" text-geometry="value:By;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json" position="-8.963292662336798 -0.4754740576947194 0.1" rotation="" scale="2 2 0.01" material=""></a-entity>
+        <a-entity id="username" text-geometry="value:@markegiles;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json" position="-1.75 -1.25 0.1" rotation="" scale="2 2 0.01" material=""></a-entity>
+    </a-entity>
+  </a-entity>
+    <a-entity id="col-2" position="10 -1 -0.1">
+      <a-entity id="r1-body" geometry="primitive:plane;width:20.04;height:10" material="side:double;opacity:0.7" position="0 1 0">
+        <a-entity id="p" position="-6.8 -0.35 0.1">
+        <a-entity id="p-text-1" text-geometry="value:Welcome to a series of;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json" position="0 2.35 0" rotation="" scale="2 2 0.01" material="color:black"></a-entity>
+        <a-entity id="p-text-2" text-geometry="value:five landscapes captured;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json" position="" rotation="" scale="2 2 0.01" material="color:black"></a-entity>
+        <a-entity id="p-text-3" text-geometry="value:at Joshua Tree.;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json" position="0 -2.35 0" rotation="" scale="2 2 0.01" material="color:black"></a-entity>
+        </a-entity>
+    </a-entity>
+  </a-entity>
+</a-entity>
+    </a-scene>
+</body>

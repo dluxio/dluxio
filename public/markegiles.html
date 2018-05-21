@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <meta charset="utf-8">
+  <title>dlux vr | decentralized WebVR</title>
+  <meta name="dlux" content="crafting VR">
+  <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+  <script src="https://unpkg.com/aframe-text-geometry-component@0.5.0/dist/aframe-text-geometry-component.min.js"></script>
+  <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+  <script src="https://unpkg.com/aframe-fps-look-controls-component/dist/aframe-fps-look-controls-component.min.js"></script>
+  <script>
+  AFRAME.registerComponent('url', {
+  schema: {default: ''},
+
+  init: function () {
+    var url = this.data;
+    this.el.addEventListener('click', function () {
+    window.location.href = url;
+ });
+}
+});
+</script>
+<body>
+  <a-scene>
+    <a-assets>
+      <a-asset-item id="bf" src="https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json"></a-asset-item>
+      <img id="360t" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmZwC5cCtkjmqMSkTd5Ln7ceogRevkX85u4FxeBwQgXaS6">
+      <img id="logout-logo" src="viz/logout.png">
+      <img id="user" src="markegiles.jpg">
+      <img id="rank" src="plankton.png">
+    </a-assets>
+    <a-entity camera fps-look-controls wasd-controls position="0 0 0">
+      <a-cursor position="0 0 -1"></a-cursor>
+    </a-entity>
+    <a-entity environment="preset: volcano; grid: cross" position="0 0 0" rotation="0 -100 0"></a-entity>
+    <a-entity id="system-menu" position="5 9 -11.5">
+      <a-entity url="/auth/logout" geometry="primitive:plane" material="src:#logout-logo;transparent:true" id="logout-button" rotation="" scale="1.87 1.87 1.87" position="0 0 0"></a-entity>
+    </a-entity>
+    <a-entity id="user-profile" geometry="primitive:plane;width:10;height:5.5" material="side:double;color:#4C4C4C;opacity:0.7" position="1.25 4.1 -15" scale=".7 .7 .7" rotation="">
+      <a-entity id="user-pic" geometry="primitive:circle" material="side:double;src:#user" position="0 2.5 0.1" scale="2 2 2"></a-entity>
+      <a-entity id="rank-pin" geometry="primitive:circle" material="side:double;color:#3F8BF8;opacity:1" position="-3.5 1.33 0.1" scale="">
+        <a-entity id="rank-icon" geometry="primitive:circle" material="side:double;src:#rank;transparent:true;alphaTest:0.3" position="0 0 0.1"></a-entity>
+      </a-entity>
+      <a-entity id="user-rep" geometry="primitive:circle" material="side:double;color:#FFF;opacity:1" position="3.5 1.33 0.1" scale="">
+        <a-entity id="reputation" text-geometry="value:39;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json" position="-.723 -.5 0.1" rotation="" scale="2 2 0.01" material="color:black"></a-entity>
+      </a-entity>
+      <a-entity id="nickname" text-geometry="value:Mark;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json" position="-1.75 -.67 0.1" rotation="" scale="2 2 0.01" material=""></a-entity>
+      <a-entity id="username" text-geometry="value:@markegiles;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json" position="-4 -2 0.1" rotation="" scale="2 2 0.01" material=""></a-entity>
+
+    </a-entity>
+    <a-link id="portal1" position="-3.48 2 -3.55" rotation="0 32 0" scale="1 1 1" href="joshuatree.html" title="Joshua Tree" image="#360t"></a-link>
+    <a-link id="portal2" position="-2 2 -5" rotation="0 16 0" scale="1 1 1" href="https://ipfs.io/ipfs/QmdQAVZWAcA61TMkbjE4dHkDi8P2ci8uDaMFxyfYNvHC6F?ipfs-1524340839265" title="Gabba Gallery" image="#360t"></a-link>
+    <a-link id="portal3" position="3 2 -5" rotation="0 -35 0" scale="1 1 1" href="" title="Oregon Eclipse" image="#360t"></a-link>
+    <a-link id="portal4" position="4 2 -3.3" rotation="0 -75 0" scale="1 1 1" href="/@dlux-io" title="dlux-io" image="#360t"></a-link>
+    <a-sky src="#360s" rotation="0 -90 0"></a-sky>
+    <a-entity light="type:spot;angle:30;intensity:0.5" rotation="-13.079119765470512 -7.053719572429054 -2.0918682827625292" id="spotlight" position="-4.957638886550869 12.21869592309272 13.680728857980178"></a-entity>
+  </body>

@@ -8,29 +8,9 @@
   <script src="https://unpkg.com/aframe-text-geometry-component@0.5.0/dist/aframe-text-geometry-component.min.js"></script>
   <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
   <script src="https://unpkg.com/aframe-fps-look-controls-component/dist/aframe-fps-look-controls-component.min.js"></script>
-
-<script>
-// Add URL to objects
-  AFRAME.registerComponent('url', {
-  schema: {default: ''},
-
-  init: function () {
-    var url = this.data;
-    this.el.addEventListener('click', function () {
-    window.location.href = url;
- });
-}
-});
-</script>
-<script>
-// click on load
-function clickMe() {
-    var el = document.querySelector('#scene-0');
-      this.el.click();
-    };
-</script>
-<body onload="clickMe()">
-  <a-scene id="scene-0">
+  <script src="js/dlux.js"></script>
+<body>
+  <a-scene>
     <a-assets>
       <a-asset-item id="bf" src="https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json"></a-asset-item>
       <img id="360t" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmZwC5cCtkjmqMSkTd5Ln7ceogRevkX85u4FxeBwQgXaS6">

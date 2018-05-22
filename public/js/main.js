@@ -70,13 +70,11 @@ function getTrendingTags(){
      var filteredResults = []
     for (i = 0; i < result.length; i++) {
       let vr = JSON.parse(result[i].json_metadata).vrHash
-      console.log(vr)
-
       if (vr) {
         filteredResults.push(result[i])
       }
     }
-    displayContent(filteredResults)
+    displayContent(filteredResults, 1)
    })
  }
 
@@ -92,14 +90,14 @@ function getUserFeed(username, initial){
     limit: 20
   }
   steem.api.getDiscussionsByFeed(query, (err, result) => {
-    var filteredResults = new Array()
+    var filteredResults = []
     for (i = 0; i < result.length; i++) {
-      let app = JSON.parse(result[i].json_metadata).app
-      if (app.includes('dlux')) {
+      let vr = JSON.parse(result[i].json_metadata).vrHash
+      if (vr) {
         filteredResults.push(result[i])
       }
     }
-    displayContent(filteredResults)
+    displayContent(filteredResults, 1)
   })
 }
 

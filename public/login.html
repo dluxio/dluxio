@@ -21,8 +21,7 @@
   <body>
     <a-scene>
       <a-assets>
-        <a-asset-item id="bf" src="https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json"></a-asset-item><img id="360t" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmZwC5cCtkjmqMSkTd5Ln7ceogRevkX85u4FxeBwQgXaS6"/>
-        <img id="360s" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmYcNJ8MdN3vC8UZJYaN5Xx13m4ne3z456UCeSTYjE9J5v"/>
+        <a-asset-item id="bf" src="https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json"></a-asset-item>
         <img id="sclogo" src="/viz/steemconnectlogo.jpg"/>
         <img id="jslogo" src="/viz/joinsteemlogo.jpg"/>
         <img id="adlogo" src="/viz/aboutdluxlogo.jpg"/>
@@ -36,15 +35,12 @@
         <a-cursor position="0 0 -1"></a-cursor>
       </a-entity>
       <!--dlux-->
-      <a-entity id="dlux-entrance" position="0 -0.1 -10">
+      <a-entity id="dlux" position="0 -0.1 -10">
             <!-- banner block -->
-            <a-entity id="banner" geometry="height:8;width:8;depth:8" material="side:double;color:#ff0080;opacity:0.5" position="-0.23520907077682374 4 0">
-              <a-entity id="banner-col-1" position="0 0.8383006278098293 4.1">
-                <a-plane id="steem" height="2" width="2" color="" rotation="" position="0 0.7730119252643002 0" material="color:#FFF;shader:flat;src:#steemlogo;transparent:true;alphaTest:0.9;flatShading:true" geometry="height:1.5;width:1.5" class="link"></a-plane>
-                <a-entity id="welcome" text-geometry="value:Welcome;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.17" position="-1.079643531181838 1.750670204966693 0" scale="2 2 0.01" visible="false" material="color:#ffffff"></a-entity>
-                <a-entity id="dlux" text-geometry="value:dlux;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json" position="0.9772870769712148 -4.353392544243526 0" scale="2 2 0.01" visible="" material="color:#16398D"></a-entity>
-                <a-entity id="welcome" text-geometry="value:I am a decentralized VR platform;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.14" position="-2.670662447034004 -0.7005197806389534 0" scale="2 2 0.01" visible="" material="color:#ffffff"></a-entity>
-                <a-entity id="steempowered" text-geometry="value:powered by the Steem blockchain;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.14" position="-2.793283207448542 -1.2316183966129821 0" scale="2 2 0.01" visible="" material="color:#ffffff"></a-entity>
+            <a-entity id="cube" geometry="height:8;width:8;depth:8" material="side:double;color:#ff0033;opacity:0.5" position="-0.23520907077682374 4 0">
+              <a-entity id="cube-col-1" position="0.5094452993592824 -2.7742320398058666 4.099999999999992">
+                <a-entity id="dlux" text-geometry="value:dlux;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json" position="" scale="2 2 0.01" visible="" material="color:#1ed6a4"></a-entity>
+                <a-entity id="steempowered" text-geometry="value:Steem powered VR;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.1" position="0.25257686960285675 -0.40458286302652624 0" scale="2 2 0.01" visible="" material="color:#ffffff"></a-entity>
               </a-entity>
             </a-entity>
             <!-- menu block -->
@@ -76,6 +72,7 @@
           <a-entity id="ototag" geometry="primitive:plane;height:0.77;width:5.91" material="side:double" position="0 0.369 8" rotation="0 -180 0">
               <a-entity id="heart" obj-model="obj:/viz/love.obj" material="color:#ff0000" position="" rotation="" scale="0.015 0.015 0.015" url="http://otolux.la"></a-entity>
               <a-entity id="made in" text-geometry="value:made in LA        by OTOLUX;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.15" position="-2.5343438681418977 -0.13075031335592513 0.09999999999999998" scale="2 2 0.01" visible="" material="color:#333333" rotation=""></a-entity>
+              <a-entity id="made in" text-geometry="value:made in LA        by OTOLUX;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.15" position="2.4983945090055526 -0.13075031335592513 -0.09999999999999935" scale="2 2 0.01" visible="" material="color:#333333" rotation="0 180 0"></a-entity>
             </a-entity>
 
       </a-entity>

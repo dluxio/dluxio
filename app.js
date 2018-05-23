@@ -12,7 +12,6 @@ let index = require('./routes/index');
 let auth = require('./routes/auth');
 let feed = require('./routes/feed');
 let post = require('./routes/post');
-
 let config = require('./config');
 
 let util = require('./modules/util');

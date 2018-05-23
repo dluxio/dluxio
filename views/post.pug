@@ -1,26 +1,123 @@
-extends layout
-
-block content
-  include partials/nav
-
-  main.create-post
-    h1 New WebVR Post
-    form(action="/post/create-post/" method="post")
-      label Title
-      input(type="text" name="title")
-      label VR Scene (Press CTL + ALT + i to open the inspector)
-      iframe(allowvr='yes', id='theIframe', allowfullscreen='yes', scrolling='no', width='1000', height='1000', src=`https://ipfs.io/ipfs/QmTGmwXbvz639zayzdytVWh3fS6HxRmHyiKsECun7DvWaG`)
-      label VR IPFS Hash
-      input(type="text" name="vrHash")
-      label Portal IPFS Hash
-      input(type="text" name="Hash360")
-      label Blog Image IPFS Hash
-      input(type="text" name="image")
-      label Blog Post
-      textarea(name="post")
-      label Tags
-      input(type="text" name="tags")
-      label
-      button.btn.btn-primary(type="submit") Post to STEEM
-      p Posting as #{name}
-      p #{msg}
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/css/style.css')
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous")
+    script(src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js")
+    script(src="https://cdn.steemjs.com/lib/latest/steem.min.js")
+    script(src="/js/main.js")
+    script(src="https://unpkg.com/ipfs/dist/index.min.js")
+    style.
+      html, body{
+      margin: 0;
+      height: 100%;
+      }
+      main{
+      padding: 30px 0;
+      max-width: 1000px;
+      margin: 0 auto;
+      }
+      iframe{
+      border: 0;
+      }
+    script.
+      if (window.addEventListener) {
+      window.addEventListener("message", onMessage, false);
+      }
+      else if (window.attachEvent) {
+      window.attachEvent("onmessage", onMessage, false);
+      }
+      function onMessage(event) {
+      if (event.origin !== "https://ipfs.io") return;
+      var data = event.data;
+      if (typeof(window[data.func]) == "function") {
+      window[data.func].call(null, data.message);
+      }
+      }
+      function haveSomeVR(message) {
+      // var buf = bufferize(message)
+      //window.ipfs.files.add(buf, function (err, files) {
+      // 'files' will be an array of objects containing paths and the multihashes of the files added
+      //})
+      document.getElementById('theIframe').height = '50%';
+      var main = document.createElement('main');
+      main.class = 'create-post'
+      main.id = 'mainthing'
+      document.body.appendChild(main);
+      var post = document.createElement('form');
+      post.id = 'poster'
+      post.method = 'post'
+      post.action = '/post/create-post'
+      document.getElementById('mainthing').appendChild(post);
+      var labelT = document.createElement('label');
+      labelT.text = 'Title'
+      document.getElementById('poster').appendChild(labelT);
+      var inputT = document.createElement('input');
+      inputT.type = 'text'
+      inputT.name = 'title'
+      document.getElementById('poster').appendChild(inputT);
+      var labelP = document.createElement('label');
+      labelP.textValue = 'Classic Post'
+      labelP.for = 'post'
+      document.getElementById('poster').appendChild(labelP);
+      var textarea = document.createElement('textarea');
+      textarea.type = 'text'
+      textarea.name = 'post'
+      document.getElementById('poster').appendChild(textarea);
+      var labelC = document.createElement('label');
+      labelC.textValue = 'Tags separated by commas'
+      labelC.for = 'tags'
+      document.getElementById('poster').appendChild(labelC);
+      var inputC = document.createElement('input');
+      inputC.type = 'text'
+      inputC.name = 'tags'
+      document.getElementById('poster').appendChild(inputC);
+      var p = document.createElement('p');
+      p.value = 'Posting as #{name}'
+      document.getElementById('poster').appendChild(p);
+      //maybe establish a loading applet here
+      var form = new FormData();
+      form.append("", message);
+      var settings = {
+      "async": true,
+      "crossDomain": false,
+      "url": "https://ipfs-dev.dlux.io/api/v0/add?stream-channels=true",
+      "method": "POST",
+      "headers": {
+      "Cache-Control": "no-cache"
+      },
+      "processData": false,
+      "contentType": false,
+      "mimeType": "multipart/form-data",
+      "data": form
+      }
+      $.ajax(settings).done(function (response) {
+      console.log(response);
+      //satisfy loading applet
+      var inputV = document.createElement('input');
+      inputV.type = 'hidden'
+      inputV.name = vrHash
+      inputV.value = response.Hash
+      document.getElementById('poster').appendChild(inputV);
+      var inputI = document.createElement('input');
+      inputI.type = 'hidden'
+      inputI.name = image
+      inputI.value = '' //get normal aspect screengrab
+      document.getElementById('poster').appendChild(inputI);
+      var input3 = document.createElement('input');
+      input3.type = 'hidden'
+      input3.name = Hash360
+      input3.value = '' //screengrabhash
+      document.getElementById('poster').appendChild(input3);
+      var button = document.createElement('button');
+      button.class = 'btn btn-primary'
+      button.type = 'submit'
+      button.value = 'Post to Steem'
+      document.getElementById('poster').appendChild(button);
+      });
+      }
+    body
+      iframe(allowvr='yes', id='theIframe', allowfullscreen='yes', scrolling='no', width='100%', height='100%', src=`https://ipfs.io/ipfs/QmSo1ECHbziLnv5e3fRhdgC2mBycdvekQbugpGU83sGaoK`)

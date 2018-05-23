@@ -30,44 +30,7 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
     'image': image,
     'Hash360': Hash360
   }
-  steem.broadcast([
-  [
-    "comment",
-    {
-      "parent_author": "",
-      "parent_permlink": "dlux",
-      "author": author,
-      "permlink": permlink,
-      "title": title,
-      "body": body,
-      "json_metadata": customData
-    }
-  ],
-  [
-    "comment_options",
-    {
-      "author": "example",
-      "permlink": "example",
-      "max_accepted_payout": "1000000.000 SBD",
-      "percent_steem_dollars": 10000,
-      "allow_votes": true,
-      "allow_curation_rewards": true,
-      "extensions": [
-        [
-          0,
-          {
-            "beneficiaries": [
-              {
-                "account": "dlux-io",
-                "weight": 1000
-              }
-            ]
-          }
-        ]
-      ]
-    }
-  ]
-], function (err, response) {
+  steem.broadcast([['comment',{'parent_author': '','parent_permlink': 'dlux','author': author,'permlink': permlink,'title': title,'body': body,'json_metadata': customData}],['comment_options',{'author': author,'permlink': permlink,'max_accepted_payout': ['1000000000', 3, '@@000000013'],'percent_steem_dollars': 10000,'allow_votes': true,'allow_curation_rewards': true,'extensions': [[0,{'beneficiaries': [{'account': 'dlux-io','weight': 1000}]}]]}]], function (err, response) {
   if (err) {
     console.log(err)
     //res.redirect(`/@${parentAuthor}/${parentPermlink}`)
@@ -76,37 +39,6 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
   }
 })
 });
-
-/*
-router.post('/create-post', util.isAuthenticated, (req, res) => {
-  let author = req.session.steemconnect.name
-  let body = 'testing'
-  let permlink = util.urlString()
-  var tags = req.body.tags.split(',').map(item => item.trim())
-  let primaryTag = 'dlux'
-  let otherTags = tags.slice(0, 4)
-  let title = 'hello world'
-  let suBmetadata = JSON.stringify({
-    app: 'dlux/0.0.1',
-    vrHash: 'QmTGmwXbvz639zayzdytVWh3fS6HxRmHyiKsECun7DvWaG'
-  })
-
-  let ben = [{'account':'disregardfiat','weight':1000}]
-      steem.broadcast([['comment', {'parent_author': '', 'parent_permlink': primaryTag, 'author': author, 'permlink': permlink, 'title': title, 'body': body, 'json_metadata': suBmetadata}], ['comment_options', {'author': author, 'permlink': permlink, 'max_accepted_payout': '1000000.000 SBD', 'percent_steem_dollars': 10000, 'allow_votes': true, 'allow_curation_rewards': true, 'extensions': [[0, {'beneficiaries': ben}]]}]], function (err, response) {
-        if (err) {
-          res.render('post', {
-            name: req.session.steemconnect.name,
-            msg: 'Error'
-          })
-        } else {
-          res.render('post', {
-            name: req.session.steemconnect.name,
-            msg: 'Posted To Steem Network'
-          })
-        }
-    });
-});
-*/
 
 /* POST a vote broadcast to STEEM network. */
 router.post('/vote', util.isAuthenticatedJSON, (req, res) => {

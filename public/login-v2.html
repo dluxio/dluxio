@@ -16,6 +16,7 @@
     <script src="https://unpkg.com/aframe-text-geometry-component@0.5.0/dist/aframe-text-geometry-component.min.js"></script>
     <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
     <script src="https://unpkg.com/aframe-fps-look-controls-component/dist/aframe-fps-look-controls-component.min.js"></script>
+    <script src="https://rawgit.com/Ctrl-Alt-Zen/aframe-mobile-controls/master/components/twoway-motion/twoway-motion.js"></script>
     <script src="js/dlux.js"></script>
   </head>
   <body>
@@ -31,9 +32,10 @@
       <a-entity environment="preset: forest"></a-entity>
       <a-entity light="type:point;intensity:0.75" id="point-light" position="0 15 15"></a-entity>
       <!-- camera -->
-      <a-entity camera fps-look-controls wasd-controls position="0 0 0"><!---->
-        <a-cursor position="0 0 -1"></a-cursor>
-      </a-entity>
+      <!--<a-entity only-desktop></a-entity>-->
+      <a-camera set-camera look-controls>
+        <a-cursor></a-cursor>
+      </a-camera>
       <!--dlux-->
       <a-entity id="dlux" position="0 -0.1 -10">
             <!-- banner block -->

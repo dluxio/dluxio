@@ -12,7 +12,6 @@ let index = require('./routes/index');
 let auth = require('./routes/auth');
 let feed = require('./routes/feed');
 let post = require('./routes/post');
-var mysql = require('mysql');
 let config = require('./config');
 
 let util = require('./modules/util');
@@ -68,22 +67,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-/*
-var con = mysql.createConnection({
-  host     : process.env.RDS_HOSTNAME,
-  user     : process.env.RDS_USERNAME,
-  password : process.env.RDS_PASSWORD,
-  port     : process.env.RDS_PORT,
-  database : "dluxdb"
-});
 
-con.connect(function(err) {
-  if (err) {
-    console.error('Database connection failed: ' + err.stack);
-  }
-  console.log('Connected to database.');
-});
-
-con.end();
-*/
 module.exports = app;

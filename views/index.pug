@@ -1,7 +1,7 @@
 html(xmlns='http://www.w3.org/1999/xhtml')
   head
     meta(charset='utf-8')
-    title dlux | decentralized WebVR
+    title dlux | decentralized VR
     meta(name='dlux', content='crafting VR')
     meta(property='og:title', content='Decentralized Limitless User eXperiences')
     meta(property='og:type', content='website')
@@ -16,6 +16,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
     script(src='https://unpkg.com/aframe-text-geometry-component@0.5.0/dist/aframe-text-geometry-component.min.js')
     script(src='https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js')
     script(src='https://unpkg.com/aframe-fps-look-controls-component/dist/aframe-fps-look-controls-component.min.js')
+    script(src='https://rawgit.com/Ctrl-Alt-Zen/aframe-mobile-controls/master/components/twoway-motion/twoway-motion.js')
     script(src='js/dlux.js')
   body
     a-scene
@@ -29,25 +30,16 @@ html(xmlns='http://www.w3.org/1999/xhtml')
       a-entity(environment='preset: forest')
       a-entity#point-light(light='type:point;intensity:0.75', position='0 15 15')
       // camera
-      a-entity(camera='', fps-look-controls='', wasd-controls='', position='0 0 0')
-        //
-        a-cursor(position='0 0 -1')
+      // <a-entity only-desktop></a-entity>
+      a-camera(set-camera='', look-controls='')
+        a-cursor
       // dlux
       a-entity#dlux(position='0 -0.1 -10')
         // banner block
         a-entity#cube(geometry='height:8;width:8;depth:8', material='side:double;color:#ff0033;opacity:0.5', position='-0.23520907077682374 4 0')
-          a-entity#cube-col-1(position='0.5094452993592824 -2.7742320398058666 4.099999999999992')
+          a-entity#cube-col-1(position='0.5094452993592824 -2.24 4.099999999999992')
             a-entity#dlux(text-geometry='value:dlux;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json', position='', scale='2 2 0.01', visible='', material='color:#1ed6a4')
-            a-entity#steempowered(text-geometry='value:Steem powered VR;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.1', position='0.25257686960285675 -0.40458286302652624 0', scale='2 2 0.01', visible='', material='color:#ffffff')
-      a-entity#dlux-entrance(position='0 -0.1 -10')
-        // banner block
-        a-entity#banner(geometry='height:8;width:8;depth:8', material='side:double;color:#ff0080;opacity:0.5', position='-0.23520907077682374 4 0')
-          a-entity#banner-col-1(position='0 0.8383006278098293 4.1')
-            a-plane#steem.link(height='2', width='2', color='', rotation='', position='0 0.7730119252643002 0', material='color:#FFF;shader:flat;src:#steemlogo;transparent:true;alphaTest:0.9;flatShading:true', geometry='height:1.5;width:1.5')
-            a-entity#welcome(text-geometry='value:Welcome;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.17', position='-1.079643531181838 1.750670204966693 0', scale='2 2 0.01', visible='false', material='color:#ffffff')
-            a-entity#dlux(text-geometry='value:dlux;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json', position='0.9772870769712148 -4.353392544243526 0', scale='2 2 0.01', visible='', material='color:#16398D')
-            a-entity#welcome(text-geometry='value:I am a decentralized VR platform;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.14', position='-2.670662447034004 -0.7005197806389534 0', scale='2 2 0.01', visible='', material='color:#ffffff')
-            a-entity#steempowered(text-geometry='value:powered by the Steem blockchain;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.14', position='-2.793283207448542 -1.2316183966129821 0', scale='2 2 0.01', visible='', material='color:#ffffff')
+            a-entity#steempowered(text-geometry='value:Steem-Powered VR;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.1', position='0.25257686960285675 -0.40458286302652624 0', scale='2 2 0.01', visible='', material='color:#ffffff')
         // menu block
         a-entity#menu(position='-1.608 1.719 3.119', geometry='height:2.4;width:2.4;depth:2.4', material='opacity:0.7;color:#3F8BF8')
           a-entity#menu-col-1(position='0 0 1.22')
@@ -71,4 +63,3 @@ html(xmlns='http://www.w3.org/1999/xhtml')
         a-entity#heart(obj-model='obj:/viz/love.obj', material='color:#ff0000', position='', rotation='', scale='0.015 0.015 0.015', url='http://otolux.la')
         a-entity(id='made in', text-geometry='value:made in LA        by OTOLUX;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.15', position='-2.5343438681418977 -0.13075031335592513 0.09999999999999998', scale='2 2 0.01', visible='', material='color:#333333', rotation='')
         a-entity(id='made in', text-geometry='value:made in LA        by OTOLUX;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.15', position='2.4983945090055526 -0.13075031335592513 -0.09999999999999935', scale='2 2 0.01', visible='', material='color:#333333', rotation='0 180 0')
-

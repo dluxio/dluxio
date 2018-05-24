@@ -41,14 +41,16 @@ AFRAME.registerComponent('set-camera', {
 
     if (isDesktop === true) {
       entity.removeAttribute('look-controls');
+      entity.setAttribute('position', '0 0 0');
       entity.setAttribute('fps-look-controls', 'enabled', true);
 		}
     if (isMobile === true) {
       entity.removeAttribute('look-controls');
+      entity.setAttribute('position', '0 0 0');
       entity.setAttribute('twoway-motion', 'speed:35');
     }
     if (isHMD === true) {
-      
+
     }
     if (isGearVR === true) {
       //var leftEl = document.createElement('a-entity','gearvr-controls','hand:left');

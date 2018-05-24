@@ -7,6 +7,7 @@ let bodyParser = require('body-parser');
 let session = require('express-session');
 let expressSanitized = require('express-sanitize-escape');
 let cors = require('cors');
+var ipfsAPI = require('ipfs-api')
 
 let index = require('./routes/index');
 let auth = require('./routes/auth');

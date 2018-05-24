@@ -24,18 +24,18 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
   let hashy = req.body.vrHash
   let image = req.body.image
   let Hash360 = req.body.Hash360
-  let customData = JSON.stringify({
+  let customData = {
     'app': 'dlux/v0.0.1',
     'vrHash': hashy,
-    'image': 'https://ipfs.io/ipfs/' + image,
+    'image': image,
     'Hash360': Hash360
-  })
-  steem.broadcast([['comment',{'parent_author': '','parent_permlink': 'dlux','author': author,'permlink': permlink,'title': title,'body': body,'json_metadata': customData}],['comment_options',{'author': author,'permlink': permlink,'max_accepted_payout': '1000000.000 SBD','percent_steem_dollars': 10000,'allow_votes': true,'allow_curation_rewards': true,'extensions': [[0,{'beneficiaries': [{'account': 'dlux-io','weight': 1000}]}]]}]], function (err, response) {
+  }
+  steem.broadcast([['comment',{'parent_author': '','parent_permlink': 'dlux','author': author,'permlink': permlink,'title': title,'body': body,'json_metadata': customData}],['comment_options',{'author': author,'permlink': permlink,'max_accepted_payout': ['1000000000', 3, '@@000000013'],'percent_steem_dollars': 10000,'allow_votes': true,'allow_curation_rewards': true,'extensions': [[0,{'beneficiaries': [{'account': 'dlux-io','weight': 1000}]}]]}]], function (err, response) {
   if (err) {
     console.log(err)
     //res.redirect(`/@${parentAuthor}/${parentPermlink}`)
   } else {
-    res.redirect(`/@${author}`)
+    res.redirect(`/@${parentAuthor}`)
   }
 })
 });

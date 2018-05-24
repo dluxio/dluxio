@@ -2,15 +2,13 @@
  <html>
    <head>
     <meta charset="utf-8">
-    <title>Sample StaticVR</title>
+    <title>Initiation of self-incentive software</title>
     <meta name="0.0.9" content="Decentralized Program Seed">
     <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
     <script src="https://rawgit.com/rdub80/aframe-gui/master/dist/aframe-gui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.map"></script>
-    <script src="https://unpkg.com/aframe-state-component@^3.0.0/dist/aframe-state-component.min.js"></script>
     <script src="//cdn.steemjs.com/lib/latest/steem.min.js"></script>
     <script type="text/javascript">
-    var postKey; //this page will be posted in IPFS and will need a way to display current state about itself. This key will be passed to declare its current state on Steem.
     if (window.addEventListener) {
     window.addEventListener("message", onMessage, false);
     }
@@ -25,7 +23,8 @@
     }
     }
     function voteMsg(message) {
-      AFRAME.scenes[0].emit('setVoteMsg', {val: message});
+      console.log(message)
+      document.querySelector('voteMsgR').value = message;
     }
     function voteButton() {
       voteAmt = parseInt(10000);
@@ -45,32 +44,26 @@
     //  var link = document.querySelector('link').value
     window.parent.postMessage({
     'func': 'sendLink',
-    'message': '/@disregardfiat'
+    'message': '/@dlux-io'
     }, "*");
     }
     function aVote() {
     window.parent.postMessage({
     'func': 'aVote',
     'message': {
-      'permlink': '',
-      'author': '',
+      'permlink': 'dlux-seed',
+      'author': 'disregardfiat',
       'weight': parseInt(10000),
     }
     }, "*");
     }
-    function key (message) {
-      postKey = message;
-    }
     function steemState(message) {
-      AFRAME.scenes[0].emit('setID', {val: message.content[postKey].id});
-      AFRAME.scenes[0].emit('setTitle', {val: message.content[postKey].root_title});
-      AFRAME.scenes[0].emit('setAuthor', {val: message.content[postKey].author});
-      AFRAME.scenes[0].emit('setVotesNum', {val: message.content[postKey].net_votes});
-      AFRAME.scenes[0].emit('setVotesVal', {val: Math.round( parseFloat(message.content[postKey].pending_payout_value.substring(0,5)) * 100) / 100});
+      $("body").data("steemState", message);
       console.log(message)
     }
     function iAm(message) {
-      AFRAME.scenes[0].emit('setiAm', {val: message});
+      var targetLabel = document.querySelector('usernameText')
+      targetLabel.value = message;
     }
     function onpageloaded() {
       window.parent.postMessage({
@@ -78,50 +71,6 @@
       'message': ''
     }, "*");
     }
-    </script>
-    <script>
-      AFRAME.registerState({
-        initialState: {
-          post: "",
-          username: "@",
-          id: "",
-          title: "No sync ...",
-          author: "",
-          rep: "UND",
-          profileimage: "",
-          votesNum: "UNK",
-          votesVal: "$0",
-          menuVis: false,
-          voteMsg: "Vote!"
-        },
-
-        handlers: {
-          setiAm: function (state, action) {
-            state.username = "@" + action.val;
-          },
-          setVoteMsg: function (state, action) {
-            state.voteMsg = action.val;
-          },
-          setID: function (state, action) {
-            state.id = action.val;
-          },
-          setAuthor: function (state, action) {
-            state.author = "@" + action.val;
-          },
-          setTitle: function (state, action) {
-            state.title = action.val;
-          },
-          setVotesNum: function (state, action) {
-            state.votesNum = action.val;
-          },
-          setVotesVal: function (state, action) {
-            state.votesVal = "$" + action.val;
-          },
-          setProfileImage: function (state, action) {
-            state.profileimage = action.val;
-          }
-        }
-      });
     </script>
   </head>
   <body onload="onpageloaded()">
@@ -144,16 +93,7 @@
         <a-gui-label
                 width="6.5" height="0.75"
                 id="usernameText"
-                bind__value="username"
-                value=""
-                font-family="Arial"
-                margin="0 0 0.05 0">
-        </a-gui-label>
-        <a-gui-label
-                width="6.5" height="0.75"
-                id="titletag"
-                bind__value="title"
-                value=""
+                value="@"
                 font-family="Arial"
                 margin="0 0 0.05 0">
         </a-gui-label>
@@ -166,7 +106,6 @@
         <a-gui-button
                 width="2.5" height="0.75"
                 onclick="voteButton"
-                bind__value="voteMsg"
                 value="Vote"
                 font-family="Helvetica"
                 margin="0 0 0.05 0">
@@ -180,9 +119,8 @@
         </a-gui-button>
         <a-gui-label
                 width="6.5" height="0.75"
-                bind__value="votesVal"
-                value=""
                 id="voteMsgR"
+                value="Hover to active slider and sign Vote"
                 font-family="Arial"
                 margin="0 0 0.05 0">
         </a-gui-label>
@@ -193,9 +131,14 @@
                 font-family="Helvetica"
                 margin="0 0 0.05 0">
     </a-gui-button>
+    <a-gui-button
+            width="6.5" height="0.75"
+            onclick="aVote"
+            value="Vote on dlux seed by @disregardfiat"
+            font-family="Helvetica"
+            margin="0 0 0.05 0">
+    </a-gui-button>
   </a-gui-flex-container>
-  <a-entity id="reputation" bind__text-geometry="value: rep" text-geometry="value: Nope;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json" position="-.723 -.5 0.1" rotation="" scale="2 2 0.01" material="color:black"></a-entity>
-
       <a-plane id="floor" color="#776e4e" height="100" rotation="-90 0 0" width="100" side="double" position="0 0 0"></a-plane>
       <a-box id="NWall" height="1000" position="0 500 -10" width="20" depth="1"></a-box>
       <a-box id="SWall" height="1000" position="0 500 10" width="20" depth="1"></a-box>

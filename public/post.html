@@ -1,16 +1,16 @@
-doctype html
-html
-  head
-    title
-    link(rel='stylesheet', href='/css/style.css')
-    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css', integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm', crossorigin='anonymous')
-    script(src='https://code.jquery.com/jquery-3.2.1.min.js', integrity='sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=', crossorigin='anonymous')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js')
-    script(src='https://cdn.steemjs.com/lib/latest/steem.min.js')
-    script(src='/js/main.js')
-    script(src='https://unpkg.com/ipfs/dist/index.min.js')
-    style.
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+    <script src="https://cdn.steemjs.com/lib/latest/steem.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="https://unpkg.com/ipfs/dist/index.min.js"></script>
+    <style>
       html, body{
       margin: 0;
       height: 100%;
@@ -23,7 +23,8 @@ html
       iframe{
       border: 0;
       }
-    script.
+    </style>
+    <script>
       if (window.addEventListener) {
       window.addEventListener("message", onMessage, false);
       }
@@ -44,49 +45,57 @@ html
       //})
       document.getElementById('theIframe').height = '50%';
       var main = document.createElement('main');
-      main.class = 'create-post'
-      main.id = 'mainthing'
-      document.body.appendChild(main);
+          main.class = 'create-post'
+          main.id = 'mainthing'
+          document.body.appendChild(main);
       // Form
       var post = document.createElement('form');
-      post.id = 'poster'
-      post.method = 'post'
-      post.action = '/post/create-post'
-      document.getElementById('mainthing').appendChild(post);
+          post.id = 'poster'
+          post.method = 'post'
+          post.action = '/post/create-post'
+          document.getElementById('mainthing').appendChild(post);
+
       // A - Title
       var labelA = document.createElement('label');
-      labelA.setAttribute('for', 'title')
-      labelA.innerHTML = 'Title'
-      document.getElementById('poster').appendChild(labelA);
+          labelA.setAttribute('for', 'title')
+          labelA.innerHTML = 'Title'
+          document.getElementById('poster').appendChild(labelA);
+
       var inputA = document.createElement('input');
-      inputA.id = 'title'
-      inputA.type = 'text'
-      inputA.name = 'title'
-      document.getElementById('poster').appendChild(inputA);
+          inputA.id = 'title'
+          inputA.type = 'text'
+          inputA.name = 'title'
+          document.getElementById('poster').appendChild(inputA);
+
       // B - Body
       var labelB = document.createElement('label');
-      labelB.setAttribute('for', 'body')
-      labelB.innerHTML = 'Body'
-      document.getElementById('poster').appendChild(labelB);
+          labelB.setAttribute('for', 'body')
+          labelB.innerHTML = 'Body'
+          document.getElementById('poster').appendChild(labelB);
+
       var textareaB = document.createElement('textarea');
-      textareaB.id = 'body'
-      textareaB.type = 'text'
-      textareaB.name = 'body'
-      document.getElementById('poster').appendChild(textareaB);
+          textareaB.id = 'body'
+          textareaB.type = 'text'
+          textareaB.name = 'body'
+          document.getElementById('poster').appendChild(textareaB);
+
       // C - Tags
       var labelC = document.createElement('label');
-      labelC.setAttribute('for','tags')
-      labelC.innerHTML= 'Tags separated by commas'
-      document.getElementById('poster').appendChild(labelC);
+          labelC.setAttribute('for','tags')
+          labelC.innerHTML= 'Tags separated by commas'
+          document.getElementById('poster').appendChild(labelC);
+
       var inputC = document.createElement('input');
-      inputC.id = 'tags'
-      inputC.type = 'text'
-      inputC.name = 'tags'
-      document.getElementById('poster').appendChild(inputC);
+          inputC.id = 'tags'
+          inputC.type = 'text'
+          inputC.name = 'tags'
+          document.getElementById('poster').appendChild(inputC);
+
       // Posting as
       var p = document.createElement('p');
-      p.innerHTML = 'Posting as'
-      document.getElementById('poster').appendChild(p);
+          p.innerHTML = 'Posting as'
+          document.getElementById('poster').appendChild(p);
+
       //maybe establish a loading applet here
       var form = new FormData();
       form.append("", message);
@@ -128,5 +137,9 @@ html
       document.getElementById('poster').appendChild(button);
       });
       }
-  body
-    iframe#theIframe(allowvr='yes', allowfullscreen='yes', scrolling='no', src='https://ipfs.io/ipfs/QmSo1ECHbziLnv5e3fRhdgC2mBycdvekQbugpGU83sGaoK', width='100%', height='100%')
+    </script>
+    <body>
+      <iframe allowvr="yes" id="theIframe" allowfullscreen="yes" scrolling="no" src="https://ipfs.io/ipfs/QmSo1ECHbziLnv5e3fRhdgC2mBycdvekQbugpGU83sGaoK" width="100%" height="100%"></iframe>
+    </body>
+  </head>
+</html>

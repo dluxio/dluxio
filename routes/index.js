@@ -41,13 +41,22 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
       let category = req.params.category
       let username = req.params.username
       let permlink = req.params.permlink
-      let iAm = req.session.steemconnect.name
+      if(req.session.steemconnect){
+        let iAm = req.session.steemconnect.name
+        res.render('single', {
+          category: category,
+          username: username,
+          permlink: permlink,
+          iAm: iAm
+        });
+      } else {
       res.render('single', {
         category: category,
         username: username,
         permlink: permlink,
-        iAm: iAm
+        iAm: "Guest"
       });
+    }
 });
 
 module.exports = router;

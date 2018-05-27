@@ -41,13 +41,13 @@ html
       'weight': message
       }
       }, (response) => {
-      console.log(response)
-      let stateObject = response
+      steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
       var target = document.getElementById('theIframe').contentWindow
       target.postMessage({
-      'func': 'voteMsg',
-      'message': stateObject
+      'func': 'steemState',
+      'message': result,
       }, "*");
+      })
       })
       }
       function aVote(message) {
@@ -100,8 +100,7 @@ html
       iframe.scrolling = 'no'
       iframe.width = '100%'
       iframe.height = '100%'
-      iframe.src = 'https://ipfs.io/ipfs/' + hashy;
+      iframe.src = 'https://ipfs.io/ipfs/' + hashy
       document.body.appendChild(iframe);
       })
-
     body

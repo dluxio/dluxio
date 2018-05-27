@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+    <meta charset="utf-8">
+    <title>@gabbagallery in VR with P2P positional voice chat by @dlux-io</title>
+    <meta name="description" content="@gabbagallery VR">
+    <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-text-geometry-component@0.5.0/dist/aframe-text-geometry-component.min.js"></script>
+    <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-fps-look-controls-component/dist/aframe-fps-look-controls-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-aabb-collider-component/dist/aframe-aabb-collider-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-sharedspace-component@1.0.1/dist/aframe-sharedspace-component.min.js"></script>
+    <script src="/js/dlux.js">
+    // Target URL
+    AFRAME.registerComponent('url', {
+      schema: {default: ''},
+
+      init: function () {
+
+        var url = this.data;
+
+        this.el.addEventListener('click', function () {
+        window.location.href = url;
+        });
+
+    }
+    });
+    // Toggle Author
+    AFRAME.registerComponent('toggle-info', {
+      schema: {default: ''},
+
+      init: function() {
+        var el = document.querySelector('#author-info');
+        this.el.addEventListener('mouseenter', function() {
+
+        if (el.getAttribute('visible', true) ) {
+            el.setAttribute('visible', false);
+        } else {
+            el.setAttribute('visible', true);
+            }
+        });
+      }
+    });
+    // Desktop fps control
+
+
+    AFRAME.registerComponent('set-camera', {
+    	init: function () {
+    		const isDesktop = !AFRAME.utils.device.checkHeadsetConnected();
+        const isMobile = AFRAME.utils.device.isMobile();
+        const isHMD = !AFRAME.utils.device.isMobile() && AFRAME.utils.device.checkHeadsetConnected();
+        const isGearVR = AFRAME.utils.device.isGearVR();
+        let entity = this.el;
+
+        if (isDesktop === true) {
+          entity.removeAttribute('look-controls');
+          entity.setAttribute('position', '0 0 0');
+          entity.setAttribute('fps-look-controls', 'enabled', true);
+    		}
+        if (isMobile === true) {
+          entity.removeAttribute('look-controls');
+          entity.setAttribute('position', '0 1.6 0');
+          entity.setAttribute('twoway-motion', 'speed:35');
+        }
+        if (isHMD === true) {
+
+        }
+        if (isGearVR === true) {
+          //var leftEl = document.createElement('a-entity','gearvr-controls','hand:left');
+          //var rightEl = document.createElement('a-entity','gearvr-controls', 'hand:right');
+
+        }
+    	}
+    });
+    var postKey; //this page will be posted in IPFS and will need a way to display current state about itself. This key will be passed to declare its current state on Steem.
+    if (window.addEventListener) {
+    window.addEventListener("message", onMessage, false);
+    }
+    else if (window.attachEvent) {
+    window.attachEvent("onmessage", onMessage, false);
+    }
+    function onMessage(event) {
+    //if (event.origin !== "https://dlux.io" || "localhost:3000") return;
+    var data = event.data;
+    if (typeof(window[data.func]) == "function") {
+    window[data.func].call(null, data.message);
+    }
+    }
+    function voteMsg(message) {
+      AFRAME.scenes[0].emit('setVoteVal', {val: message});
+    }
+    function voteButton() {
+      voteAmt = parseInt(10000);
+    window.parent.postMessage({
+        'func': 'vote',
+        'message': voteAmt
+    }, "*");
+    }
+    function flagButton() {
+    var voteAmt = -1;
+    window.parent.postMessage({
+      'func': 'vote',
+      'message': voteAmt
+    }, "*");
+    }
+    function sendLink() {
+    //  var link = document.querySelector('link').value
+    window.parent.postMessage({
+    'func': 'sendLink',
+    'message': '/@disregardfiat'
+    }, "*");
+    }
+    function aVote() {
+    window.parent.postMessage({
+    'func': 'aVote',
+    'message': {
+      'permlink': '',
+      'author': '',
+      'weight': parseInt(10000),
+    }
+    }, "*");
+    }
+    function key (message) {
+      postKey = message;
+    }
+    function steemState(message) {
+      AFRAME.scenes[0].emit('setID', {val: message.content[postKey].id});
+      AFRAME.scenes[0].emit('setTitle', {val: message.content[postKey].root_title});
+      AFRAME.scenes[0].emit('setAuthor', {val: message.content[postKey].author});
+      AFRAME.scenes[0].emit('setVotesNum', {val: message.content[postKey].net_votes});
+      AFRAME.scenes[0].emit('setVotesVal', {val: Math.round( parseFloat(message.content[postKey].pending_payout_value.substring(0,5)) * 100) / 100});
+      console.log(message)
+    }
+    function iAm(message) {
+      AFRAME.scenes[0].emit('setiAm', {val: message});
+    }
+    function onpageloaded() {
+      window.parent.postMessage({
+      'func': 'iloaded',
+      'message': ''
+    }, "*");
+    }
+      AFRAME.registerState({
+        initialState: {
+          post: "",
+          username: "@",
+          id: "",
+          title: "No sync ...",
+          author: "",
+          rep: "UND",
+          profileimage: "",
+          votesNum: "UNK",
+          votesVal: "$0",
+          menuVis: false,
+          voteMsg: "Vote!"
+        },
+
+        handlers: {
+          setiAm: function (state, action) {
+            state.username = "@" + action.val;
+          },
+          setVoteMsg: function (state, action) {
+            state.voteMsg = action.val;
+          },
+          setID: function (state, action) {
+            state.id = action.val;
+          },
+          setAuthor: function (state, action) {
+            state.author = "@" + action.val;
+          },
+          setTitle: function (state, action) {
+            state.title = action.val;
+          },
+          setVotesNum: function (state, action) {
+            state.votesNum = action.val;
+          },
+          setVotesVal: function (state, action) {
+            state.votesVal = "$" + action.val;
+          },
+          setProfileImage: function (state, action) {
+            state.profileimage = action.val;
+          }
+        }
+      });
+    </script>
+  </head>
+    <body>
+      <a-scene class="fullscreen" id="" transparent="true" canvas="" keyboard-shortcuts="" screenshot="" vr-mode-ui="">
+        <a-entity sharedspace="hold: true; audio: true" avatars="onmyself: user"></a-entity>
+        <a-assets>
+          <a-mixin id="user" visible="false" set-camera look-controls wasd-controls share="position, rotation"></a-mixin>
+          <img id="collage" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmPY2hcquasv1fAy5yRF4Z8aJJL54tzQ5gL1G1dV8nLMUn">
+          <img id="360o" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmYcNJ8MdN3vC8UZJYaN5Xx13m4ne3z456UCeSTYjE9J5v">
+          <img id="gp1" crossorigin="anonymous" src="https://ipfs.io/ipfs/Qme4wrNsVs64bVc3Dv4TBA7rx38Gnz8FVkshDCnV23KtTM">
+          <img id="gp2" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmWzgf9hLvP1mWkQ5S96vTMCN8ACViC9QcZEes5xXhMKiX">
+          <img id="gp3" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmNyhwxdQbtaB2Nj3h1CgS59SqaRur9Qx8AQKV7YEzfjUM">
+          <img id="gp4" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmV6jtsJoq9y4y7fjvETuzc7hHPKLjGTKXt49uxG2w98xF">
+          <img id="gp5" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmScVUpXg7AQhE63Uq726tTecNgvDt7C2rLbd3suemnfag">
+          <img id="gp6" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmZe531LGFped7vRC1z5ufWJxPZykQofp2PxicV2965dVT">
+          <img id="gp8" crossorigin="anonymous" src="https://ipfs.io/ipfs/Qmer6FUqMeiMmFqWFfA4gVuGkDL8d5PJXWmDL56LNoefUy">
+          <img id="gp9" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmZ2RXDsUBoKkvRui9vX7XRjExe9x8b2GRv179qzXXdYdT">
+          <img id="go1" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmXv34JGcRPZ2eADEKSiQcz29FAqtN8m7B9cUW3hbHLkuw">
+          <img id="go2" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmYM9Km3Lj2ovep6Y1KSZsUuTjBUAn1HxQkSTPi4spTQEK">
+          <img id="go3" crossorigin="anonymous" src="https://ipfs.io/ipfs/Qmd2pNS94z2ocHxDdv5tCKDzpS4JcqnYrEzHhhYiwngamB">
+          <img id="gb1" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmTzRwrThyT2jp4AcX7xQ9D9KkedbQ6mHBxZoCGBhQBwdc">
+          <img id="gb2" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmUXTSrtE6QAQfEcDPCjjCAxrLPLnzKEUWCm3NspKzH5hb">
+          <img id="gb3" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmeWPbnbGtfSuaAooYsXutc31JQvzNcwu1eR4bFBz761GM">
+          <img id="gb4" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmRZffpnZHAzFozA2CCrR95mZHWxg7vEHRDVuzieH7uVxJ">
+          <img id="gb5" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmWxszv5naKE1CJrQG3qAtMNnh1ZmTgLjWk4Zo8mJur8vq">
+          <img id="gb6" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmbW8iUsRYxQh1jnqeuJjFU9UcTqfdyszPbqzN77rAtkt1">
+          <img id="fw1" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmVDpGkSet96vc4BChRzp4nhttDTZ7i3egWe71jo24rARG">
+          <img id="fw2" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmWzXKCU6TJ9mpLZj9VeziX17YNusZKuu6hDHFife6Uc3C">
+          <img id="fw3" crossorigin="anonymous" src="https://ipfs.io/ipfs/Qmdq8YuK8HmyY6ZeCqaGcpDkwRUac7fVN5hcBDLoeQaxsa">
+          <img id="fw4" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmZNcM1gkpAjSCFyfHP7J2pXhgaFsjw3dqtta232w7acnn">
+          <img id="fw5" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmU8NbMG5tZQrk1fJfgHFA5s2nyGv7TkidNgq4dnr8WHaJ">
+          <img id="fw6" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmQPVePNQrLK2acaHLAWsjcXqVxRViraPfcxfku8WZr13f">
+          <img id="fw7" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmbRM3hw64HSjCzUFYvtRu8cvmXHAYfZZUhx4QbcWPWNX5">
+          <img id="fw8" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmWBp6PEzXV1gnwnHVgzm1gkKTxRvcdUG5thdb2GMgatYf">
+          <img id="gc1" crossorigin="anonymous" src="https://ipfs.io/ipfs/Qmc5qHagxkWMPokDpi2LzNk9KUwbvmHZkQeNAJukAYDCnz">
+          <img id="gc2" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmPNvRhWX4Bo6ym3nQwmoUTCL1jEUXBGPySvgFPPxUEMFJ">
+          <img id="gc3" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmfT7cBe2kkNvA3BswquuSpqsPRLV4nZXriXF2VfX7AE9N">
+          <img id="gc4" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmTdsQZoLSLauQ8VvzbH1Eiun3dTBT3f9dfsbV2RQzBhiq">
+          <img id="gc5" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmTsF4JsAhxT2gPqXgkzXdMnTcfR6hm7LB8gDLz8Jh1Fa2">
+          <img id="gc6" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmT6sX8dcN6prxEZ8R2okKjiB1Z83xrWpCFyW6LRHucStH">
+          <img id="gc7" crossorigin="anonymous" src="https://ipfs.io/ipfs/Qmb7YiBJhtfmTZPmugDH8rzS934mVMHbzHqhV1Rp6y6xZp">
+          <img id="gc8" crossorigin="anonymous" src="https://ipfs.io/ipfs/Qmb4AmtiRbG6kdvaqwimKC7kqZ94zrsvDSVaUFKzVcKvmJ">
+          <img id="gc9" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmU9qFhuCeLPM4W7tsBUHChEEe21SWXA1Ye5dDsTrdBmFc">
+          <img id="gd1" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmVGVZHaNEFpJ96vdW3eoCaAubguRPgYUVpxv7rVganCHV">
+          <img id="gd2" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmZVEawT1zx2HG2xVXnbJj5i5qugJQLFsZn9Ksox1ZDfbT">
+          <img id="gd3" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmRW7KaVR1xzjKogxFTxF4p3FUSadcrq4zkyGXxgWyVm1k">
+        </a-assets>
+        <a-image src="#collage" height="2.5" position="1.35 1.25 -6.53" rotation="0 -90 0" scale="" visible="" width="4.2"></a-image>
+        <a-image src="#fw1" height=".6" position="-2.2 2 -11.03" rotation="0 0 0" scale="" visible="" width=".6"></a-image>
+        <a-image src="#fw2" height=".6" position="-2.1 1.2 -11.03" rotation="0 0 0" scale="" visible="" width=".6"></a-image>
+        <a-image src="#fw3" height=".6" position="-1.4 2 -11.03" rotation="0 0 0" scale="" visible="" width=".6"></a-image>
+        <a-image src="#fw4" height=".6" position="-1.3 1.2 -11.03" rotation="0 0 0" scale="" visible="" width=".6"></a-image>
+        <a-image src="#fw5" height=".6" position="-0.6 2 -11.03" rotation="0 0 0" scale="" visible="" width=".6"></a-image>
+        <a-image src="#fw6" height=".6" position="-0.5 1.2 -11.03" rotation="0 0 0" scale="" visible="" width=".6"></a-image>
+        <a-image src="#fw7" height=".6" position="0.2 2 -11.03" rotation="0 0 0" scale="" visible="" width=".6"></a-image>
+        <a-image src="#fw8" height=".6" position="0.3 1.2 -11.03" rotation="0 0 0" scale="" visible="" width=".6"></a-image>
+        <a-image src="#gp1" height=".6" position="-4.07 1.57 -11.03" rotation="0 0 0" scale="" visible="" width=".5"></a-image>
+        <a-image src="#gp2" height="1" position="-8.32 .83 -5.22" rotation="0 -90 0" scale="0.9 0.9 0.9" visible="" width="2.71"></a-image>
+        <a-image src="#gp3" height="1" position="-8.32 1.62 -3.9" rotation="0 -90 0" scale="0.65 0.65 0.3" visible="" width=".42"></a-image>
+        <a-image src="#gp4" height="1" position="-15.05 1.95 -.08" rotation="0 180 0" scale="1.6 1.6 0.3" visible="" width="2.24"></a-image>
+        <a-image src="#gp5" height="1" width="2.67" position="-12.88 1.76 -1.94" rotation="0 -90 0" scale="1.1 1.1 0.3" visible=""></a-image>
+        <a-image src="#gp6" height="1" width="2.28" position="-17.21 1.76 -1.94" rotation="0 90 0" scale="1.4 1.4 0.3" visible=""></a-image>
+        <a-image src="#gp8" height="1" width="1" position="-4.39 1.5 -1.57" rotation="0 90 0" scale="1 1 0.3" visible=""></a-image>
+        <a-image src="#gp9" height="1.3" width="1" position="-4.39 1.43 -4.95" rotation="0 90 0" scale=".75 .75 0.3" visible=""></a-image>
+        <a-image src="#go1" height="1.3" width="1" position="-4.39 1.43 -7.35" rotation="0 90 0" scale=".75 .75 0.3" visible=""></a-image>
+        <a-image src="#go2" height="1.3" width="1" position="-4.39 1.43 -6.15" rotation="0 90 0" scale=".75 .75 0.3" visible=""></a-image>
+        <a-image src="#go3" height="1.3" width="1" position="-4.39 1.43 -8.55" rotation="0 90 0" scale=".75 .75 0.3" visible=""></a-image>
+        <a-image src="#gb1" height="1" width="2.56" position="-6.3 0.78 -0.08" rotation="0 180 0" scale="1.1 1.1 0.3" visible=""></a-image>
+        <a-image src="#gb2" height="1" width="1.70" position="-4.57 1.23 -1.3" rotation="0 -90 0" scale="1.25 1.25 0.3" visible=""></a-image>
+        <a-image src="#gb3" height="1" width="1" position="-4.57 1.05 -4.61" rotation="0 -90 0" scale=".5 .5 0.3" visible=""></a-image>
+        <a-image src="#gb4" height="1" width="1" position="-4.57 1.65 -4.61" rotation="0 -90 0" scale=".5 .5 0.3" visible=""></a-image>
+        <a-image src="#gb5" height="1" width="1" position="-4.57 1.32 -5.24" rotation="0 -90 0" scale=".65 .65 0.3" visible=""></a-image>
+        <a-image src="#gb6" height="1" width=".56" position="-4.57 1.3 -5.85" rotation="0 -90 0" scale=".8 .8 0.3" visible=""></a-image>
+        <a-image src="#gc1" height="1" width="1.25" position="-12.72 1.53 -.97" rotation="0 90 0" scale=".65 .65 0.3" visible=""></a-image>
+        <a-image src="#gc2" height="1" width="1.06" position="-12.72 1.53 -2.01" rotation="0 90 0" scale=".65 .65 0.3" visible=""></a-image>
+        <a-image src="#gc3" height="1" width="1.32" position="-12.72 1.53 -3.07" rotation="0 90 0" scale=".65 .65 0.3" visible=""></a-image>
+        <a-image src="#gc4" height="1" width="0.72" position="-12.76 1.53 -5.16" rotation="0 90 0" scale=".65 .65 0.3" visible=""></a-image>
+        <a-image src="#gc5" height="1" width="0.82" position="-12.76 1.53 -5.74" rotation="0 90 0" scale=".5 .5 0.3" visible=""></a-image>
+        <a-image src="#gc6" height="1" width="0.77" position="-12.76 1.53 -6.32" rotation="0 90 0" scale=".6 .6 0.3" visible=""></a-image>
+        <a-image src="#gc7" height="1" width="1.48" position="-12.21 1.53 -6.57" rotation="0 180 0" scale=".6 .6 0.3" visible=""></a-image>
+        <a-image src="#gc8" height="1" width="1.19" position="-11.21 1.54 -6.57" rotation="0 180 0" scale=".65 .65 0.3" visible=""></a-image>
+        <a-image src="#gc9" height="1" width="1.34" position="-10.26 1.54 -6.57" rotation="0 180 0" scale=".65 .65 0.3" visible=""></a-image>
+        <a-image src="#gd1" height="1" position="-17.18 1.66 -5.5" rotation="0 90 0" scale=".8 .8 0.3" visible="" width=".38"></a-image>
+        <a-image src="#gd2" height="1" position="-14 1.68 -5.2" rotation="0 -90 0" scale="1 1 0.3" visible="" width="0.34"></a-image>
+        <a-image src="#gd3" height="1" position="-15.20 1.76 -5.75" rotation="0 0 0" scale=".8 .8 0.3" visible="" width="1.48"></a-image>
+        <a-box id="" transparent="true" material="" color="#ffffff" depth="0.15" geometry="" height="3" position=".93 1.5 0" rotation="" scale="" visible="" width="1.02"></a-box>
+        <a-box id="" transparent="true" material="" depth="0.15" geometry="" height="0.9" position="0 2.55 0" width="0.89" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="0.15" geometry="" height="3" position="-1 1.5 0" rotation="" scale="" visible="" width="1.12"></a-box>
+        <a-box id="" transparent="true" material="" depth="0.15" geometry="" height="1.4" position="-2.25 .7 0" rotation="" scale="" visible="" width="1.38"></a-box>
+        <a-box id="" transparent="true" material="" depth="0.15" geometry="" height="0.2" position="-2.25 2.9 0" rotation="" scale="" visible="" width="1.38"></a-box>
+        <a-box id="" transparent="true" material="" depth="0.15" geometry="" height="3" position="-3.76 1.5 0" rotation="" scale="" visible="" width="1.64"></a-box>
+        <a-box id="" transparent="true" material="" depth="2.61" geometry="" height="3" position="-4.49 1.5 -1.3" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="1.62" geometry="" height="0.9" position="-4.49 2.55 -3.41" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="4.97" geometry="" height="3" position="-4.49 1.5 -6.70" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="1.62" geometry="" height="0.9" position="-4.49 2.55 -9.98" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" color="#ffffff" depth="0.28" geometry="" height="3" position="-4.49 1.5 -10.93" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="0.28" geometry="" height="1.1" position="-4.1 .55 -10.93" width="0.66" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="0.28" geometry="" height="3" position="-3.41 1.5 -10.93" width="0.73" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" color="#ffffff" depth="0.15" geometry="" height="3" position="-1.49 1.5 -11.13" width="5.86" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="0.6" geometry="" height="3" position="1.44 1.5 -0.3" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="3.75" geometry="" height="1.2" position="1.44 .6 -2.47" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="3.75" geometry="" height="0.2" position="1.44 2.9 -2.47" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="4.7" geometry="" height="3" position="1.44 1.5 -6.69" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="2.1" geometry="" height="3" position="1.44 1.5 -10.08" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-sky id="" transparent="true" src="#360o" position="" rotation="0 270 0" scale=""></a-sky>
+        <a-box id="" transparent="true" material="" color="#6a5656" depth="3.95" geometry="" height="2" opacity="0.83" position="1.44 2 -2.55" width="0.1" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" color="#756e6e" depth="0.1" geometry="" height="1.4" opacity="0.81" position="-2.26 2.11 0" width="1.4" rotation="" scale="" visible=""></a-box>
+        <a-plane id="" transparent="true" material="" color="#5c2525" height="11.3" geometry="" position="-10.3 0 -5.6" rotation="90 0 0" width="23.4" side="double" scale="" visible=""></a-plane>
+        <a-box id="" transparent="true" material="" color="#ffffff" depth="2.92" geometry="" height="3" position="-5.92 1.5 -9.62" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" color="#ffffff" depth="0.15" geometry="" height="3" position="-5.21 1.49 -11.13" width="1.3" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="0.15" geometry="" height="1.4" position="-9.07 0.7 0" width="9" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" color="#878585" depth="7.2" geometry="" height="0.3" position="-10.47 .15 -3.67" width="4.6" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="7.2" geometry="" height="0.4" position="-8.24 2.4 -3.67" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="0.15" geometry="" height="3" position="-8.24 1.5 -0.6" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="0.3" geometry="" height="3" position="-8.24 1.5 -3.9" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="2.6" geometry="" height="1.3" position="-8.24 .65 -5.34" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" color="#ffffff" depth="1.5" geometry="" height="0.3" position="-7.01 0.15  -7.41" width="2.3" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" color="#ffffff" depth="3.71" geometry="" height="3" position="-12.8 1.5 -1.93" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" color="#ffffff" depth="3.835" geometry="" height="3" position="-17.29 1.5 -1.92" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" color="#ffffff" depth="0.15" geometry="" height="3" position="-15.02 1.5 0" width="4.394" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" color="#ffffff" depth="0.15" geometry="" height="3" position="-15.43 1.5 -5.85" width="3.835" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" color="#ffffff" depth="2.413" geometry="" height="0.9" position="-12.85 2.85 -4.27" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" color="#ffffff" depth="2.02" geometry="" height="3.4" position="-13.37 1.7 -5.77" width="1.2" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" color="#d6c7c7" depth="7.2" geometry="" height="0.4" position="-15.08 .2 -3.67" width="4.6" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" color="#9d6262" depth="9" geometry="" height="0.5" position="-19.52 .25 -4.50" width="4.6" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" color="#ffffff" depth="3.45" geometry="" height="3.4" position="-17.28 1.7 -6.95" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" color="#ffffff" depth="1.4" geometry="" height="1" position="-17.29 2.85 -4.53" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="0.15" geometry="" height="1" position="-9 3.14 0" width="9" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="0.15" geometry="" height="3.3" opacity="1" position="-9.59 1.65 -8.23" width="7.5" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="1.66" geometry="" height="3.3" opacity="1" position="-11.89 1.65 -7.45" width="7.5" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="0.15" geometry="" height="4" position="-19.58 2 0" width="4.48" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="0.15" geometry="" height="4" position="-19.58 2 -8.74" width="4.48" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" depth="8.75" geometry="" height="4" position="-21.88 2 -4.30" width="0.15" rotation="" scale="" visible=""></a-box>
+        <a-plane id="" transparent="true" material="" color="#f6f6f6" height="11" geometry="" position="-8.63 2.51 -5.6" rotation="90 0 0" width="8.43" side="double" scale="" visible=""></a-plane>
+        <a-box id="" transparent="true" material="" color="#ececec" depth="11.3" geometry="" height="4" position="-10.18 5 -5.65" width="23.4" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" color="#ffffff" depth="0.1" geometry="" height="1.4" opacity="0.9" position="-8.69 2 0" width="8.5" rotation="" scale="" visible=""></a-box>
+        <a-box id="" transparent="true" material="" color="#413030" depth="0.55" geometry="" height="0.84" opacity="1" position="-7.03 .68 -6.95" width="2.12" rotation="" scale="" visible=""></a-box>
+      </a-scene>
+      <template>
+        <a-sphere radius="0.1" color="#ffffff">
+          <a-sphere position="0.05 0.03 -0.08" radius="0.02" segments-width="8" segments-height="8" color="#000000"></a-sphere>
+          <a-sphere position="-0.05 0.03 -0.08" radius="0.02" segments-width="8" segments-height="8" color="#000000"></a-sphere>
+          <a-sphere class="themable" position="0 -0.07 -0.1" scale="1 1 0.5" segments-width="4" segments-height="4" radius="0.02" color="#11fd3e"></a-sphere>
+          <a-cone class="themable" position="0.03 -0.07 -0.1" rotation="0 0 90" scale="1 1 0.5" segments-radial="8" segments-height="1" height="0.03" radius-bottom="0.03"  color="#1cff3c"></a-cone>
+          <a-cone class="themable" position="-0.03 -0.07 -0.1" rotation="0 0 -90" scale="1 1 0.5" segments-radial="8" segments-height="1" height="0.03" radius-bottom="0.03"  color="#1cff3c"></a-cone>
+        </a-sphere>
+      </template>
+      <script>
+    var scene = document.querySelector('a-scene');
+    (function start() {
+        if (!scene.hasLoaded) {
+        scene.addEventListener('loaded', start);
+        return;
+        }
+        var prefix = window.location.host.split('.')[0] + '-';
+        var currentUrl = new URL(window.location);
+        var roomName = currentUrl.search.substr(1);
+        if (!roomName) {
+          roomName = prefix + Date.now();
+          currentUrl.search = roomName;
+          history.pushState({}, '', currentUrl.href);
+        }
+        var room = document.querySelector('[sharedspace]');
+        room.setAttribute('sharedspace', { room: roomName, hold: false });
+        }());
+      </script>
+    </body>
+  </html>

@@ -10,7 +10,9 @@
     <script src="https://unpkg.com/aframe-fps-look-controls-component/dist/aframe-fps-look-controls-component.min.js"></script>
     <script src="https://unpkg.com/aframe-aabb-collider-component/dist/aframe-aabb-collider-component.min.js"></script>
     <script src="https://unpkg.com/aframe-sharedspace-component@1.0.1/dist/aframe-sharedspace-component.min.js"></script>
-    <script src="/js/dlux.js">
+    <script src="https://unpkg.com/aframe-state-component@3.0.0/dist/aframe-state-component.min.js"></script>
+    <script src="https://rawgit.com/rdub80/aframe-gui/master/dist/aframe-gui.min.js"></script>
+    <script>
     // Target URL
     AFRAME.registerComponent('url', {
       schema: {default: ''},
@@ -130,6 +132,20 @@
       AFRAME.scenes[0].emit('setVotesNum', {val: message.content[postKey].net_votes});
       AFRAME.scenes[0].emit('setVotesVal', {val: Math.round( parseFloat(message.content[postKey].pending_payout_value.substring(0,5)) * 100) / 100});
       console.log(message)
+      connectRoom(message.content[postKey].author);
+    }
+    function connectRoom(hostUser) {
+      var scene = document.querySelector('a-scene');
+      var prefix = window.location.host.split('.')[0] + '-';
+      var currentUrl = new URL(window.location);
+      var roomName = currentUrl.search.substr(1);
+      if (!roomName) {
+            roomName = prefix + hostUser; //standard room name based on author name of steem post
+            currentUrl.search = roomName;
+            history.pushState({}, '', currentUrl.href);
+      }
+      var room = document.querySelector('[sharedspace]');
+      room.setAttribute('sharedspace', { room: roomName, hold: false });
     }
     function iAm(message) {
       AFRAME.scenes[0].emit('setiAm', {val: message});
@@ -152,12 +168,13 @@
           votesNum: "UNK",
           votesVal: "$0",
           menuVis: false,
-          voteMsg: "Vote!"
+          voteMsg: "Vote!",
+          host: "NoSync"
         },
 
         handlers: {
           setiAm: function (state, action) {
-            state.username = "@" + action.val;
+            state.username = "Welcome @" + action.val;
           },
           setVoteMsg: function (state, action) {
             state.voteMsg = action.val;
@@ -167,6 +184,12 @@
           },
           setAuthor: function (state, action) {
             state.author = "@" + action.val;
+            state.host = action.val;
+          },
+          setHost: function (state, action) {
+            state.host = action.val;
+            AFRAME.scenes[0].removeAttribute('networked-scene');
+            AFRAME.scenes[0].emit('connect');
           },
           setTitle: function (state, action) {
             state.title = action.val;
@@ -185,10 +208,26 @@
     </script>
   </head>
     <body>
-      <a-scene class="fullscreen" id="" transparent="true" canvas="" keyboard-shortcuts="" screenshot="" vr-mode-ui="">
-        <a-entity sharedspace="hold: true; audio: true" avatars="onmyself: user"></a-entity>
+      <a-scene class="fullscreen" id="" transparent="true" canvas="" keyboard-shortcuts="" screenshot="" vr-mode-ui="" bind__networked-scene.room="host" bind__networked-scene.app="author" networked-scene="
+    app: gabbagallery;
+    room: 'nosync';
+    connectOnLoad: true;
+    onConnect: onConnect;
+    adapter: easyrtc;
+    audio: true;
+    debug: false;
+  ">
         <a-assets>
-          <a-mixin id="user" visible="false" set-camera look-controls wasd-controls share="position, rotation"></a-mixin>
+          <template id="avatar">
+            <a-sphere radius="0.1" color="#ffffff">
+              <a-sphere position="0.05 0.03 -0.08" radius="0.02" segments-width="8" segments-height="8" color="#000000"></a-sphere>
+              <a-sphere position="-0.05 0.03 -0.08" radius="0.02" segments-width="8" segments-height="8" color="#000000"></a-sphere>
+              <a-sphere class="themable" position="0 -0.07 -0.1" scale="1 1 0.5" segments-width="4" segments-height="4" radius="0.02" color="#11fd3e"></a-sphere>
+              <a-cone class="themable" position="0.03 -0.07 -0.1" rotation="0 0 90" scale="1 1 0.5" segments-radial="8" segments-height="1" height="0.03" radius-bottom="0.03"  color="#1cff3c"></a-cone>
+              <a-cone class="themable" position="-0.03 -0.07 -0.1" rotation="0 0 -90" scale="1 1 0.5" segments-radial="8" segments-height="1" height="0.03" radius-bottom="0.03"  color="#1cff3c"></a-cone>
+            </a-sphere>
+          </template>
+          <a-entity networked="template:#avatar;attachTemplateToLocal:false">
           <img id="collage" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmPY2hcquasv1fAy5yRF4Z8aJJL54tzQ5gL1G1dV8nLMUn">
           <img id="360o" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmYcNJ8MdN3vC8UZJYaN5Xx13m4ne3z456UCeSTYjE9J5v">
           <img id="gp1" crossorigin="anonymous" src="https://ipfs.io/ipfs/Qme4wrNsVs64bVc3Dv4TBA7rx38Gnz8FVkshDCnV23KtTM">
@@ -229,6 +268,46 @@
           <img id="gd2" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmZVEawT1zx2HG2xVXnbJj5i5qugJQLFsZn9Ksox1ZDfbT">
           <img id="gd3" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmRW7KaVR1xzjKogxFTxF4p3FUSadcrq4zkyGXxgWyVm1k">
         </a-assets>
+        <a-gui-flex-container
+          flex-direction="column"
+          justify-content="center"
+          align-items="normal"
+          component-padding="0.1"
+          opacity="0.7" width="3.5" height="3"
+          position="1.35 1.5 -2" rotation="0 -90 0">
+          <a-gui-label
+                  width="3.3" height="0.5"
+                  id="usernameText"
+                  bind__value="username"
+                  value=""
+                  font-family="Arial"
+                  margin="0 0 0.05 0">
+          </a-gui-label>
+          <a-gui-label
+                  width="3.3" height="0.5"
+                  id="titletag"
+                  bind__value="title"
+                  value=""
+                  font-family="Arial"
+                  margin="0 0 0.05 0">
+          </a-gui-label>
+          <a-gui-label
+                  width="3.3" height="0.5"
+                  id="voteInst"
+                  value="<- Walk thru field to vote."
+                  font-family="Arial"
+                  margin="0 0 0.05 0">
+          </a-gui-label>
+          <a-gui-label
+                  width="3.3" height="0.5"
+                  bind__value="votesVal"
+                  value=""
+                  id="voteMsgR"
+                  font-family="Arial"
+                  margin="0 0 0.05 0">
+          </a-gui-label>
+    </a-gui-flex-container>
+        <a-box class="voteButton" color="blue" position=".85 .99 -4" height="2" width="1" depth=".1" opacity=".5" aabb-collider="objects: .user"></a-box>
         <a-image src="#collage" height="2.5" position="1.35 1.25 -6.53" rotation="0 -90 0" scale="" visible="" width="4.2"></a-image>
         <a-image src="#fw1" height=".6" position="-2.2 2 -11.03" rotation="0 0 0" scale="" visible="" width=".6"></a-image>
         <a-image src="#fw2" height=".6" position="-2.1 1.2 -11.03" rotation="0 0 0" scale="" visible="" width=".6"></a-image>
@@ -320,33 +399,5 @@
         <a-box id="" transparent="true" material="" color="#ffffff" depth="0.1" geometry="" height="1.4" opacity="0.9" position="-8.69 2 0" width="8.5" rotation="" scale="" visible=""></a-box>
         <a-box id="" transparent="true" material="" color="#413030" depth="0.55" geometry="" height="0.84" opacity="1" position="-7.03 .68 -6.95" width="2.12" rotation="" scale="" visible=""></a-box>
       </a-scene>
-      <template>
-        <a-sphere radius="0.1" color="#ffffff">
-          <a-sphere position="0.05 0.03 -0.08" radius="0.02" segments-width="8" segments-height="8" color="#000000"></a-sphere>
-          <a-sphere position="-0.05 0.03 -0.08" radius="0.02" segments-width="8" segments-height="8" color="#000000"></a-sphere>
-          <a-sphere class="themable" position="0 -0.07 -0.1" scale="1 1 0.5" segments-width="4" segments-height="4" radius="0.02" color="#11fd3e"></a-sphere>
-          <a-cone class="themable" position="0.03 -0.07 -0.1" rotation="0 0 90" scale="1 1 0.5" segments-radial="8" segments-height="1" height="0.03" radius-bottom="0.03"  color="#1cff3c"></a-cone>
-          <a-cone class="themable" position="-0.03 -0.07 -0.1" rotation="0 0 -90" scale="1 1 0.5" segments-radial="8" segments-height="1" height="0.03" radius-bottom="0.03"  color="#1cff3c"></a-cone>
-        </a-sphere>
-      </template>
-      <script>
-    var scene = document.querySelector('a-scene');
-    (function start() {
-        if (!scene.hasLoaded) {
-        scene.addEventListener('loaded', start);
-        return;
-        }
-        var prefix = window.location.host.split('.')[0] + '-';
-        var currentUrl = new URL(window.location);
-        var roomName = currentUrl.search.substr(1);
-        if (!roomName) {
-          roomName = prefix + Date.now();
-          currentUrl.search = roomName;
-          history.pushState({}, '', currentUrl.href);
-        }
-        var room = document.querySelector('[sharedspace]');
-        room.setAttribute('sharedspace', { room: roomName, hold: false });
-        }());
-      </script>
     </body>
   </html>

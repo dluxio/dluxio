@@ -19,6 +19,7 @@
     "ipfs-api": "^22.0.0",
     "morgan": "~1.9.0",
     "mysql": "^2.15.0",
+    "networked-aframe": "^0.6.1",
     "npm": "^6.1.0",
     "pug": "2.0.0-beta11",
     "sc2-sdk": "^1.0.2",

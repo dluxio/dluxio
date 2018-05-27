@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+    <meta charset="utf-8">
+    <title>Secure Round Table by @disregardfiat</title>
+    <meta name="VR Sandbox" content="Create a dlux social blockchain VR">
+    <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+    <script src="https://rawgit.com/rdub80/aframe-gui/master/dist/aframe-gui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.map"></script>
+    <script>
+    if (window.addEventListener) {
+    window.addEventListener("message", onMessage, false);
+    }
+    else if (window.attachEvent) {
+    window.attachEvent("onmessage", onMessage, false);
+    }
+    function onMessage(event) {
+    //if (event.origin !== "https://dlux.io" || "localhost:3000") return;
+    var data = event.data;
+    if (typeof(window[data.func]) == "function") {
+    window[data.func].call(null, data.message);
+    }
+    }
+    function voteMsg(message) {
+      console.log(message)
+      document.querySelector('voteMsgR').value = message;
+    }
+    function voteButton() {
+      voteAmt = parseInt(10000);
+    window.parent.postMessage({
+        'func': 'vote',
+        'message': voteAmt
+    }, "*");
+    }
+    function flagButton() {
+    var voteAmt = -1;
+    window.parent.postMessage({
+      'func': 'vote',
+      'message': voteAmt
+    }, "*");
+    }
+    function sendLink() {
+    //  var link = document.querySelector('link').value
+    window.parent.postMessage({
+    'func': 'sendLink',
+    'message': '/@dlux-io'
+    }, "*");
+    }
+    function aVote() {
+    window.parent.postMessage({
+    'func': 'aVote',
+    'message': {
+      'permlink': 'dlux-seed',
+      'author': 'disregardfiat',
+      'weight': parseInt(10000),
+    }
+    }, "*");
+    }
+    function steemState(message) {
+      $("body").data("steemState", message);
+      console.log(message)
+    }
+    function iAm(message) {
+      var targetLabel = document.querySelector('usernameText')
+      targetLabel.value = message;
+    }
+    function onpageloaded() {
+      window.parent.postMessage({
+      'func': 'iloaded',
+      'message': ''
+    }, "*");
+    }
+</script>
+  </head>
+  <body>
+    <a-scene inspector="url: https://ipfs.io/ipfs/QmabkiLShR7vrZPRdZQFawJgZQXSuEdK8ohSMHEgFebB8R">
+      <a-assets>
+      </a-assets>
+      <a-camera look-controls>
+        <a-entity raycaster="interval: 1000; objects: [gui-interactable]"
+                  cursor="fuse: true; fuseTimeout: 1000"
+                  gui-cursor="design:reticle;" >
+        </a-entity>
+      </a-camera>
+      <a-gui-flex-container
+        flex-direction="column"
+        justify-content="center"
+        align-items="normal"
+        component-padding="0.1"
+        opacity="0.7" width="7.5" height="7"
+        position="5 3.6 -4" rotation="0 -45 0">
+        <a-gui-label
+                width="6.5" height="0.75"
+                id="usernameText"
+                value="@"
+                font-family="Arial"
+                margin="0 0 0.05 0">
+        </a-gui-label>
+        <a-gui-slider
+                width="2.5" height="0.75"
+                percent="0.5"
+                id="voteWeight"
+                margin="0 0 0.05 0">
+        </a-gui-slider>
+        <a-gui-button
+                width="2.5" height="0.75"
+                onclick="voteButton"
+                value="Vote"
+                font-family="Helvetica"
+                margin="0 0 0.05 0">
+        </a-gui-button>
+        <a-gui-button
+                width="2.5" height="0.75"
+                onclick="flagButton"
+                value="Flag"
+                font-family="Helvetica"
+                margin="0 0 0.05 0">
+        </a-gui-button>
+        <a-gui-label
+                width="6.5" height="0.75"
+                id="voteMsgR"
+                value="Hover to active slider and sign Vote"
+                font-family="Arial"
+                margin="0 0 0.05 0">
+        </a-gui-label>
+        <a-gui-button
+                width="6.5" height="0.75"
+                onclick="sendLink"
+                value="Visit My Feed"
+                font-family="Helvetica"
+                margin="0 0 0.05 0">
+    </a-gui-button>
+    <a-gui-button
+            width="6.5" height="0.75"
+            onclick="aVote"
+            value="Vote on dlux seed by @disregardfiat"
+            font-family="Helvetica"
+            margin="0 0 0.05 0">
+    </a-gui-button>
+  </a-gui-flex-container>
+      <a-cylinder color="#732222" height="0.9" position="0 .45 0" radius="2.5"></a-cylinder>
+      <a-video id="NVideo" vidS src="#videoscreen" autoplay="true" height="0.9" position="0 2.45 0.95" rotation="15 0 0" width="1.6"></a-video>
+      <a-video id="SVideo" vidS src="#videoscreen" autoplay="true" height="0.9" position="0 2.45 -0.95" rotation="15 180 0" width="1.6"></a-video>
+      <a-video id="WVideo" vidS src="#videoscreen" autoplay="true" height="0.9" position="0.95 2.45 0" rotation="15 90 0" width="1.6"></a-video>
+      <a-video id="EVideo" vidS src="#videoscreen" autoplay="true" height="0.9" position="-0.95 2.45 0" rotation="15 270 0" width="1.6"></a-video>
+      <a-plane id="floor" color="#776e4e" height="100" rotation="-90 0 0" width="100" side="double" position="0 0 0"></a-plane>
+      <a-light id="WNWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="-9 2 -5" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="WCWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="-9 2 0" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="WSWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="-9 2 5" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="ENWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="9 2 -5" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="ECWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="9 2 0" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="ESWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="9 2 5" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="NWWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="-5 2 -9" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="NCWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="0 2 -9" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="NEWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="5 2 -9" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="SWWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="-5 2 9" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="SCWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="0 2 9" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="SEWL" intensity=".3" transparent="true" angle="30" light color="#c39919" penumbra="0.25" position="5 2 9" rotation="90 0 0" type="spot" decay="1"></a-light>
+      <a-light id="TableLight" angle="30" light="" color="#bab39b" decay="2.3" penumbra="0.66" position="0 10 0" rotation="-90 0 0" type="spot"></a-light>
+      <a-light id="TableLight" intensity=".2" light="" color="#bab39b"position="0 100 0" rotation="-90 0 0" type="ambient"></a-light>
+      <a-light id="TableLight" intensity=".1" light="" color="#bab39b"position="0 1.5 0" rotation="-90 0 0" type="ambient"></a-light>
+      <a-sky id="Sky" transparent="true" material="" color="#191040" position="" rotation="" scale="" visible="" geometry=""></a-sky>
+    </a-scene>
+  </body>
+</html>

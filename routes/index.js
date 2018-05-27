@@ -59,4 +59,25 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
     }
 });
 
+router.get('/@:username/:permlink', (req, res, next) => {
+      let username = req.params.username
+      let permlink = req.params.permlink
+      if(req.session.steemconnect){
+        let iAm = req.session.steemconnect.name
+        res.render('single', {
+          category: 'dlux',
+          username: username,
+          permlink: permlink,
+          iAm: iAm
+        });
+      } else {
+      res.render('single', {
+        category: 'dlux',
+        username: username,
+        permlink: permlink,
+        iAm: "Guest"
+      });
+    }
+});
+
 module.exports = router;

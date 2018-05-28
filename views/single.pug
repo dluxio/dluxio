@@ -20,7 +20,7 @@ html
     script.
       if (isIOS()) {
       window.addEventListener('devicemotion', function(e) {
-      iframe.contentWindow.postMessage({
+      document.getElementById('theIframe').contentWindow.postMessage({
       type: 'devicemotion',
       deviceMotionEvent: cloneDeviceMotionEvent(e),
       }, '*');

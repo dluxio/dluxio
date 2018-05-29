@@ -8,6 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
     <script src="../easyrtc/easyrtc.js"></script>
     <script src="https://unpkg.com/aframe-aabb-collider-component@^2.2.1/dist/aframe-aabb-collider-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@4.0.1/dist/aframe-event-set-component.js"></script>
     <script src="https://rawgit.com/rdub80/aframe-gui/master/dist/aframe-gui.min.js"></script>
     <script src="https://unpkg.com/aframe-randomizer-components@^3.0.1/dist/aframe-randomizer-components.min.js"></script>
     <script src="https://unpkg.com/aframe-particle-system-component@1.0.5/dist/aframe-particle-system-component.min.js"></script>
@@ -65,8 +66,6 @@
 
         return text;
       }
-    </script>
-    <script>
     // Target URL
     AFRAME.registerComponent('url', {
       schema: {default: ''},
@@ -81,15 +80,6 @@
 
     }
     });
-
-      AFRAME.registerComponent('voter', {
-        init: function () {
-          var el = this.el;
-          el.addEventListener('hitstart', function () {
-            votebutton();
-          });
-        }
-      });
     // Toggle Author
     AFRAME.registerComponent('toggle-info', {
       schema: {default: ''},
@@ -157,6 +147,7 @@
     }
     function voteButton() {
       voteAmt = parseInt(10000);
+      AFRAME.scenes[0].emit('setVoteMsg', {val: 'Thank you for voting in VR'});
     window.parent.postMessage({
         'func': 'vote',
         'message': voteAmt
@@ -218,7 +209,7 @@
           votesNum: "UNK",
           votesVal: "$0",
           menuVis: false,
-          voteMsg: "Vote!",
+          voteMsg: "<- Walk thru field to vote.",
           host: "NoSync"
         },
 
@@ -260,7 +251,6 @@
   </head>
   <body>
     <a-scene networked-scene="
-      server: /;
       app: default;
       room: basic;
       debug: true;
@@ -352,9 +342,9 @@
         <!-- /Templates -->
       </a-assets>
 
-      <a-entity id="player" networked="template:#avatar-template;" set-camera camera spawn-in-circle="radius:3;" position="0 1.6 0" wasd-controls look-controls>
+      <a-entity id="player" networked="template:#avatar-template;" set-camera camera position="0 1.6 0" wasd-controls look-controls>
       </a-entity>
-      <a-entity aabb-collider="object: #vote;" voter set-camera look-controls wasd-controls></a-entity>
+      <a-box class="voter" voter aabb-collider="objects: .votee" height=".2" width=".3" depth=".3" opacity="0" set-camera position="0 1.6 0" wasd-controls look-controls></a-box>
 <a-gui-flex-container
           flex-direction="column"
           justify-content="center"
@@ -381,6 +371,7 @@
           <a-gui-label
                   width="3.3" height="0.5"
                   id="voteInst"
+                  bind__value="voteMsg"
                   value="<- Walk thru field to vote."
                   font-family="Arial"
                   margin="0 0 0.05 0">
@@ -394,7 +385,10 @@
                   margin="0 0 0.05 0">
           </a-gui-label>
     </a-gui-flex-container>
-        <a-box id="vote" voter event-set__hitstart="material.opacity: 0.1; material.color: green" color="blue" position=".85 .99 -4" height="2" width="1" depth=".1" opacity=".5"></a-box>
+    <a-box class="votee" aabb-collider="objects: .voter"
+           event-set__hitstart="material.opacity: 0.5; material.color: red"
+           event-set__hitend="visible: false"
+           voter color="blue" position=".6 0.99 -4" height="2" width="1.5" depth=".4" opacity="1"></a-box>
         <a-image src="#collage" height="2.5" position="1.35 1.25 -6.53" rotation="0 -90 0" scale="" visible="" width="4.2"></a-image>
         <a-image src="#fw1" height=".6" position="-2.2 2 -11.03" rotation="0 0 0" scale="" visible="" width=".6"></a-image>
         <a-image src="#fw2" height=".6" position="-2.1 1.2 -11.03" rotation="0 0 0" scale="" visible="" width=".6"></a-image>
@@ -504,6 +498,10 @@
             property: 'value'
           }
         ]
+      });
+      var voterThing = document.querySelector('.voter');
+      voterThing.addEventListener('hitend', function(){
+      voteButton();
       });
       document.querySelector('a-scene').addEventListener('loaded', onSceneLoad)
     </script>

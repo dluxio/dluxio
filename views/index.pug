@@ -17,7 +17,8 @@ html(xmlns='http://www.w3.org/1999/xhtml')
     script(src='https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js')
     script(src='https://unpkg.com/aframe-fps-look-controls-component/dist/aframe-fps-look-controls-component.min.js')
     script(src='https://rawgit.com/Ctrl-Alt-Zen/aframe-mobile-controls/master/components/twoway-motion/twoway-motion.js')
-    script(src='js/dlux.js')
+    script(src='https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js')
+    script(src='/js/dlux.js')
   body
     a-scene
       a-assets
@@ -31,8 +32,9 @@ html(xmlns='http://www.w3.org/1999/xhtml')
       a-entity#point-light(light='type:point;intensity:0.75', position='0 15 15')
       // camera
       // <a-entity only-desktop></a-entity>
-      a-camera(set-camera='', look-controls='')
-        a-cursor
+      a-entity#cameraRig
+        a-camera(set-camera='', wasd-controls='', look-controls='')
+          a-cursor
       // dlux
       a-entity#dlux(position='0 -0.1 -10')
         // banner block

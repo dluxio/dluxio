@@ -7,7 +7,7 @@ let socketIo = require("socket.io");        // web socket external module
 let easyrtc = require("easyrtc");               // EasyRTC external module
 let app = require('./app');
 let debug = require('debug')('dlux:server');
-let http = require('https');
+let http = require('http');
 let config = require('./config');
 
 /**

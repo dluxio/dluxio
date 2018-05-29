@@ -18,6 +18,38 @@ html
       border: 0;
       }
     script.
+      if (isIOS()) {
+      window.addEventListener('devicemotion', function(e) {
+      document.getElementById('theIframe').contentWindow.postMessage({
+      type: 'devicemotion',
+      deviceMotionEvent: cloneDeviceMotionEvent(e),
+      }, '*');
+      });
+      }
+      function isIOS() {
+      return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      }
+      function cloneDeviceMotionEvent(e) {
+      return {
+      acceleration: {
+      x: e.acceleration.x,
+      y: e.acceleration.y,
+      z: e.acceleration.z,
+      },
+      accelerationIncludingGravity: {
+      x: e.accelerationIncludingGravity.x,
+      y: e.accelerationIncludingGravity.y,
+      z: e.accelerationIncludingGravity.z,
+      },
+      rotationRate: {
+      alpha: e.rotationRate.alpha,
+      beta: e.rotationRate.beta,
+      gamma: e.rotationRate.gamma,
+      },
+      interval: e.interval,
+      timeStamp: e.timeStamp
+      };
+      }
       if (window.addEventListener) {
       window.addEventListener("message", onMessage, false);
       }
@@ -41,13 +73,13 @@ html
       'weight': message
       }
       }, (response) => {
-      console.log(response)
-      let stateObject = response
+      steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
       var target = document.getElementById('theIframe').contentWindow
       target.postMessage({
-      'func': 'voteMsg',
-      'message': stateObject
+      'func': 'steemState',
+      'message': result,
       }, "*");
+      })
       })
       }
       function aVote(message) {
@@ -100,8 +132,8 @@ html
       iframe.scrolling = 'no'
       iframe.width = '100%'
       iframe.height = '100%'
-      iframe.src = 'https://ipfs.io/ipfs/' + hashy;
+      iframe.setAttribute('allow', 'gyroscope; accelerometer')
+      iframe.src = 'https://ipfs.io/ipfs/' + hashy
       document.body.appendChild(iframe);
       })
-
     body

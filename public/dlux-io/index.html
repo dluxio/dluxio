@@ -8,8 +8,9 @@
   <script src="https://unpkg.com/aframe-text-geometry-component@0.5.0/dist/aframe-text-geometry-component.min.js"></script>
   <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
   <script src="https://unpkg.com/aframe-fps-look-controls-component/dist/aframe-fps-look-controls-component.min.js"></script>
+  <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
+  <script src="https://rawgit.com/Ctrl-Alt-Zen/aframe-mobile-controls/master/components/twoway-motion/twoway-motion.js"></script>
   <script src="/js/dlux.js"></script>
-  <script src="js/dlux.js"></script>
 </head>
 <body>
   <a-scene>
@@ -18,11 +19,9 @@
       <img id="gabbagallery360" crossorigin="anonymous" src="https://ipfs.io/ipfs/QmZwC5cCtkjmqMSkTd5Ln7ceogRevkX85u4FxeBwQgXaS6">
       <img id="logout-logo" src="/viz/logout.png">
     </a-assets>
-    <a-camera set-camera look-controls>
-      <a-cursor></a-cursor>
-    </a-camera>
-    <a-entity environment="preset: arches; grid: cross" position="0 0 0" rotation="0 -100 0"></a-entity>
-    <a-entity url="/auth/logout" geometry="primitive:plane" material="src:#logout-logo;transparent:true" id="logout-button" rotation="" scale="1.87 1.87 1.87" position="0 5.2 -11.65"></a-entity>
+    <a-entity id="cameraRig"><a-camera set-camera wasd-controls look-controls><a-cursor></a-cursor></a-camera></a-entity>
+    <a-entity id="env" environment="preset: arches; grid: cross" position="0 0 0" rotation="0 -100 0"></a-entity>
+    <a-entity id="logout-button" url="/auth/logout" geometry="primitive:plane" material="src:#logout-logo;transparent:true" rotation="" scale="1.87 1.87 1.87" position="0 5.2 -11.65"></a-entity>
     <a-entity id="text-dlux" text-geometry="value:dlux;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json" position="-1.5 2.8 -12.7" rotation="0 0 0" scale="2 2 0.01" material="color:#ffffff"></a-entity>
     <a-entity id="text-age" text-geometry="value:stone age;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.30000000000000004" position="-2 2 -12.7" rotation="0 0 0" scale="2 2 0.01" material="color:#ffffff"></a-entity>
     <a-link id="portal1" position="-3.8 2 -4" scale="1 1 1" rotation="0 45 0" href="/borderless" title="Borderless" image="#gabbagallery360"></a-link>

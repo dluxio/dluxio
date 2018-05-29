@@ -8,6 +8,8 @@
   <script src="https://unpkg.com/aframe-text-geometry-component@0.5.0/dist/aframe-text-geometry-component.min.js"></script>
   <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
   <script src="https://unpkg.com/aframe-fps-look-controls-component/dist/aframe-fps-look-controls-component.min.js"></script>
+  <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
+  <script src="https://rawgit.com/Ctrl-Alt-Zen/aframe-mobile-controls/master/components/twoway-motion/twoway-motion.js"></script>
   <script src="/js/dlux.js"></script>
 <body>
   <a-scene>
@@ -18,9 +20,7 @@
       <img id="user" src="panda.jpg" crossorigin="anonymous">
       <img id="rank" src="/viz/plankton.png">
     </a-assets>
-    <a-camera set-camera look-controls>
-      <a-cursor></a-cursor>
-    </a-camera>
+    <a-entity id="cameraRig"><a-camera set-camera wasd-controls look-controls><a-cursor></a-cursor></a-camera></a-entity>
     <a-entity id="env" environment="preset: forest; grid: cross" position="0 0 0" rotation="0 -100 0"></a-entity>
     <a-entity id="system-menu" position="5 9 -11.5">
       <a-entity url="/auth/logout" geometry="primitive:plane" material="src:#logout-logo;transparent:true" id="logout-button" rotation="" scale="1.87 1.87 1.87" position="0 0 0"></a-entity>

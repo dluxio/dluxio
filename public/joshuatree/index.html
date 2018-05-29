@@ -7,6 +7,8 @@
   <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
   <script src="https://unpkg.com/aframe-text-geometry-component@0.5.0/dist/aframe-text-geometry-component.min.js"></script>
   <script src="https://unpkg.com/aframe-fps-look-controls-component/dist/aframe-fps-look-controls-component.min.js"></script>
+  <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
+  <script src="https://rawgit.com/Ctrl-Alt-Zen/aframe-mobile-controls/master/components/twoway-motion/twoway-motion.js"></script>
   <script src="/js/dlux.js"></script>
 </head>
 <body>
@@ -20,9 +22,7 @@
       <video id="video" style="display:none" autoplay loop crossorigin="anonymous" playsinline webkit-playsinline>
           <source type="video/mp4" src="https://player.vimeo.com/external/224022953.hd.mp4?s=7e772ee219b452e666dd7a31847c3547c2881488&profile_id=175" /></video>
     </a-assets>
-    <a-camera set-camera look-controls>
-      <a-cursor></a-cursor>
-    </a-camera>
+    <a-entity id="cameraRig"><a-camera set-camera wasd-controls look-controls><a-cursor></a-cursor></a-camera></a-entity>
     <!-- Author Pin -->
     <a-entity id="author-pin" position="-1.552 4 -15">
     <a-entity id="rank-pin" geometry="primitive:circle" material="side:double;color:#3F8BF8;opacity:0.7" position="" scale="" toggle-info="">

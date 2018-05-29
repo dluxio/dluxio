@@ -37,25 +37,70 @@ AFRAME.registerComponent('set-camera', {
     const isMobile = AFRAME.utils.device.isMobile();
     const isHMD = !AFRAME.utils.device.isMobile() && AFRAME.utils.device.checkHeadsetConnected();
     const isGearVR = AFRAME.utils.device.isGearVR();
-    let entity = this.el;
+    let cameraEl = this.el;
+    cameraEl.setAttribute('id','head');
+    var cameraRigEl = document.querySelector('#cameraRig');
+    var cursorEl = document.querySelector('a-cursor');
 
-    if (isDesktop === true) {
-      entity.removeAttribute('look-controls');
-      entity.setAttribute('position', '0 0 0');
-      entity.setAttribute('fps-look-controls', 'enabled', true);
+    if (isDesktop === true) { // setup fps controls
+      cameraEl.removeAttribute('look-controls');
+      cameraEl.setAttribute('position', '0 0 0');
+      cameraEl.setAttribute('fps-look-controls', 'enabled', true);
 		}
-    if (isMobile === true) {
-      entity.removeAttribute('look-controls');
-      entity.setAttribute('position', '0 0 0');
-      entity.setAttribute('twoway-motion', 'speed:35');
+    if (isMobile === true) { // setup twoway controls and revert to look controls in VR
+      cameraEl.removeAttribute('look-controls');
+      cameraEl.setAttribute('twoway-motion', 'speed:40');
+      // enter VR
+      window.addEventListener('enter-vr', e => {
+      cameraEl.removeAttribute('twoway-motion');
+      cameraEl.setAttribute('look-controls', 'enabled', true);
+      // fuse cursor
+      cursorEl.setAttribute('fuse','true');
+      cursorEl.setAttribute('timeout','100');
+      cursorEl.setAttribute('color','#4CC3D9');
+      });
+      // exit VR
+      window.addEventListener('exit-vr', e => {
+      cameraEl.removeAttribute('look-controls');
+      cameraEl.setAttribute('twoway-motion', 'enabled', true);
+      // disable fuse
+      cursorEl.setAttribute('fuse','false');
+      cursorEl.setAttribute('color','#000');
+      });
     }
-    if (isHMD === true) {
-
+    if (isHMD === true) { // setup fps controls and revert to look controls in VR
+      cameraEl.removeAttribute('look-controls');
+      cameraEl.setAttribute('position', '0 0 0');
+      cameraEl.setAttribute('fps-look-controls', 'enabled', true);
+      // add teleport controllers
+      var leftEl = document.createElement('a-entity');
+      leftEl.setAttribute('id','left-hand');
+      leftEl.setAttribute('teleport-controls', 'button: trigger; collision-entities: #env; cameraRig: #cameraRig; teleportOrigin: #head;');
+      leftEl.setAttribute('hand-controls','left');
+      cameraRigEl.appendChild(leftEl);
+      var rightEl = document.createElement('a-entity');
+      rightEl.setAttribute('id','right-hand');
+      rightEl.setAttribute('teleport-controls', 'button: trigger; collision-entities: #env; cameraRig: #cameraRig; teleportOrigin: #head;');
+      rightEl.setAttribute('hand-controls','right');
+      cameraRigEl.appendChild(rightEl);
+      // enter VR
+      window.addEventListener('enter-vr', e => {
+      cameraEl.removeAttribute('fps-look-controls');
+      cameraEl.setAttribute('position', '0 0 0');
+      cameraEl.setAttribute('look-controls', 'enabled', true);
+      });
+      // exit VR
+      window.addEventListener('exit-vr', e => {
+      cameraEl.removeAttribute('look-controls');
+      cameraEl.setAttribute('position', '0 0 0');
+      cameraEl.setAttribute('fps-look-controls', 'enabled', true);
+      });
     }
-    if (isGearVR === true) {
-      //var leftEl = document.createElement('a-entity','gearvr-controls','hand:left');
-      //var rightEl = document.createElement('a-entity','gearvr-controls', 'hand:right');
-
+    if (isGearVR === true) { // add gear controller
+      var leftEl = document.createElement('a-entity','gearvr-controls','hand:left');
+      cameraRigEl.appendChild(leftEl);
+      var rightEl = document.createElement('a-entity','gearvr-controls', 'hand:right');
+      cameraRigEl.appendChild(rightEl);
     }
 	}
 });

@@ -166,8 +166,8 @@
     function voteMsg(message) {
       AFRAME.scenes[0].emit('setVoteMsg', {val: message}); //transaction id in message, useful for triggering other actions.
     }
-    function voteButton() { //
-      voteAmt = parseInt(10000);
+    function voteButton(amt) { //
+      voteAmt = amt || 10000
       AFRAME.scenes[0].emit('setVoteMsg', {val: 'Thank you for voting in VR'});
     window.parent.postMessage({
         'func': 'vote',

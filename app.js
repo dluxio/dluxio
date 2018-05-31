@@ -22,6 +22,7 @@ let util = require('./modules/util');
 let app = express();
 
 app.use(cors());
+app.enable('trust proxy');
 app.use(session({
     secret: config.session.secret,
     saveUninitialized: true,

@@ -16,7 +16,7 @@
     "express": "^4.16.3",
     "express-sanitize-escape": "^1.1.0",
     "express-session": "^1.15.6",
-    "ipfs-api": "^22.0.0",
+    "ipfs-api": "^22.0.1",
     "morgan": "~1.9.0",
     "mysql": "^2.15.0",
     "networked-aframe": "^0.6.1",
@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "claudia": "^4.0.0",
-    "webpack": "^4.8.3",
-    "webpack-cli": "^2.1.4"
+    "webpack": "^4.10.2",
+    "webpack-cli": "^2.1.5"
   }
 }

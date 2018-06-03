@@ -25,49 +25,67 @@
       <a-assets>
         <a-asset-item id="bf" src="https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json"></a-asset-item>
         <img id="sclogo" src="/viz/steemconnectlogo.jpg"/>
-        <img id="jslogo" src="/viz/joinsteemlogo.jpg"/>
-        <img id="adlogo" src="/viz/aboutdluxlogo.jpg"/>
+
+
         <img id="steemlogo" src="/viz/steem.png"/>
       </a-assets>
       <!-- environment -->
       <a-entity environment="preset: forest"></a-entity>
       <a-entity light="type:point;intensity:0.75" id="point-light" position="0 15 15"></a-entity>
       <!-- camera -->
-      <!--<a-entity only-desktop></a-entity>-->
       <a-entity id="cameraRig"><a-camera set-camera wasd-controls look-controls><a-cursor></a-cursor></a-camera></a-entity>
-      <!--dlux-->
-      <a-entity id="dlux" position="0 -0.1 -10">
-            <!-- banner block -->
-            <a-entity id="cube" geometry="height:8;width:8;depth:8" material="side:double;color:#ff0033;opacity:0.5" position="-0.23520907077682374 4 0">
-              <a-entity id="cube-col-1" position="0.5094452993592824 -2.24 4.099999999999992">
-                <a-entity id="dlux" text-geometry="value:dlux;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json" position="" scale="2 2 0.01" visible="" material="color:#1ed6a4"></a-entity>
-                <a-entity id="steempowered" text-geometry="value:Steem-Powered VR;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.1" position="0.25257686960285675 -0.40458286302652624 0" scale="2 2 0.01" visible="" material="color:#ffffff"></a-entity>
-              </a-entity>
-            </a-entity>
-            <!-- menu block -->
-            <a-entity id="menu" position="-1.608 1.719 3.119" geometry="height:2.4;width:2.4;depth:2.4" material="opacity:0.7;color:#3F8BF8">
-              <a-entity id="menu-col-1" position="0 0 1.22">
-                <a-plane id="steemconnect" height=".5" width="2" color="" rotation="" position="0 0.65 0" material="color:#FFF;shader:flat;src:#sclogo" url="/auth" class="link" geometry=""></a-plane>
-                <a-plane id="joinsteem" height=".5" width="2" color="" rotation="" position="" material="color:#FFF;shader:flat;src:#jslogo" url="https://signup.steemit.com/" class="link" geometry=""></a-plane>
-                <a-plane id="aboutdlux" height=".5" width="2" color="" rotation="" position="0 -0.65 0" material="color:#FFF;shader:flat;src:#adlogo" url="about/" class="link" geometry=""></a-plane>
-              </a-entity>
-            </a-entity>
-          <!--boxes-->
-          <a-entity id="boxes" position="0.9509077048919101 0.710367665203627 6.305">
-            <a-entity id="box-1" geometry="" position="-1.9867610577502477 4.052706343560493 -3.4493498143325443" material="color:#ffff00"></a-entity>
-            <a-entity id="box-2" geometry="" mixin="null" material="color:#ff8000" position="0.2764692448037831 3.7490400473780987 -7.126213875581079" scale="2.510708693442104 2.510708693442104 2.510708693442104"></a-entity>
-            <a-entity id="box-3" geometry="" position="2.6380178618649524 7.285748107782961 -7.597022784196335" material="color:#00ff80"></a-entity>
-            <a-entity id="box-4" geometry="" position="-4.884657546014574 4.6913579379938195 -7.544614208662843" scale="1.77 1.77 1.77" material="color:#0080ff"></a-entity>
+      <!-- dlux login-->
+      <a-entity id="dlux-cube-container" position="0 -0.13415502430593165 -12.623592051133942">
+        <a-entity id="dlux-cube" geometry="height:8;width:8;depth:8" material="side:double;color:#ff0033;opacity:0.5" position="-0.23520907077682374 4 0">
+          <a-entity id="cube-col-1" position="0.5094452993592824 -2.24 4.099999999999992">
+            <a-entity id="dlux" text-geometry="value:dlux;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json" position="" scale="2 2 0.01" visible="" material="color:#1ed6a4"></a-entity>
+            <a-entity id="steempowered" text-geometry="value:Steem-Powered VR;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.1" position="0.25257686960285675 -0.40458286302652624 0" scale="2 2 0.01" visible="" material="color:#ffffff"></a-entity>
           </a-entity>
         </a-entity>
-
-          <!-- demo area sign-->
-          <a-entity id="sign" geometry="height:0.95;width:1.72;depth:0.2" material="color:#804000" position="-8.229 1.344 -7.908" rotation="0 45 0" visible="false">
-            <a-entity id="arrow" text-geometry="value:<;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.16" position="-0.8514039322826414 -0.3714990252130552 0.2" scale="2.5751289991764095 5.846850445724887 0.01" visible="" material="" rotation=""></a-entity>
-            <a-entity id="demo" text-geometry="value:demo;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.15" position="-0.36944435015844235 0.045186476928397834 0.2" scale="2 2 0.01" visible="" material="" rotation=""></a-entity>
-            <a-entity id="room" text-geometry="value:room;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.15" position="-0.32 -0.302 0.2" scale="2 2 0.01" visible="" material="" rotation=""></a-entity>
-            <a-entity geometry="primitive:cylinder;radius:0.08;height:2" material="color:#804000" id="sign-post" position="0 -0.5 0"></a-entity>
+        <a-entity id="login-btn" position="-1.608 1.719 3.119" url="/auth" class="link" geometry="height:2.4;width:2.4;depth:2.4" material="opacity:0.7;color:#3F8BF8">
+          <a-entity id="login-col-1" position="0 0 1.22">
+            <a-plane id="steemconnect" height=".5" width="2" color="" rotation="" position="" material="color:#FFF;shader:flat;side:double;src:#sclogo" geometry=""></a-plane>
           </a-entity>
+        </a-entity>
+        <a-entity id="boxes" position="0.9509077048919101 0.710367665203627 6.305">
+          <a-entity id="box-1" geometry="" position="-1.9867610577502477 4.052706343560493 -3.4493498143325443" material="color:#ffff00"></a-entity>
+          <a-entity id="box-2" geometry="" mixin="null" material="color:#ff8000" position="0.2764692448037831 3.7490400473780987 -7.126213875581079" scale="2.510708693442104 2.510708693442104 2.510708693442104"></a-entity>
+          <a-entity id="box-3" geometry="" position="2.6380178618649524 7.285748107782961 -7.597022784196335" material="color:#00ff80"></a-entity>
+          <a-entity id="box-4" geometry="" position="-4.884657546014574 4.6913579379938195 -7.544614208662843" scale="1.77 1.77 1.77" material="color:#0080ff"></a-entity>
+        </a-entity>
+      </a-entity>
+      <!-- about dlux -->
+          <a-entity id="about-cube" geometry="height:8;width:8;depth:8" material="side:double;color:#ffffff;opacity:0.5" position="-9.695 3.854 -10.072957077671417" rotation="0 29.999999999999996 0">
+           <a-entity id="about-inner" position="0.12545218659686697 -0.15317288792748318 0" geometry="height:4.22;width:5.98;depth:8.2" material="color:#303030;opacity:0.52;side:double">
+            <a-entity id="about-col-1" position="0 0 4.112999646391557">
+            <a-entity id="what-text" text-geometry="value:What is this?;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.36" position="-2.8689872759518886 0.909208288785714 0" scale="2 2 0.01" visible="" material="color:#ffffff"></a-entity>
+            <a-entity id="first-free" text-geometry="value:dlux is the first free;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.1" position="-1.125193996938262 0.121 0" scale="2 2 0.01" visible="" material="color:#ffffff"></a-entity>
+            <a-entity id="vr-platform" text-geometry="value:decentralized virtual reality platform;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.1" position="-2.240551886010688 -0.2679448983783086 0" scale="2 2 0.01" visible="" material="color:#ffffff"></a-entity>
+            <a-entity id="make-vr" text-geometry="value:anyone can use to make VR;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.1" position="-1.6039890901188238 -0.6392146992199157 0" scale="2 2 0.01" visible="" material="color:#ffffff"></a-entity>
+            <a-entity id="earn-crypto" text-geometry="value:and earn crypto;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.1" position="-0.8914035561630618 -1 0" scale="2 2 0.01" visible="" material="color:#ffffff"></a-entity>
+            <a-entity id="ctl-alt" text-geometry="value:press CTL + ALT + i to look under the hood;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.1" position="-2.7322050407273206 -1.6409436250956624 0" scale="2 2 0.01" visible="" material="color:#ffffff"></a-entity>
+            <a-entity id="learn-btn" geometry="width:3" color="" rotation="" position="0 -2.7687544116120306 0" material="color:#ff8080;shader:flat;opacity:0.5" url="about/" class="link">
+              <a-entity id="learn-more" text-geometry="value:LEARN MORE;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.16" position="-1.337018946866647 -0.17840292473618158 0" scale="2 2 0.01" visible="" material="color:#000"></a-entity>
+            </a-entity>
+           </a-entity>
+         </a-entity>
+          </a-entity>
+        <!-- about Steem -->
+          <a-entity id="steem-cube" geometry="height:8;width:8;depth:8" material="side:double;color:#72f883;opacity:0.5" position="9.218063715676063 3.854 -10.097917230529825" rotation="0 -29.999999999999996 0">
+               <a-entity id="steem-inner" position="0.12545218659686697 -0.15317288792748318 0" geometry="height:4.22;width:5.98;depth:8.2" material="color:#303030;opacity:0.52;side:double">
+                <a-entity id="steem-col-1" position="0 0 4.112999646391557">
+                <a-entity id="why-steem" text-geometry="value:Why Steem?;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.36" position="-2.7161802649523166 0.909208288785714 0" scale="2 2 0.01" visible="" material="color:#ffffff"></a-entity>
+                <a-entity id="social-blockchain" text-geometry="value:Steem is a social blockchain;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.1" position="-1.622650008325217 0.12110590476450334 0" scale="2 2 0.01" visible="" material="color:#ffffff"></a-entity>
+                <a-entity id="rewards-upvotes" text-geometry="value:that rewards upvotes with;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.1" position="-1.5128352915117036 -0.24781911478752594 0" scale="2 2 0.01" visible="" material="color:#ffffff"></a-entity>
+                <a-entity id="crypto-currency" text-geometry="value:crypto currency you can;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.1" position="-1.4087455383185157 -0.616285335823548 0" scale="2 2 0.01" visible="" material="color:#ffffff"></a-entity>
+                <a-entity id="spend-trade" text-geometry="value:spend, trade, or transfer;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.1" position="-1.4227131388029557 -1.0065043959147628 0" scale="2 2 0.01" visible="" material="color:#ffffff"></a-entity>
+                <a-entity id="no-ads" text-geometry="value:No Ads. No Censorship. Decentralized on IPFS;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.1" position="-2.8619850834476424 -1.6409436250956624 0" scale="2 2 0.01" visible="" material="color:#ffffff"></a-entity>
+                <a-entity id="steem-btn" geometry="width:3" color="" rotation="" position="0 -2.7687544116120306 0" material="color:#ffffff;shader:flat;opacity:0.5" url="https://signup.steemit.com/" class="link">
+                  <a-entity id="get-steem" text-geometry="value:GET STEEM;font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;height:0.5;size:0.16" position="-1.08 -0.17840292473618158 0" scale="2 2 0.01" visible="" material="color:#000"></a-entity>
+                </a-entity>
+               </a-entity>
+             </a-entity>
+              </a-entity>
 
           <!-- otolux tag-->
           <a-entity id="ototag" geometry="primitive:plane;height:0.77;width:5.91" material="side:double" position="0 0.369 8" rotation="0 -180 0">

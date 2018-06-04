@@ -15,7 +15,7 @@ router.get('/', util.isAuthenticated, (req, res, next) => {
 
 router.post('/create-post', util.isAuthenticated, (req, res) => {
   let author = req.session.steemconnect.name
-  let body = req.body.post
+  let topbody = req.body.post
   let permlink = util.urlString()
   var tags = req.body.tags.split(',').map(item => item.trim())
   let primaryTag = 'dlux'
@@ -30,6 +30,9 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
     'image': 'https://ipfs.io/ipfs/' + image,
     'Hash360': Hash360
   })
+  var linker = `
+  #### [Visit this post in VR at dlux.io](https://dlux.io/dlux/@` + author + `/` + permlink + `)`
+  var body = topbody + linker
   steem.broadcast([['comment',{'parent_author': '','parent_permlink': 'dlux','author': author,'permlink': permlink,'title': title,'body': body,'json_metadata': customData}],['comment_options',{'author': author,'permlink': permlink,'max_accepted_payout': '1000000.000 SBD','percent_steem_dollars': 10000,'allow_votes': true,'allow_curation_rewards': true,'extensions': [[0,{'beneficiaries': [{'account': 'dlux-io','weight': 1000}]}]]}]], function (err, response) {
   if (err) {
     console.log(err)
@@ -46,7 +49,7 @@ router.post('/vote', util.isAuthenticatedJSON, (req, res) => {
     let voter = req.session.steemconnect.name
     let author = req.body.author
     let permlink = req.body.permlink
-    let weight = 10000
+    let weight = parseInt(req.body.weight, 10)
 
     steem.vote(voter, author, permlink, weight, function (err, steemResponse) {
       if (err) {

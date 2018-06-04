@@ -1,15 +1,11 @@
-doctype html
-html
-  head
-    title= title
-    link(rel='stylesheet', href='/css/style.css')
-    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous")
-    script(src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous")
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js")
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js")
-    script(src="https://cdn.steemjs.com/lib/latest/steem.min.js")
-    script(src="/js/main.js")
-    style.
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>dlux</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+    <script src="https://cdn.steemjs.com/lib/latest/steem.min.js"></script>
+    <style>
       html, body{
       margin: 0;
       height: 100%;
@@ -17,7 +13,8 @@ html
       iframe{
       border: 0;
       }
-    script.
+    </style>
+    <script>
       if (isIOS()) {
       window.addEventListener('devicemotion', function(e) {
       document.getElementById('theIframe').contentWindow.postMessage({
@@ -57,61 +54,47 @@ html
       window.attachEvent("onmessage", onMessage, false);
       }
       function onMessage(event) {
-      if (event.origin !== "https://ipfs.io") return;
+      if (event.origin !== "https://cheerful-suggestion.glitch.me") return;
       var data = event.data;
       if (typeof(window[data.func]) == "function") {
       window[data.func].call(null, data.message);
       }
       }
       function vote(message) {
-      $.post({
-      url: '/post/vote/',
-      dataType: 'json',
-      data: {
-      'permlink': '#{permlink}',
-      'author': '#{username}',
-      'weight': message
-      }
-      }, (response) => {
-      steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
-      var target = document.getElementById('theIframe').contentWindow
-      target.postMessage({
-      'func': 'steemState',
-      'message': result,
-      }, "*");
-      })
-      })
-      }
-      function aVote(message) {
-      $.post({
-      url: '/post/vote/',
-      dataType: 'json',
-      data: {
-      'permlink': message.permlink,
-      'author': message.author,
-      'weight': message.weight
-      }}, (response) => {
-      console.log(response)
       var target = document.getElementById('theIframe').contentWindow
       target.postMessage({
       'func': 'voteMsg',
-      'message': stateObject
+      'message': 'you sent a vote'
       }, "*");
-      });
       }
+
+
+      function aVote(message) {
+      var target = document.getElementById('theIframe').contentWindow
+      target.postMessage({
+      'func': 'voteMsg',
+      'message': message
+      }, "*");
+      }
+
       function sendLink(link) {
       location.href = link;
+        var target = document.getElementById('theIframe').contentWindow
+      target.postMessage({
+      'func': 'voteMsg',
+      'message': 'you sent a vote'
+      }, "*");
       }
       function iloaded(){
-      steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
+      steem.api.getState(`/dlux/@disregardfiat/mgrbow31o19wt1f8frk5jf75ssoxk24p`, (err, result) => {
       var target = document.getElementById('theIframe').contentWindow
       target.postMessage({
       'func': 'iAm',
-      'message': '#{iAm}',
+      'message': 'Guest',
       }, "*");
       target.postMessage({
       'func': 'key',
-      'message': '#{username}/#{permlink}',
+      'message': 'disregardfiat/mgrbow31o19wt1f8frk5jf75ssoxk24p',
       }, "*");
       target.postMessage({
       'func': 'steemState',
@@ -119,10 +102,11 @@ html
       }, "*");
       })
       }
-    script.
-      steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
+    </script>
+    <script>
+      steem.api.getState(`/dlux/@disregardfiat/mgrbow31o19wt1f8frk5jf75ssoxk24p`, (err, result) => {
       console.log(result)
-      var sux = '#{username}/#{permlink}'
+      var sux = 'disregardfiat/mgrbow31o19wt1f8frk5jf75ssoxk24p'
       var metadata = result.content[sux].json_metadata
       var hashy = JSON.parse(metadata).vrHash
       var iframe = document.createElement('iframe');
@@ -132,8 +116,11 @@ html
       iframe.scrolling = 'no'
       iframe.width = '100%'
       iframe.height = '100%'
-      iframe.setAttribute('allow', 'gyroscope; accelerometer; microphone')
-      iframe.src = 'https://ipfs.io/ipfs/' + hashy
+      iframe.setAttribute('allow', 'gyroscope; accelerometer')
+      iframe.src = 'https://cheerful-suggestion.glitch.me/post.html'
       document.body.appendChild(iframe);
       })
-    body
+    </script>
+    <body></body>
+  </head>
+</html>

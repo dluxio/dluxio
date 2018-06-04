@@ -1,0 +1,433 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Starter Pack</title>
+    <meta name="description" content="Tag">
+
+    <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+    <script src="https://dlux.io/easyrtc/easyrtc.js"></script>
+    <script src="https://unpkg.com/aframe-aabb-collider-component@^2.2.1/dist/aframe-aabb-collider-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@4.0.1/dist/aframe-event-set-component.js"></script>
+    <script src="https://rawgit.com/rdub80/aframe-gui/master/dist/aframe-gui.min.js"></script>
+    <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-randomizer-components@^3.0.1/dist/aframe-randomizer-components.min.js"></script>
+    <script src="https://unpkg.com/aframe-state-component@3.0.0/dist/aframe-state-component.min.js"></script>
+    <script src="https://rawgit.com/Ctrl-Alt-Zen/aframe-mobile-controls/master/components/twoway-motion/twoway-motion.js"></script>
+    <script src="https://unpkg.com/networked-aframe@^0.6.0/dist/networked-aframe.min.js"></script>
+    <script>
+
+      //spawn in a circle so you don't load stacked on each other
+
+    AFRAME.registerComponent('spawn-in-circle', {
+  schema: {
+    radius: {type: 'number', default: 1}
+  },
+
+  init: function() {
+    var el = this.el;
+    var center = el.getAttribute('position');
+
+    var angleRad = this.getRandomAngleInRadians();
+    var circlePoint = this.randomPointOnCircle(this.data.radius, angleRad);
+    var worldPoint = {x: circlePoint.x + center.x, y: center.y, z: circlePoint.y + center.z};
+    el.setAttribute('position', worldPoint);
+
+    var angleDeg = angleRad * 180 / Math.PI;
+    var angleToCenter = -1 * angleDeg + 90;
+    el.object3D.rotation.set(0, THREE.Math.degToRad(angleToCenter), 0);
+  },
+
+  getRandomAngleInRadians: function() {
+    return Math.random()*Math.PI*2;
+  },
+
+  randomPointOnCircle: function (radius, angleRad) {
+    var x = Math.cos(angleRad)*radius;
+    var y = Math.sin(angleRad)*radius;
+    return {x: x, y: y};
+  }
+});
+      // Define custom schema for syncing avatar color, set by random-color, non-secure username from blockchain onSceneLoad(username) ...  or user prompt
+
+
+      function onSceneLoad(msg) {
+        var username = msg || iam;
+        var player = document.getElementById('player');
+        player.setAttribute('visible', false);
+        var myNametag = player.querySelector('.nametag');
+        myNametag.setAttribute('text', 'value', username);
+        document.querySelector('a-scene').components['networked-scene'].connect();
+      }
+
+    // Target URL let things become links, if trying to navigate use sendLink('/@username') or similar domain reference.
+    AFRAME.registerComponent('url', {
+      schema: {default: ''},
+
+      init: function () {
+
+        var url = this.data;
+
+        this.el.addEventListener('click', function () {
+        sendLink(url)
+        });
+
+    }
+    });
+
+    // Toggle Author that will likely be placed on a follower at the cameras look-down
+    AFRAME.registerComponent('toggle-info', {
+      schema: {default: ''},
+
+      init: function() {
+        var el = document.querySelector('#author-info');
+        this.el.addEventListener('mouseenter', function() {
+
+        if (el.getAttribute('visible', true) ) {
+            el.setAttribute('visible', false);
+        } else {
+            el.setAttribute('visible', true);
+            }
+        });
+      }
+    });
+
+    // Where to handle attributes based on capability
+
+
+      AFRAME.registerComponent('votee', { //the vote button or field
+        schema: {default: ''},
+
+        init: function () {
+          var el = document.querySelector('votee');
+          this.el.addEventListener('hitend', function(){
+            voteButton();
+          });
+        }
+      });
+
+
+      AFRAME.registerComponent('exit', { //the field
+        schema: {default: ''},
+        init: function () {
+          var el = document.querySelector('#exit');
+      el.addEventListener('hitend', function(){
+      sendLink('/@disregardfiat');
+      });
+        }
+      });
+
+    AFRAME.registerComponent('set-camera', {
+    	init: function () {
+    		const isDesktop = !AFRAME.utils.device.checkHeadsetConnected();
+        const isMobile = AFRAME.utils.device.isMobile();
+        const isHMD = !AFRAME.utils.device.isMobile() && AFRAME.utils.device.checkHeadsetConnected();
+        const isGearVR = AFRAME.utils.device.isGearVR();
+        let entity = this.el;
+
+        if (isDesktop === true) {
+          entity.removeAttribute('look-controls');
+          entity.setAttribute('position', '0 1.6 0');
+          entity.setAttribute('fps-look-controls', 'enabled', true);
+    		}
+        if (isMobile === true) {
+          entity.removeAttribute('look-controls');
+          entity.removeAttribute('wasd-controls');
+          entity.setAttribute('position', '0 1.6 0');
+          entity.setAttribute('twoway-motion', 'speed:35');
+        }
+        if (isHMD === true) {
+
+        }
+        if (isGearVR === true) {
+          //var leftEl = document.createElement('a-entity','gearvr-controls','hand:left');
+          //var rightEl = document.createElement('a-entity','gearvr-controls', 'hand:right');
+
+        }
+    	}
+    });
+
+      //API for steem and dlux
+    var iam = "Init"
+    var postKey; //this page will be posted in IPFS and will need a way to display current state about itself. This key will be passed to declare its current state on Steem.
+    if (window.addEventListener) {
+    window.addEventListener("message", onMessage, false);
+    }
+    else if (window.attachEvent) {
+    window.attachEvent("onmessage", onMessage, false);
+    }
+    function onMessage(event) {
+    //if (event.origin !== "https://dlux.io" || "localhost:3000") return;
+    var data = event.data;
+    if (typeof(window[data.func]) == "function") {
+    window[data.func].call(null, data.message);
+    }
+    }
+    function voteMsg(message) {
+      AFRAME.scenes[0].emit('setVoteMsg', {val: message}); //transaction id in message, useful for triggering other actions.
+    }
+    function voteButton(amt) { //
+      voteAmt = amt || 10000
+      AFRAME.scenes[0].emit('setVoteMsg', {val: 'Thank you for voting in VR'});
+    window.parent.postMessage({
+        'func': 'vote',
+        'message': voteAmt  //integer -10000(flag) to 10000(vote) on this post
+    }, "*");
+    }
+    function flagButton() {  //redundant and likely unused
+    var voteAmt = -1;
+    window.parent.postMessage({
+      'func': 'vote',
+      'message': voteAmt
+    }, "*");
+    }
+    function sendLink(payload) {
+    //  var link = document.querySelector('/@dlux-io').value //pass a string to escape the dlux.io iFrame. Domain level redirects are greatm external will recieve a warning.
+    window.parent.postMessage({
+    'func': 'sendLink',
+    'message': payload
+    }, "*");
+    }
+    function aVote() {   //utilize this API to trigger votes for other steem content. http://dlux.io/dlux/@disregardfiat/mgrbow31o19wt1f8frk5jf75ssoxk24p
+    window.parent.postMessage({  //would be voted for by setting disregardfiat as the author, and mgrbow31o19wt1f8frk5jf75ssoxk24p as the permlink
+    'func': 'aVote',
+    'message': {
+      'permlink': '',
+      'author': '',
+      'weight': 10000,
+    }
+    }, "*");
+    }
+    function key (message) { //how this post finds itself on blockchain
+      postKey = message;
+    }
+    function steemState(message) {  //the entirety of the current steem state will be passed in JSON. Utilize this function to initialize current state.
+      AFRAME.scenes[0].emit('setID', {val: message.content[postKey].id});
+      AFRAME.scenes[0].emit('setTitle', {val: message.content[postKey].root_title});
+      AFRAME.scenes[0].emit('setAuthor', {val: message.content[postKey].author});
+      AFRAME.scenes[0].emit('setVotesNum', {val: message.content[postKey].net_votes});
+      AFRAME.scenes[0].emit('setVotesVal', {val: Math.round( parseFloat(message.content[postKey].pending_payout_value.substring(0,5)) * 100) / 100});
+      console.log(message)
+    }
+    function iAm(message) { //This is the unsecure identifier that returns logged in steem user
+      AFRAME.scenes[0].emit('setiAm', {val: message});
+      iam = message;
+      onSceneLoad(iam);
+    }
+    function onpageloaded() { //requests steem state
+      window.parent.postMessage({
+      'func': 'iloaded',
+      'message': ''
+    }, "*");
+    }
+
+      //global aframe state, this and the NAF schemas should enable you to create any variety of program
+      AFRAME.registerState({
+        initialState: {
+          post: "",
+          username: "@",
+          id: "",
+          title: "No sync ...",
+          author: "",
+          rep: "UND",
+          profileimage: "",
+          votesNum: "UNK",
+          votesVal: "$0",
+          menuVis: false,
+          voteMsg: "<- Walk thru field to vote.",
+          host: "NoSync",
+          imIt: false,
+          whosIt: "Me"
+        },
+
+        handlers: { //state handlers discribed in networked-aframe
+          setImIt: function (state, action) {
+            state.imIt != state.imIt;
+          },
+          setiAm: function (state, action) {
+            state.username = "Welcome @" + action.val;
+          },
+          setVoteMsg: function (state, action) {
+            state.voteMsg = action.val;
+          },
+          setID: function (state, action) {
+            state.id = action.val;
+          },
+          setAuthor: function (state, action) {
+            state.author = "@" + action.val;
+            state.host = action.val;
+          },
+          setHost: function (state, action) {
+            state.host = action.val;
+          },
+          setTitle: function (state, action) {
+            state.title = action.val;
+          },
+          setVotesNum: function (state, action) {
+            state.votesNum = action.val;
+          },
+          setVotesVal: function (state, action) {
+            state.votesVal = "$" + action.val;
+          },
+          setProfileImage: function (state, action) {
+            state.profileimage = action.val;
+          }
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <!-- Our webrtc server information info in networked aframe-->
+    <a-scene networked-scene="
+      serverURL: wss://dlux.io;
+      app: default;
+      room: basic;
+      adapter: easyrtc;
+      audio: true;
+      debug: true;
+      connectOnLoad: false;
+    ">
+      <!-- Environment component https://feiss.github.io/aframe-environment-component/# -->
+      <a-entity environment="preset: forest"></a-entity>
+      <a-assets>
+
+        <!-- Avatar / user cutom coming soon-->
+        <template id="avatar-template">
+
+
+          <a-entity class="avatar">
+            <a-entity class="whosIt" bind__text="value: whosIt" text="value: 0; align:center;" position="0 1.1 0" rotation="0 180 0" scale="8 8 8"></a-entity>
+            <a-entity class="nametag" text="value: Hello World; align:center;" position="0 0.7 0" rotation="0 180 0" scale="8 8 8"></a-entity>
+            <a-sphere class="head"
+              color="#5985ff"
+              scale="0.45 0.5 0.37"
+              random-color
+              aabb-collider="objects: .hb"
+            ></a-sphere>
+            <a-entity class="face"
+              position="0 0.05 0"
+            >
+              <a-sphere class="eye"
+                color="#efefef"
+                position="0.16 0.1 -0.35"
+                scale="0.16 0.16 0.16"
+              >
+                <a-sphere class="pupil"
+                  color="#000"
+                  position="0 0 -1"
+                  scale="0.2 0.2 0.2"
+                ></a-sphere>
+              </a-sphere>
+              <a-sphere class="eye"
+                color="#efefef"
+                position="-0.16 0.1 -0.35"
+                scale="0.16 0.16 0.16"
+              >
+                <a-sphere class="pupil"
+                  color="#000"
+                  position="0 0 -1"
+                  scale="0.2 0.2 0.2"
+                ></a-sphere>
+              </a-sphere>
+            </a-entity>
+          </a-entity>
+        </template>
+
+        <!-- /Templates -->
+      </a-assets>
+<!-- The users camera, and what the avatar gets attached to elsewhere -->
+      <a-entity id="player" networked="template:#avatar-template;" set-camera camera position="0 1.6 0" wasd-controls look-controls>
+
+      <!-- a hitbox that follows the camera and triggers environment interactions -->
+      <a-box class="hb" voter aabb-collider="objects: .votee" height=".2" width=".3" depth=".3" opacity="0">
+      </a-box>
+        </a-entity>
+
+      <!-- some information and examples -->
+      <a-gui-flex-container
+          flex-direction="column"
+          justify-content="center"
+          align-items="normal"
+          component-padding="0.1"
+          opacity="0.7" width="3.7" height="3"
+          position="1.35 1.5 -1.95" rotation="0 -90 0">
+          <a-gui-label
+                  width="3.5" height="0.5"
+                  id="usernameText"
+                  bind__value="username"
+                  value=""
+                  font-family="Arial"
+                  margin="0 0 0.05 0">
+          </a-gui-label>
+          <a-gui-label
+                  width="3.5" height="0.5"
+                  id="titletag"
+                  bind__value="title"
+                  value=""
+                  font-family="Arial"
+                  margin="0 0 0.05 0">
+          </a-gui-label>
+          <a-gui-label
+                  width="3.5" height="0.5"
+                  id="itText"
+                  bind__value="whosIt"
+                  value=""
+                  font-family="Arial"
+                  margin="0 0 0.05 0">
+          </a-gui-label>
+          <a-gui-label
+                  width="3.5" height="0.5"
+                  id="voteInst"
+                  bind__value="voteMsg"
+                  value="<- Walk thru field to vote."
+                  font-family="Arial"
+                  margin="0 0 0.05 0">
+          </a-gui-label>
+          <a-gui-label
+                  width="3.5" height="0.5"
+                  bind__value="votesVal"
+                  value=""
+                  id="voteMsgR"
+                  font-family="Arial"
+                  margin="0 0 0.05 0">
+          </a-gui-label>
+    </a-gui-flex-container>
+      <!-- boxes that interacts with the hitbox to trigger an action  -->
+    <a-box class="votee" aabb-collider="objects: .hb"
+            event-set__hitstart="material.opacity: 0.5; material.color: red"
+            event-set__hitend="visible: false"
+            votee color="blue" position=".6 0.99 -4" height="2" width="1.5" depth=".4" opacity="1"></a-box>
+    <a-box id="exit" exit aabb-collider="objects: .hb"
+            event-set__hitstart="material.opacity: 0.5; material.color: red"
+            event-set__hitend="visible: false"
+            color="blue" position="-20 0.99 -2" height="2" width="2" depth="2" opacity="1"></a-box>
+
+    </a-scene>
+    <!-- networked aframe schema-->
+    <script>
+      NAF.schemas.add({
+        template: '#avatar-template',
+        components: [
+          'position',
+          'rotation',
+          {
+            selector: '.head',
+            component: 'material',
+            property: 'color'
+          },
+          {
+            selector: '.nametag',
+            component: 'text',
+            property: 'value'
+          },
+          {
+            selector: '.whosIt',
+            component: 'text',
+            property: 'value'
+          }
+        ]
+      });
+     document.querySelector('a-scene').addEventListener('loaded', onpageloaded)
+    </script>
+  </body>
+</html>

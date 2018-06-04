@@ -50,8 +50,6 @@
 
 
       function onSceneLoad(username) {
-        var username = 'user-' + makeId(5).toLowerCase();
-        username = prompt('Choose a username', username);
         var player = document.getElementById('player');
         player.setAttribute('visible', false);
         var myNametag = player.querySelector('.nametag');
@@ -253,12 +251,10 @@
   </head>
   <body>
     <a-scene networked-scene="
-      serverURL: /;
+      serverURL: ws://dlux.io:8080
       app: default;
       room: basic;
-      adapter: easyrtc;
       debug: true;
-      audio: true;
       connectOnLoad: false;
     ">
       <a-assets>
@@ -347,7 +343,7 @@
         <!-- /Templates -->
       </a-assets>
 
-      <a-entity id="player" networked="template:#avatar-template" set-camera camera position="0 1.6 0" wasd-controls look-controls>
+      <a-entity id="player" networked="template:#avatar-template;" set-camera camera position="0 1.6 0" wasd-controls look-controls>
       </a-entity>
       <a-box class="hb" voter aabb-collider="objects: .votee" height=".2" width=".3" depth=".3" opacity="0" set-camera position="0 1.6 0" wasd-controls look-controls></a-box>
 <a-gui-flex-container

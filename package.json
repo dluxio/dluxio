@@ -12,18 +12,19 @@
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",
     "debug": "~2.6.9",
+    "easyrtc": "^1.1.0",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
     "express-sanitize-escape": "^1.1.0",
     "express-session": "^1.15.6",
     "ipfs-api": "^22.0.1",
     "morgan": "~1.9.0",
-    "mysql": "^2.15.0",
     "networked-aframe": "^0.6.1",
     "npm": "^6.1.0",
     "pug": "2.0.0-beta11",
     "sc2-sdk": "^1.0.2",
-    "serve-favicon": "~2.4.5"
+    "serve-favicon": "~2.4.5",
+    "socketio": "^1.0.0"
   },
   "devDependencies": {
     "claudia": "^4.0.0",

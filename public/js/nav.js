@@ -10,13 +10,30 @@ AFRAME.registerComponent('url', {
 AFRAME.registerComponent('vote', {
         schema: {default: ''},
         init: function () {
-        var permlink = this.data.split( '/' )[2]
-        var author = this.data.split( '/' )[1]
-        var weight = this.data.split( '/' )[3]
-        var voteMessage = {'parmlink': permlink, 'author': author, 'weight': weight}
-        this.el.addEventListener('click', function () {
-         aVote(voteMessage);
+          console.log(this.data)
+          var author = this.data.split( '/' )[2]
+          author = author.split( '@' )[1]
+          console.log(author)
+          var permlink = this.data.split( '/' )[3]
+          console.log(permlink)
+          var weight = parseInt(this.data.split( '/' )[4])
+          console.log(weight)
+          var voteMessage = {'permlink': permlink, 'author': author, 'weight': weight}
+          this.el.addEventListener('click', function () {
+            aVote(voteMessage);
+          });
+        }
+      });
+AFRAME.registerComponent('trending', { //trending="tag" to pull another tag, default delux
+        schema: {default: ''},
+        init: function () {
+            getTrending(this.data);
+          }
         });
+AFRAME.registerComponent('new', { //new="username" to pull user feeds, defalt dlux tag
+        schema: {default: ''},
+        init: function () {
+            getLatest(this.data);
       }
     });
 AFRAME.registerComponent('show-info', {
@@ -136,7 +153,8 @@ AFRAME.registerComponent('set-camera', {
     AFRAME.scenes[0].emit('setVoteVal', {val: message});
   }
   function setDiscussionsByBlog (query, initial) {
-    var queryI = { tag: query, limit: 20 }
+    var queryI = { tag: 'dlux', limit: 20 }
+    if(query) {queryI = { tag: query, limit: 20 }}
     steem.api.getDiscussionsByBlog(queryI, (err, result) => {
       var filteredResults = []
       for (i = 0; i < result.length; i++) {
@@ -149,6 +167,8 @@ AFRAME.registerComponent('set-camera', {
       })
     }
   function getTrending(query, initial){
+    var queryI = { tag: 'dlux', limit: 20 }
+    if(query) {queryI = { tag: query, limit: 20 }}
     steem.api.getDiscussionsByTrending(query, (err, result) => {
       if (err === null) {
         var filteredResults = []
@@ -165,6 +185,24 @@ AFRAME.registerComponent('set-camera', {
         }
       });
     }
+  function getLatest(query, initial){
+    var queryI = { tag: 'dlux', limit: 20 }
+    steem.api.getDiscussionsByCreated(query, (err, result) => {
+      if (err === null) {
+        var filteredResults = []
+        for (i = 0; i < result.length; i++) {
+          let vr = JSON.parse(result[i].json_metadata).vrHash
+          if (vr) {
+            filteredResults.push(result[i])
+            }
+          }
+          setPortals(filteredResults)
+          displayContent(result,initial)
+        } else {
+          console.log(err);
+        }
+    });
+  }
   function aVote(message) {
     $.post({
       url: '/post/vote/',

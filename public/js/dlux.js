@@ -12,19 +12,6 @@ AFRAME.registerComponent('url', {
 
 }
 });
-//button class that reads dynamic data
-AFRAME.registerComponent('vote', {
-        schema: {default: ''},
-        init: function () {
-        var permlink = this.data.split( '/' )[2]
-        var author = this.data.split( '/' )[1]
-        var weight = this.data.split( '/' )[3]
-        var voteMessage = {'parmlink': permlink, 'author': author, 'weight': weight}
-        this.el.addEventListener('click', function () {
-         aVote(voteMessage);
-        });
-        }
-        });
 //Show post info card
 AFRAME.registerComponent('show-info', {
   schema: {

@@ -202,10 +202,8 @@ AFRAME.registerComponent('set-camera', {
           let votePower = user.voting_power += (10000 * lastVoteTime / 432000);
           votePower = Math.min(votePower / 100, 100).toFixed(2);
           steem.api.getFollowCount(user.name, function(err, result){
-            var followerCounter = result.follower_count
-            var followingCounter = result.following_count
-            console.log(followerCounter)
-          })
+            let followerCounter = result.follower_count
+            let followingCounter = result.following_count
           let data = {
             name: user.name,
             image: jsonData.profile_image ? 'https://steemitimages.com/512x512/' + jsonData.profile_image : '',
@@ -225,6 +223,7 @@ AFRAME.registerComponent('set-camera', {
             createdDate: new Date (user.created)
           }
           AFRAME.scenes[0].emit('setData', {val: data});
+          })
         });
       })
     }
@@ -310,7 +309,7 @@ AFRAME.registerComponent('set-camera', {
           state.name = action.val.name
           state.image = action.val.image
           state.cover = action.val.cover
-          state.rep = action.val.rep
+          state.userRep = action.val.rep
           state.effectiveSp = action.val.effectiveSp
           state.sp = action.val.sp
           state.delegatedSpIn = action.val.delegatedSpIn

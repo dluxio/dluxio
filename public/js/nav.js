@@ -216,18 +216,42 @@ AFRAME.registerComponent('set-camera', {
         //feedback here, likely emit a hide vote button function?
       });
     }
+    function generateProfileData(author){
+      let authorData
+      steem.api.getAccounts([author], (err, result) => {
+        let user = result[0]
+        let jsonData = JSON.parse(user.json_metadata)
+        let profileData = jsonData.profile
+        authorData = {
+          about: profileData.about,
+          avatar: profileData.avatar,
+          bitcoin: profileData.bitcoin,
+          cover_image: profileData.cover_image,
+          ethereum: profileData.ethereum,
+          facebook: profileData.facebook,
+          github: profileData.github,
+          instagram: profileData.instagram,
+          linkedin: profileData.linkedin,
+          location: profileData.location,
+          name: profileData.name,
+          profile_image: profileData.profile_image,
+          signature: profileData.signature,
+          twitter: profileData.twitter,
+          website: profileData.website,
+          youtube: profileData.youtube,
+          vrhome: profileData.vrhome
+        }
+        console.log(authorData)
+        return authorData;
+    });
+  }
     function getAccountInfo(username) {
       steem.api.getDynamicGlobalProperties((err, result) => {
         let totalVestingShares = result.total_vesting_shares;
         let totalVestingFundSteem = result.total_vesting_fund_steem;
         steem.api.getAccounts([username], (err, result) => {
-          steem.api.getDynamicGlobalProperties((err, result) => {
-            let totalVestingShares = result.total_vesting_shares;
-            let totalVestingFundSteem = result.total_vesting_fund_steem;
-          })
           let user = result[0]
           let jsonData;
-          try {jsonData = JSON.parse(user.json_metadata).profile} catch(err) { console.log(err)}
           // steem power calc
           let vestingShares = user.vesting_shares;
           let delegatedVestingShares = user.delegated_vesting_shares;
@@ -242,10 +266,34 @@ AFRAME.registerComponent('set-camera', {
           steem.api.getFollowCount(user.name, function(err, result){
             let followerCounter = result.follower_count
             let followingCounter = result.following_count
+            var authorData
+            steem.api.getAccounts([user.name], (err, result) => {
+              let user = result[0]
+              let jsonData = JSON.parse(user.json_metadata)
+              let profileData = jsonData.profile
+              authorData = {
+                about: profileData.about,
+                avatar: profileData.avatar,
+                bitcoin: profileData.bitcoin,
+                cover_image: profileData.cover_image,
+                ethereum: profileData.ethereum,
+                facebook: profileData.facebook,
+                github: profileData.github,
+                instagram: profileData.instagram,
+                linkedin: profileData.linkedin,
+                location: profileData.location,
+                name: profileData.name,
+                profile_image: profileData.profile_image,
+                signature: profileData.signature,
+                twitter: profileData.twitter,
+                website: profileData.website,
+                youtube: profileData.youtube,
+                vrhome: profileData.vrhome
+              }
           let data = {
-            name: user.name,
-            image: jsonData.profile_image ? 'https://steemitimages.com/512x512/' + jsonData.profile_image : '',
-            cover: jsonData.cover_image,
+            name: authorData.name,
+            image: authorData.profile_image,
+            cover: authorData.cover_image,
             rep: steem.formatter.reputation(user.reputation),
             effectiveSp: parseInt(steemPower  + delegatedSteemPower - -outgoingSteemPower),
             sp: parseInt(steemPower).toLocaleString(),
@@ -258,26 +306,15 @@ AFRAME.registerComponent('set-camera', {
             followerCount: followerCounter,
             followingCount: followingCounter,
             usdValue: steem.formatter.estimateAccountValue(user),
+            username: user.name,
             createdDate: new Date (user.created)
           }
+          console.log(data, authorData)
           AFRAME.scenes[0].emit('setData', {val: data});
-          })
         });
-      })
-    }
-    function generateProfileImage(author){
-      let profileImage = 'img/default-user.jpg';
-      try {
-        if (author.json_metadata === '' || typeof author.json_metadata === 'undefined' ) {
-          author.json_metadata = { profile_image : false }
-        } else {
-          author.json_metadata = JSON.parse(author.json_metadata).profile
-        }
-        profileImage = author.json_metadata.profile_image ? 'https://steemitimages.com/128x128/' + author.json_metadata.profile_image : '';
-      } catch(err){
-        console.log(err)
-      }
-      return profileImage
+        });
+        });
+      });
     }
     function setPortals(action) {
       //if (!action.initial) {action.result.shift()}
@@ -293,10 +330,35 @@ AFRAME.registerComponent('set-camera', {
         } else {
           val = valA
         }
+        let authorData
+        steem.api.getAccounts([post.author], (err, result) => {
+          let user = result[0]
+          let jsonData = JSON.parse(user.json_metadata)
+          let profileData = jsonData.profile
+          authorData = {
+            about: profileData.about,
+            avatar: profileData.avatar,
+            bitcoin: profileData.bitcoin,
+            cover_image: profileData.cover_image,
+            ethereum: profileData.ethereum,
+            facebook: profileData.facebook,
+            github: profileData.github,
+            instagram: profileData.instagram,
+            linkedin: profileData.linkedin,
+            location: profileData.location,
+            name: profileData.name,
+            profile_image: profileData.profile_image,
+            signature: profileData.signature,
+            twitter: profileData.twitter,
+            website: profileData.website,
+            youtube: profileData.youtube,
+            vrhome: profileData.vrhome
+          }
       let portal = {
         postId: post.id,
         postUrl: post.url,
         author: post.author,
+        authorImage: authorData.profile_image,
         title: post.title,
         body: post.body,
         Hash360: JSON.parse(post.json_metadata).Hash360,
@@ -307,6 +369,7 @@ AFRAME.registerComponent('set-camera', {
         category: post.category
       }
       AFRAME.scenes[0].emit('addToPortals', {portalObj: portal});
+      });
       }
       AFRAME.scenes[0].emit('setPortalsIndex', {val: i});
     }
@@ -345,6 +408,7 @@ AFRAME.registerComponent('set-camera', {
         },
         setData: function (state, action) {
           state.name = action.val.name
+          state.username = action.val.username
           state.image = action.val.image
           state.cover = action.val.cover
           state.userRep = action.val.rep

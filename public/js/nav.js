@@ -21,18 +21,30 @@ AFRAME.registerComponent('vote', {
           var voteMessage = {'permlink': permlink, 'author': author, 'weight': weight}
           this.el.addEventListener('click', function () {
             aVote(voteMessage);
+            //this.setAttribute('visible', false);
           });
         }
       });
 AFRAME.registerComponent('trending', { //trending="tag" to pull another tag, default delux
         schema: {default: ''},
         init: function () {
+            AFRAME.scenes[0].emit('delPortals', {portalObj: portal});
             getTrending(this.data);
+          }
+        });
+AFRAME.registerComponent('profile', { //trending="tag" to pull another tag, default delux
+        schema: {default: ''},
+        init: function () {
+            AFRAME.scenes[0].emit('delPortals', {portalObj: portal});
+            if (!this.data) { this.data = 'dlux-io' }
+            setDiscussionsByBlog(this.data);
+            getAccountInfo(this.data);
           }
         });
 AFRAME.registerComponent('new', { //new="username" to pull user feeds, defalt dlux tag
         schema: {default: ''},
         init: function () {
+            AFRAME.scenes[0].emit('delPortals', {portalObj: portal});
             getLatest(this.data);
       }
     });
@@ -43,6 +55,23 @@ AFRAME.registerComponent('show-info', {
       init: function() {
         var el = this.el;
         var showEl = el.querySelector('.hidebutton');
+        //mouseenter
+        el.addEventListener('mouseenter', function() {
+          showEl.setAttribute('visible', true);
+        });
+        //mouseleave
+        el.addEventListener('mouseleave', function() {
+          showEl.setAttribute('visible', false);
+        });
+      }
+    });
+AFRAME.registerComponent('show-menu', {
+      schema: {
+      show: {default: ''}
+      },
+      init: function() {
+        var el = this.el;
+        var showEl = el.querySelector('.hiddenMenu');
         //mouseenter
         el.addEventListener('mouseenter', function() {
           showEl.setAttribute('visible', true);
@@ -150,7 +179,7 @@ AFRAME.registerComponent('set-camera', {
     	}
     });
   function voteMsg(message) {
-    AFRAME.scenes[0].emit('setVoteVal', {val: message});
+    AFRAME.scenes[0].emit('setVoteMsg', {val: message});
   }
   function setDiscussionsByBlog (query, initial) {
     var queryI = { tag: 'dlux', limit: 20 }
@@ -187,7 +216,8 @@ AFRAME.registerComponent('set-camera', {
     }
   function getLatest(query, initial){
     var queryI = { tag: 'dlux', limit: 20 }
-    steem.api.getDiscussionsByCreated(query, (err, result) => {
+    if(query) {queryI = { tag: query, limit: 20 }}
+    steem.api.getDiscussionsByCreated(queryI, (err, result) => {
       if (err === null) {
         var filteredResults = []
         for (i = 0; i < result.length; i++) {
@@ -263,10 +293,16 @@ AFRAME.registerComponent('set-camera', {
           let lastVoteTime = (new Date - new Date(user.last_vote_time + "Z")) / 1000;
           let votePower = user.voting_power += (10000 * lastVoteTime / 432000);
           votePower = Math.min(votePower / 100, 100).toFixed(2);
+
           steem.api.getFollowCount(user.name, function(err, result){
             let followerCounter = result.follower_count
             let followingCounter = result.following_count
             var authorData
+            //Plankton = up to 1 MVESTS aka Newbie/User on the charts below
+            //Minnow = >1 to 10 MVESTS aka SuperUser " " "
+            //Dolphin = >10 to 100 MVESTS aka Hero " " "
+            //Orca = >100 to 1,000 MVESTS aka SuperHero " "
+            //Whale = >1,000 MVESTS aka Legend " "
             steem.api.getAccounts([user.name], (err, result) => {
               let user = result[0]
               let jsonData = JSON.parse(user.json_metadata)
@@ -309,7 +345,6 @@ AFRAME.registerComponent('set-camera', {
             username: user.name,
             createdDate: new Date (user.created)
           }
-          console.log(data, authorData)
           AFRAME.scenes[0].emit('setData', {val: data});
         });
         });
@@ -320,17 +355,7 @@ AFRAME.registerComponent('set-camera', {
       //if (!action.initial) {action.result.shift()}
       for (let i = 0; i < action.length ; i++) {
         let post = action[i];
-        var valP
-        var valA
-        var val
-        valP = Math.round( parseFloat(post.pending_payout_value.substring(0,5)) * 100) / 100
-        valA = Math.round( parseFloat(post.total_payout_value.substring(0,5)) * 100) / 100
-        if (valP) {
-          val = valP
-        } else {
-          val = valA
-        }
-        let authorData
+        var authorData
         steem.api.getAccounts([post.author], (err, result) => {
           let user = result[0]
           let jsonData = JSON.parse(user.json_metadata)
@@ -354,6 +379,13 @@ AFRAME.registerComponent('set-camera', {
             youtube: profileData.youtube,
             vrhome: profileData.vrhome
           }
+          var val = 0
+        if (Math.round( parseFloat(post.pending_payout_value.substring(0,5)) * 100) / 100 > 0) {
+          val = Math.round( parseFloat(post.pending_payout_value.substring(0,5)) * 100) / 100
+        } else {
+          val = Math.round( parseFloat(post.total_payout_value.substring(0,5)) * 100) / 100
+        }
+        console.log(val)
       let portal = {
         postId: post.id,
         postUrl: post.url,
@@ -368,6 +400,7 @@ AFRAME.registerComponent('set-camera', {
         votesVal: '$' + val,
         category: post.category
       }
+      console.log(portal)
       AFRAME.scenes[0].emit('addToPortals', {portalObj: portal});
       });
       }
@@ -462,7 +495,7 @@ AFRAME.registerComponent('set-camera', {
         state.sp = action.val;
       },
       setUsername: function (state, action) {
-        state.username = action.val;
+        state.username = '@' + action.val;
       },
       setUserImage: function (state, action) {
         state.userImage = action.val;
@@ -496,6 +529,9 @@ AFRAME.registerComponent('set-camera', {
       },
       addToPortals: function (state, action) {
         state.portals.push(action.portalObj);
+      },
+      delPortals: function (state, action) {
+        state.portals = [];
       }
     }
   });

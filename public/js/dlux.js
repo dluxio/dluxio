@@ -12,6 +12,25 @@ AFRAME.registerComponent('url', {
 
 }
 });
+//Show post info card
+AFRAME.registerComponent('show-info', {
+  schema: {
+    show: {default: ''}
+  },
+
+  init: function() {
+    var el = this.el;
+    var showEl = el.querySelector('.hidebutton');
+    //mouseenter
+    el.addEventListener('mouseenter', function() {
+      showEl.setAttribute('visible', true);
+    });
+    //mouseleave
+    el.addEventListener('mouseleave', function() {
+      showEl.setAttribute('visible', false);
+    });
+  }
+});
 // Toggle Author
 AFRAME.registerComponent('toggle-info', {
   schema: {default: ''},

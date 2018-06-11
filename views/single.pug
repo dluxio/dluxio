@@ -100,6 +100,7 @@ html
       });
       }
       function sendLink(link) {
+      if (link == '/') { setCookie('dropOff', `/#{category}/@#{username}/#{permlink}`, 15); }
       location.href = link;
       }
       function iloaded(){

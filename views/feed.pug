@@ -23,6 +23,12 @@ html(lang='en')
     if tag = 'new'
       script.
         function popData () {
+        var c = getCookie('dropOff')
+        console.log('the cookie' + c)
+        if (c !== '') {
+        document.cookie = "dropOff=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        location.href = c;
+        }
         getLatest();
         }
     else

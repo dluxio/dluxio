@@ -1,7 +1,7 @@
 doctype html
 html(lang='en')
   head
-    title Hello!
+    title dlux decentralized VR
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1')
@@ -23,12 +23,6 @@ html(lang='en')
     if tag = 'new'
       script.
         function popData () {
-        var c = getCookie('dropOff')
-        console.log('the cookie' + c)
-        if (c !== '') {
-        document.cookie = "dropOff=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        location.href = c;
-        }
         getLatest();
         }
     else
@@ -66,16 +60,12 @@ html(lang='en')
                 a-entity#browse-education-text(text-geometry='value:Education;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
           a-entity#nav-create(show-menu='', geometry='primitive:plane', material='side:double;src:https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Fdocument.png;transparent:true;alphaTest:0.6599999999999999', position='1.6 0 0')
             a-entity#nav-create-items.hiddenMenu(visible='false', position='.8 -2.7 1')
-              if user
-                a-entity#create-upload(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 1.2 0', url='https://glitch.com/edit/#!/cheerful-suggestion')
-                  a-entity#create-upload-text(text-geometry='value:Glitch;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
-                a-entity#create-inspector(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 .6 0', url='/post')
-                  a-entity#create-inspector-text(text-geometry='value:Post;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
-                a-entity#create-apainter(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 0 0', url='')
-                  a-entity#create-apainter-text(text-geometry='value:A-Painter;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
-              else
-                a-entity#create-upload(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 1.2 0', url='https://glitch.com/edit/#!/cheerful-suggestion')
-                  a-entity#create-upload-text(text-geometry='value:Glitch;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+              a-entity#create-upload(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 1.2 0', url='https://glitch.com/edit/#!/cheerful-suggestion')
+                a-entity#create-upload-text(text-geometry='value:Glitch;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+              a-entity#create-inspector(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 .6 0', url='')
+                a-entity#create-inspector-text(text-geometry='value:Inspector;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+              a-entity#create-apainter(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 0 0', url='')
+                a-entity#create-apainter-text(text-geometry='value:A-Painter;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
           a-entity#nav-profile(show-menu='', geometry='primitive:circle;radius:.5', material='side:double;src:https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Fmarkegiles.jpg', position='3.2 0 0')
             a-entity#nav-profile-items.hiddenMenu(visible='false', position='.6 -2.7 1')
               if user
@@ -83,7 +73,7 @@ html(lang='en')
                   a-entity#profile-home-text(text-geometry='value:My Page;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
                 a-entity#profile-wallet(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 .6 0', url='')
                   a-entity#profile-wallet-text(text-geometry='value:Wallet;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
-                a-entity#profile-logout(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 0 0', url='/auth/logout')
+                a-entity#profile-logout(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 0 0', url='/logout')
                   a-entity#profile-logout-text(text-geometry='value:Logout;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
               else
                 a-entity#profile-home(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 1.2 0', url='/')

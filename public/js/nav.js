@@ -198,7 +198,7 @@ AFRAME.registerComponent('set-camera', {
   function getTrending(query, initial){
     var queryI = { tag: 'dlux', limit: 20 }
     if(query) {queryI = { tag: query, limit: 20 }}
-    steem.api.getDiscussionsByTrending(query, (err, result) => {
+    steem.api.getDiscussionsByTrending(queryI, (err, result) => {
       if (err === null) {
         var filteredResults = []
         for (i = 0; i < result.length; i++) {

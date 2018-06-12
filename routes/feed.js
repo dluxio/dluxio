@@ -8,7 +8,7 @@ router.get('/:feed/:tag?', (req, res, next) => {
     let tag = req.params.tag
     res.render('feed', {
       feed: feed,
-      tag: tag || ''
+      tag: tag
     });
 });
 

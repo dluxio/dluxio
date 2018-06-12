@@ -28,7 +28,7 @@ html(lang='en')
         document.cookie = "dropOff=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         location.href = c;
         }
-        getLatest();
+        getLatest(`#{tag}`);
         getAccountInfo(`#{user.name}`);
         setImage(`#{user.name}`)
         }

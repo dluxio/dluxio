@@ -20,7 +20,7 @@ html(lang='en')
     script(src='https://cdn.steemjs.com/lib/latest/steem.min.js')
     script(src='https://rawgit.com/ngokevin/kframe/master/components/layout/dist/aframe-layout-component.js')
     script(src='../js/nav.js')
-    if tag = 'new'
+    if user
       script.
         function popData () {
         var c = getCookie('dropOff')
@@ -35,9 +35,7 @@ html(lang='en')
     else
       script.
         function popData () {
-        getTrending('dlux');
-        getAccountInfo(`#{user.name}`);
-        setImage(`#{user.name}`)
+        getLatest()
         }
   body(onload='popData()')
     a-scene(antialias='true')

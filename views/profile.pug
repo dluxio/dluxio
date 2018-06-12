@@ -20,12 +20,19 @@ html(lang='en')
     script(src='https://cdn.steemjs.com/lib/latest/steem.min.js')
     script(src='https://rawgit.com/ngokevin/kframe/master/components/layout/dist/aframe-layout-component.js')
     script(src='../js/nav.js')
-    script.
-      function popData () {
-      setDiscussionsByBlog(`#{username}`);
-      getAccountInfo(`#{username}`);
-      setImage(`#{user.name}`)
-      }
+    if user
+      script.
+        function popData () {
+        setDiscussionsByBlog(`#{username}`);
+        getAccountInfo(`#{username}`);
+        setImage(`#{user.name}`)
+        }
+    else
+      script.
+        function popData () {
+        setDiscussionsByBlog(`#{username}`);
+        getAccountInfo(`#{username}`);
+        }
   body(onload='popData()')
     a-scene(antialias='true')
       // Asset Manager

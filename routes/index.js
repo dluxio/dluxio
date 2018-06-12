@@ -4,7 +4,7 @@ let router = express.Router();
 /* GET home page. */
 router.get('/', (req, res, next) =>  {
   if(req.session.steemconnect){
-    res.redirect(`/@${req.session.steemconnect.name}`)
+    res.redirect('/feed/new')
   } else {
     res.render('index', { title: 'dlux'});
   }

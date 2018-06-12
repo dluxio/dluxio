@@ -100,8 +100,8 @@ html
       });
       }
       function sendLink(link) {
-      if (link == '/') { setCookie('dropOff', `/#{category}/@#{username}/#{permlink}`, 15); }
-      location.href = link;
+      if (link == '/' || link == '/auth') { setCookie('dropOff', `/#{category}/@#{username}/#{permlink}`, 15); }
+      location.href = '/auth';
       }
       function iloaded(){
       steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
@@ -133,7 +133,7 @@ html
       iframe.scrolling = 'no'
       iframe.width = '100%'
       iframe.height = '100%'
-      iframe.setAttribute('allow', 'gyroscope; accelerometer; microphone')
+      iframe.setAttribute('allow', 'gyroscope; accelerometer; microphone https://ipfs.io https://dlux.io;')
       iframe.src = 'https://ipfs.io/ipfs/' + hashy
       document.body.appendChild(iframe);
       })

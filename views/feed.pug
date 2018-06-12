@@ -23,12 +23,21 @@ html(lang='en')
     if tag = 'new'
       script.
         function popData () {
+        var c = getCookie('dropOff')
+        if (c !== '') {
+        document.cookie = "dropOff=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        location.href = c;
+        }
         getLatest();
+        getAccountInfo(`#{user.name}`);
+        setImage(`#{user.name}`)
         }
     else
       script.
         function popData () {
         getTrending('dlux');
+        getAccountInfo(`#{user.name}`);
+        setImage(`#{user.name}`)
         }
   body(onload='popData()')
     a-scene(antialias='true')
@@ -36,56 +45,78 @@ html(lang='en')
       a-assets
         img#nav-trending-icon(src='https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2FFire_Emoji.png', crossorigin='anonymous')
         img#nav-new-icon(src='https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Forange-new-512.gif', crossorigin='anonymous')
+        img#nav-random-icon(src='https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Fwhitedice.png', crossorigin='anonymous')
         img#nav-browse-icon(src='https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2F29506-200.png', crossorigin='anonymous')
         img#nav-create-icon(src='https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Fdocument.png', crossorigin='anonymous')
+        img#nav-steem-icon(src='https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Fsteem-coin.png', crossorigin='anonymous')
         img#nav-profile-icon(src='https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Fmarkegiles.jpg', crossorigin='anonymous')
+        img#greeter-pic-photo(src='https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Frobotolux.png', crossorigin='anonymous')
         a-asset-item#obfont(src='https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json')
       // DLUX
       a-entity#dlux-container(look-at='a-camera', position='0 1.6 -14')
         // DLUX Navigation
-        a-entity#nav(position='0 9 0', scale='2 2 2')
-          a-entity#nav-trending(url='/feed/trending', geometry='primitive:plane', material='side:double;src:https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2FFire_Emoji.png;transparent:true;alphaTest:0.32', position='-3.2 0 0')
-          a-entity#nav-new(url='/feed/new', geometry='primitive:plane', material='side:double;src:https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Forange-new-512.gif;transparent:true;alphaTest:0.54', position='-1.6 0 0')
-          a-entity#nav-browse(show-menu='', geometry='primitive:plane', material='side:double;src:https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2F29506-200.png;transparent:true;alphaTest:0.26', position='0 0 0')
-            a-entity#nav-browse-items.hiddenMenu(visible='false', position='1 -2.7 1')
-              a-entity#browse-videos(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 1.2 0', url='/feed/trending/vrmedia')
+        a-entity#nav(position='0 9 1', scale='2 2 2')
+          a-entity#nav-trending(url='/feed/trending', geometry='primitive:plane', material='side:double;src:#nav-trending-icon;transparent:true;alphaTest:0.32', position='-3.2 0 0')
+          a-entity#nav-new(url='/feed/new', geometry='primitive:plane', material='side:double;src:#nav-new-icon;transparent:true;alphaTest:0.5', position='-1.6 0 0')
+          a-entity#nav-random(url='random function', geometry='primitive:plane', material='side:double;src:#nav-random-icon;transparent:true;alphaTest:0.5', position='0 0 0')
+          // Browse button 0.325 spacing
+          a-entity#nav-browse(show-menu='', geometry='primitive:plane', material='side:double;src:#nav-browse-icon;transparent:true;alphaTest:0.5', position='1.6 0 0')
+            a-entity#nav-browse-items.hiddenMenu(position='0 -.5 0', visible='false')
+              a-entity(geometry='primitive:plane;height:1;width:3', material='opacity:0;depthWrite:false', position='0 0 0')
+              a-entity#browse-hr(geometry='primitive:plane;height:.1;width:3', material='side:double;color:#9100b5', position='0 -.25 0')
+              a-entity#browse-videos(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -.6 0', url='/feed/videos')
                 a-entity#browse-videos-text(text-geometry='value:Videos;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
-              a-entity#browse-games(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 .6 0', url='/feed/trending/vrgames')
+              a-entity.hr(geometry='primitive:plane;height:.05;width:3', material='side:double;color:#7F7F7F;opacity:0.85;depthWrite:false', position='0 -.925 0')
+              a-entity#browse-games(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -1.25 0', url='/feed/games')
                 a-entity#browse-games-text(text-geometry='value:Games;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
-              a-entity#browse-apps(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 0 0', url='/feed/trending/vrapps')
-                a-entity#browse-apps-text(text-geometry='value:Apps;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
-              a-entity#browse-art(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 -.6 0', url='/feed/trending/vrart')
-                a-entity#browse-art-text(text-geometry='value:Art;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
-              a-entity#browse-education(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 -1.2 0', url='/feed/trending/vred')
-                a-entity#browse-education-text(text-geometry='value:Education;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
-          a-entity#nav-create(show-menu='', geometry='primitive:plane', material='side:double;src:https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Fdocument.png;transparent:true;alphaTest:0.6599999999999999', position='1.6 0 0')
-            a-entity#nav-create-items.hiddenMenu(visible='false', position='.8 -2.7 1')
-              a-entity#create-upload(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 1.2 0', url='https://glitch.com/edit/#!/cheerful-suggestion')
-                a-entity#create-upload-text(text-geometry='value:Glitch;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
-              a-entity#create-inspector(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 .6 0', url='')
-                a-entity#create-inspector-text(text-geometry='value:Inspector;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
-              a-entity#create-apainter(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 0 0', url='')
-                a-entity#create-apainter-text(text-geometry='value:A-Painter;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
-          a-entity#nav-profile(show-menu='', geometry='primitive:circle;radius:.5', material='side:double;src:https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Fmarkegiles.jpg', position='3.2 0 0')
-            a-entity#nav-profile-items.hiddenMenu(visible='false', position='.6 -2.7 1')
-              if user
-                a-entity#profile-home(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 1.2 0', url=`/@${user.name}`)
-                  a-entity#profile-home-text(text-geometry='value:My Page;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
-                a-entity#profile-wallet(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 .6 0', url='')
-                  a-entity#profile-wallet-text(text-geometry='value:Wallet;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
-                a-entity#profile-logout(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 0 0', url='/logout')
-                  a-entity#profile-logout-text(text-geometry='value:Logout;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
-              else
-                a-entity#profile-home(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.7;depthWrite:false', position='0 1.2 0', url='/')
-                  a-entity#profile-home-text(text-geometry='value:My Page;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
-        // DLUX User Profile
-        a-entity#user-profile(geometry='primitive:plane;width:18;height:6.5', material='side:double;color:#4C4C4C;opacity:0.7', position='0 3.5 0', scale='.7 .7 .7', rotation='')
-          a-entity#user-pic(geometry='primitive:circle', bind='material.src: userImage', material='side:double', position='0 3.25 0.1', scale='2 2 2', do-on-asset-load='#user')
-          a-entity#user-rank(geometry='primitive:circle', material='side:double;src:https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2FPlankton.png', position='-5 1.8 0.1')
-          a-entity#user-rep(geometry='primitive:circle', material='side:double;color:#FFF;opacity:1', position='5 1.8 0.1', scale='')
-            a-entity#rep-text(bind='text-geometry.value: userRep', text-geometry='font:#obfont', position='-.723 -.5 0.1', rotation='', scale='2 2 0.01', material='color:black')
-          a-entity#name(bind='text-geometry.value: name', text-geometry='font:#obfont', position='-8 -.7 0.1', rotation='', scale='2 2 0.01', material='')
-          a-entity#username(bind='text-geometry.value: username', text-geometry='', position='-8 -2.35 0.1', rotation='', scale='2 2 0.01', material='')
+              a-entity.hr(geometry='primitive:plane;height:.05;width:3', material='side:double;color:#7F7F7F;opacity:0.85;depthWrite:false', position='0 -1.575 0')
+              a-entity#browse-apps(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -1.9 0', url='/feed/apps')
+                a-entity#browse-apps-text(text-geometry='value:Apps;font:#obfont;size:0.29', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+              a-entity.hr(geometry='primitive:plane;height:.05;width:3', material='side:double;color:#7F7F7F;opacity:0.85;depthWrite:false', position='0 -2.225 0')
+              a-entity#browse-art(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -2.550 0', url='/feed/art')
+                a-entity#browse-art-text(text-geometry='value:Art;font:#obfont;size:0.29', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+              a-entity.hr(geometry='primitive:plane;height:.05;width:3', material='side:double;color:#7F7F7F;opacity:0.85;depthWrite:false', position='0 -2.875 0')
+              a-entity#browse-education(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -3.2 0', url='/feed/eductation')
+                a-entity#browse-education-text(text-geometry='value:Education;font:#obfont;size:0.29', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+          if user
+            a-entity#nav-user(visible='', show-menu='', geometry='primitive:circle;radius:.5', bind='material.src: loggedInImage', crossorigin='', position='3.2 0 0')
+              a-entity#nav-user-items.hiddenMenu(position='0 -.5 0', visible='false')
+                a-entity(geometry='primitive:plane;height:1;width:3', material='opacity:0;depthWrite:false', position='0 0 0')
+                a-entity#user-hr(geometry='primitive:plane;height:.1;width:3', material='side:double;color:#05d6a9', position='0 -.25 0')
+                a-entity#user-page(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -.6 0', url=`/@${user.name}`)
+                  a-entity#user-page-text(text-geometry='value:My Page;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+                a-entity.hr(geometry='primitive:plane;height:.05;width:3', material='side:double;color:#7F7F7F;opacity:0.85;depthWrite:false', position='0 -.925 0')
+                a-entity#user-feed
+                a-entity.hr(geometry='primitive:plane;height:.05;width:3', material='side:double;color:#7F7F7F;opacity:0.85;depthWrite:false', position='0 -.925 0')
+                a-entity#user-create(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -1.25 0', url='/post')
+                  a-entity#user-create-text(text-geometry='value:Create Post;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+                a-entity.hr(geometry='primitive:plane;height:.05;width:3', material='side:double;color:#7F7F7F;opacity:0.85;depthWrite:false', position='0 -1.575 0')
+                a-entity#user-logout(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -1.9 0', url='/auth/logout')
+                  a-entity#user-logout-text(text-geometry='value:Logout;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+          else
+            a-entity#nav-steem(show-menu='', geometry='primitive:circle;radius:.5', material='side:double;src:#nav-steem-icon', position='3.2 0 0')
+              a-entity#nav-steem-items.hiddenMenu(position='0 -.5 0', visible='false')
+                a-entity(geometry='primitive:plane;height:1;width:3', material='opacity:0;depthWrite:false', position='0 0 0')
+                a-entity#steem-hr(geometry='primitive:plane;height:.1;width:3', material='side:double;color:#1b5199', position='0 -.25 0')
+                a-entity#steem-login(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -.6 0', url='/auth')
+                  a-entity#steem-login-text(text-geometry='value:Login;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+                a-entity.hr(geometry='primitive:plane;height:.05;width:3', material='side:double;color:#7F7F7F;opacity:0.85;depthWrite:false', position='0 -.925 0')
+                a-entity#join-steem(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -1.25 0', url='https://signup.steemit.com')
+                  a-entity#join-steem-text(text-geometry='value:Join Steem;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+        if user
+          a-entity#robotolux-update(geometry='primitive:plane;width:18;height:6.5', material='side:double;color:#4C4C4C;opacity:0.7', position='0 3.5 0', scale='.7 .7 .7', rotation='')
+            a-entity#robotolux-pic(geometry='primitive:circle', crossorigin='true', material='side:double;src:#greeter-pic-photo', position='-9 3.25 0.1', scale='2 2 2', do-on-asset-load='#user')
+            a-entity#robotolux-name(text-geometry='value:@robotolux;font:#obfont', position='-6.2 1.94 0.1', rotation='', scale='2 2 0.01', material='')
+            a-entity#robotolux-pinned-post-1(text-geometry='value:DLUX Update 0.2;font:#obfont;size:.3', position='-8 .2 0.1', rotation='', scale='2 2 0.01', material='')
+            a-entity#robotolux-pinned-post-2(text-geometry='value:Dynamic post population;font:#obfont;size:.3', position='-8 -.8 0.1', rotation='', scale='2 2 0.01', material='')
+            a-entity#robotolux-pinned-post-3(text-geometry='value:Uploader coming soon!;font:#obfont;size:.3', position='-8 -1.8 0.1', rotation='', scale='2 2 0.01', material='')
+        else
+          a-entity#guest-greeting( geometry='primitive:plane;width:18;height:6.5', material='side:double;color:#4C4C4C;opacity:0.7', position='0 3.5 0', scale='.7 .7 .7', rotation='')
+            a-entity#greeter-pic(geometry='primitive:circle', crossorigin='true', material='side:double;src:#greeter-pic-photo', position='-9 3.25 0.1', scale='2 2 2', do-on-asset-load='#user')
+            a-entity#greeter-name(text-geometry='value:@robotolux;font:#obfont', position='-6.2 1.94 0.1', rotation='', scale='2 2 0.01', material='')
+            a-entity#greeter-pinned-post-1(text-geometry='value:Welcome to DLUX where;font:#obfont;size:.3', position='-8 .1 0.1', rotation='', scale='2 2 0.01', material='')
+            a-entity#greeter-pinned-post-2(text-geometry='value:VR creators and curators;font:#obfont;size:.3', position='-8 -1.3 0.1', rotation='', scale='2 2 0.01', material='')
+            a-entity#greeter-pinned-post-3(text-geometry='value:earn cryptocurrency.;font:#obfont;size:.3', position='-8 -2.7 0.1', rotation='', scale='2 2 0.01', material='')
         // DLUX Spotlight
         a-entity#spot-light(light='angle:35;intensity:0.2;type:spot', position='0 8.5 31', rotation='-10.5 0 0')
       // Environment
@@ -98,15 +129,16 @@ html(lang='en')
       // Portals
       a-entity(position='0 1.6 0', rotation='0 60 0', bind-for='for: portalItem; in: portals', layout='type: circle; radius: 8; plane: xz; angle: 20')
         template
-          a-entity.poster-image(show-info='', geometry='primitive:sphere', material='side:double;src:https://ipfs.io/ipfs/{{ portalItem.Hash360 }}', position='0 0 0', rotation='0 180 0', scale='1 1 1')
+          a-entity.poster-image(show-info='', geometry='primitive:sphere', material='side:double;src:https://ipfs.io/ipfs/{{ portalItem.Hash360 }}', crossorigin='', position='0 0 0', rotation='0 180 0', scale='1 1 1')
+            a-sphere(url='{{ portalItem.postUrl}}', opacity='0', scale='1.001 1.001 1.001')
             a-entity(look-at='[camera]')
-              a-box.voteButton(vote='{{ portalItem.postUrl }}/10000', position='-1.25 0 0', scale='.5 .5 .5', material='side:double;src:https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Fupvote.png?1528448497979;transparent:true;alphaTest:0.82')
-            a-entity.hidebutton(url='{{ portalItem.postUrl}}', id='{{portalItem.postId}}', visible='false', look-at='[camera]', position='0 1.2 0')
+              a-plane.voteButton(vote='{{ portalItem.postUrl }}/10000', position='-1.25 0 .5', depth='0.5', width='0.5', material='side:double;src:https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Fupvote.png?1528448497979;transparent:true;alphaTest:0.82')
+            a-entity.hidebutton(id='{{portalItem.postId}}', visible='false', look-at='[camera]', position='0 1.2 0')
               a-entity.col-1(position='0 3.6 0')
                 a-entity.r1-title(geometry='primitive:plane;width:6;height:1', material='side:double;color:#16398D;opacity:0.7', position='0 0.5 0')
                   a-entity.title-text(text-geometry='value:{{portalItem.title}};font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.4', position='-2.610104380706663 -0.22664574459161102 0.1', rotation='', scale='1 1 0.01', material='')
                 a-entity.r2-author(geometry='primitive:plane;width:6;height:1', material='side:double;color:#25D193;opacity:0.7', position='0 -0.5 0', rotation='0 0 0', url='/@{{ portalItem.author}}')
-                  a-entity.author-pic(geometry='primitive:circle;radius:0.45', material='side:double;src:{{portalItem.authorImage}} need more functions to pull this info', position='-2.34 0 0.1', scale='1 1 1')
+                  a-entity.author-pic(geometry='primitive:circle;radius:0.45', material='side:double;src:{{portalItem.authorImage}}', crossorigin='', position='-2.34 0 0.1', scale='1 1 1')
                   a-entity.username(text-geometry='value:{{portalItem.author}};font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.34', position='-1.367 -0.155 0.1', rotation='', scale='1 1 0.01', material='')
                   a-entity.rep(text-geometry='value:{{portalItem.rep}};font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.3', position='2.194796349166291 -0.12506570270188472 0.1', rotation='', scale='1 1 0.01', material='')
                 a-entity.r3-body(geometry='primitive:plane;width:6;height:2', material='side:double;opacity:0.7', position='0 -2 0')

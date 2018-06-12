@@ -1,77 +1,148 @@
-html(xmlns='http://www.w3.org/1999/xhtml')
+doctype html
+html(lang='en')
   head
+    title dlux decentralized VR
     meta(charset='utf-8')
-    title dlux | decentralized VR
-    meta(name='dlux', content='crafting VR')
-    meta(property='og:title', content='Decentralized Limitless User eXperiences')
-    meta(property='og:type', content='website')
-    meta(property='og:url', content='https://dlux.io/')
-    meta(property='og:image', content='/viz/dluxsplash.png')
-    meta(property='og:description', content='Decentralized WebVR platform powered by the Steem blockchain')
-    meta(name='twitter:card', content='summary_large_image')
-    meta(name='twitter:title', content='Decentralized Limitless User eXperiences')
-    meta(name='twitter:description', content='Decentralized WebVR platform powered by the Steem blockchain')
-    meta(name='twitter:image', content='dluxsplash.png')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    script(src='https://code.jquery.com/jquery-3.2.1.min.js', integrity='sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=', crossorigin='anonymous')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js')
+    script(src='https://cdn.steemjs.com/lib/latest/steem.min.js')
     script(src='https://aframe.io/releases/0.8.2/aframe.min.js')
+    script(src='https://unpkg.com/aframe-look-at-component@0.5.1/dist/aframe-look-at-component.min.js')
     script(src='https://unpkg.com/aframe-text-geometry-component@0.5.0/dist/aframe-text-geometry-component.min.js')
     script(src='https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js')
     script(src='https://unpkg.com/aframe-fps-look-controls-component/dist/aframe-fps-look-controls-component.min.js')
     script(src='https://rawgit.com/Ctrl-Alt-Zen/aframe-mobile-controls/master/components/twoway-motion/twoway-motion.js')
     script(src='https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js')
-    script(src='/js/dlux.js')
-  body
-    a-scene
+    script(src='https://unpkg.com/aframe-state-component@3.4.0/dist/aframe-state-component.min.js')
+    script(src='https://cdn.steemjs.com/lib/latest/steem.min.js')
+    script(src='https://rawgit.com/ngokevin/kframe/master/components/layout/dist/aframe-layout-component.js')
+    script(src='../js/nav.js')
+    if tag = 'new'
+      script.
+        function popData () {
+        var c = getCookie('dropOff')
+        if (c !== '') {
+        document.cookie = "dropOff=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        location.href = c;
+        }
+        getLatest();
+        getAccountInfo(`#{user.name}`);
+        setImage(`#{user.name}`)
+        }
+    else
+      script.
+        function popData () {
+        getTrending('dlux');
+        getAccountInfo(`#{user.name}`);
+        setImage(`#{user.name}`)
+        }
+  body(onload='popData()')
+    a-scene(antialias='true')
+      // Asset Manager
       a-assets
-        a-asset-item#bf(src='https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json')
-        img#sclogo(src='/viz/steemconnectlogo.jpg')
-        img#steemlogo(src='/viz/steem.png')
-      // environment
+        img#nav-trending-icon(src='https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2FFire_Emoji.png', crossorigin='anonymous')
+        img#nav-new-icon(src='https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Forange-new-512.gif', crossorigin='anonymous')
+        img#nav-random-icon(src='https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Fwhitedice.png', crossorigin='anonymous')
+        img#nav-browse-icon(src='https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2F29506-200.png', crossorigin='anonymous')
+        img#nav-create-icon(src='https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Fdocument.png', crossorigin='anonymous')
+        img#nav-steem-icon(src='https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Fsteem-coin.png', crossorigin='anonymous')
+        img#nav-profile-icon(src='https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Fmarkegiles.jpg', crossorigin='anonymous')
+        img#greeter-pic-photo(src='https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Frobotolux.png', crossorigin='anonymous')
+        a-asset-item#obfont(src='https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json')
+      // DLUX
+      a-entity#dlux-container(look-at='a-camera', position='0 1.6 -14')
+        // DLUX Navigation
+        a-entity#nav(position='0 9 1', scale='2 2 2')
+          a-entity#nav-trending(url='/feed/trending', geometry='primitive:plane', material='side:double;src:#nav-trending-icon;transparent:true;alphaTest:0.32', position='-3.2 0 0')
+          a-entity#nav-new(url='/feed/new', geometry='primitive:plane', material='side:double;src:#nav-new-icon;transparent:true;alphaTest:0.5', position='-1.6 0 0')
+          a-entity#nav-random(url='random function', geometry='primitive:plane', material='side:double;src:#nav-random-icon;transparent:true;alphaTest:0.5', position='0 0 0')
+          // Browse button 0.325 spacing
+          a-entity#nav-browse(show-menu='', geometry='primitive:plane', material='side:double;src:#nav-browse-icon;transparent:true;alphaTest:0.5', position='1.6 0 0')
+            a-entity#nav-browse-items.hiddenMenu(position='0 -.5 0', visible='false')
+              a-entity(geometry='primitive:plane;height:1;width:3', material='opacity:0;depthWrite:false', position='0 0 0')
+              a-entity#browse-hr(geometry='primitive:plane;height:.1;width:3', material='side:double;color:#9100b5', position='0 -.25 0')
+              a-entity#browse-videos(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -.6 0', url='/feed/videos')
+                a-entity#browse-videos-text(text-geometry='value:Videos;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+              a-entity.hr(geometry='primitive:plane;height:.05;width:3', material='side:double;color:#7F7F7F;opacity:0.85;depthWrite:false', position='0 -.925 0')
+              a-entity#browse-games(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -1.25 0', url='/feed/games')
+                a-entity#browse-games-text(text-geometry='value:Games;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+              a-entity.hr(geometry='primitive:plane;height:.05;width:3', material='side:double;color:#7F7F7F;opacity:0.85;depthWrite:false', position='0 -1.575 0')
+              a-entity#browse-apps(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -1.9 0', url='/feed/apps')
+                a-entity#browse-apps-text(text-geometry='value:Apps;font:#obfont;size:0.29', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+              a-entity.hr(geometry='primitive:plane;height:.05;width:3', material='side:double;color:#7F7F7F;opacity:0.85;depthWrite:false', position='0 -2.225 0')
+              a-entity#browse-art(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -2.550 0', url='/feed/art')
+                a-entity#browse-art-text(text-geometry='value:Art;font:#obfont;size:0.29', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+              a-entity.hr(geometry='primitive:plane;height:.05;width:3', material='side:double;color:#7F7F7F;opacity:0.85;depthWrite:false', position='0 -2.875 0')
+              a-entity#browse-education(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -3.2 0', url='/feed/eductation')
+                a-entity#browse-education-text(text-geometry='value:Education;font:#obfont;size:0.29', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+          if user
+            a-entity#nav-user(visible='', show-menu='', geometry='primitive:circle;radius:.5', bind='material.src: loggedInImage', crossorigin='', position='3.2 0 0')
+              a-entity#nav-user-items.hiddenMenu(position='0 -.5 0', visible='false')
+                a-entity(geometry='primitive:plane;height:1;width:3', material='opacity:0;depthWrite:false', position='0 0 0')
+                a-entity#user-hr(geometry='primitive:plane;height:.1;width:3', material='side:double;color:#05d6a9', position='0 -.25 0')
+                a-entity#user-page(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -.6 0', url=`/@${user.name}`)
+                  a-entity#user-page-text(text-geometry='value:My Page;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+                a-entity.hr(geometry='primitive:plane;height:.05;width:3', material='side:double;color:#7F7F7F;opacity:0.85;depthWrite:false', position='0 -.925 0')
+                a-entity#user-feed
+                a-entity.hr(geometry='primitive:plane;height:.05;width:3', material='side:double;color:#7F7F7F;opacity:0.85;depthWrite:false', position='0 -.925 0')
+                a-entity#user-create(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -1.25 0', url='/post')
+                  a-entity#user-create-text(text-geometry='value:Create Post;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+                a-entity.hr(geometry='primitive:plane;height:.05;width:3', material='side:double;color:#7F7F7F;opacity:0.85;depthWrite:false', position='0 -1.575 0')
+                a-entity#user-logout(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -1.9 0', url='/auth/logout')
+                  a-entity#user-logout-text(text-geometry='value:Logout;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+          else
+            a-entity#nav-steem(show-menu='', geometry='primitive:circle;radius:.5', material='side:double;src:#nav-steem-icon', position='3.2 0 0')
+              a-entity#nav-steem-items.hiddenMenu(position='0 -.5 0', visible='false')
+                a-entity(geometry='primitive:plane;height:1;width:3', material='opacity:0;depthWrite:false', position='0 0 0')
+                a-entity#steem-hr(geometry='primitive:plane;height:.1;width:3', material='side:double;color:#1b5199', position='0 -.25 0')
+                a-entity#steem-login(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -.6 0', url='/auth')
+                  a-entity#steem-login-text(text-geometry='value:Login;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+                a-entity.hr(geometry='primitive:plane;height:.05;width:3', material='side:double;color:#7F7F7F;opacity:0.85;depthWrite:false', position='0 -.925 0')
+                a-entity#join-steem(geometry='primitive:plane;height:.6;width:3', material='side:double;color:#4C4C4C;opacity:0.85;depthWrite:false', position='0 -1.25 0', url='https://signup.steemit.com')
+                  a-entity#join-steem-text(text-geometry='value:Join Steem;font:#obfont;size:0.3', material='color:#FFF', position='-1.3 -.15 0.1', scale='1 1 .01')
+        if user
+          a-entity#robotolux-update(geometry='primitive:plane;width:18;height:6.5', material='side:double;color:#4C4C4C;opacity:0.7', position='0 3.5 0', scale='.7 .7 .7', rotation='')
+            a-entity#robotolux-pic(geometry='primitive:circle', crossorigin='true', material='side:double;src:#greeter-pic-photo', position='-9 3.25 0.1', scale='2 2 2', do-on-asset-load='#user')
+            a-entity#robotolux-name(text-geometry='value:@robotolux;font:#obfont', position='-6.2 1.94 0.1', rotation='', scale='2 2 0.01', material='')
+            a-entity#robotolux-pinned-post-1(text-geometry='value:DLUX Update 0.2;font:#obfont;size:.3', position='-8 .2 0.1', rotation='', scale='2 2 0.01', material='')
+            a-entity#robotolux-pinned-post-2(text-geometry='value:Dynamic post population;font:#obfont;size:.3', position='-8 -.8 0.1', rotation='', scale='2 2 0.01', material='')
+            a-entity#robotolux-pinned-post-3(text-geometry='value:Uploader coming soon!;font:#obfont;size:.3', position='-8 -1.8 0.1', rotation='', scale='2 2 0.01', material='')
+        else
+          a-entity#guest-greeting( geometry='primitive:plane;width:18;height:6.5', material='side:double;color:#4C4C4C;opacity:0.7', position='0 3.5 0', scale='.7 .7 .7', rotation='')
+            a-entity#greeter-pic(geometry='primitive:circle', crossorigin='true', material='side:double;src:#greeter-pic-photo', position='-9 3.25 0.1', scale='2 2 2', do-on-asset-load='#user')
+            a-entity#greeter-name(text-geometry='value:@robotolux;font:#obfont', position='-6.2 1.94 0.1', rotation='', scale='2 2 0.01', material='')
+            a-entity#greeter-pinned-post-1(text-geometry='value:Welcome to DLUX where;font:#obfont;size:.3', position='-8 .1 0.1', rotation='', scale='2 2 0.01', material='')
+            a-entity#greeter-pinned-post-2(text-geometry='value:VR creators and curators;font:#obfont;size:.3', position='-8 -1.3 0.1', rotation='', scale='2 2 0.01', material='')
+            a-entity#greeter-pinned-post-3(text-geometry='value:earn cryptocurrency.;font:#obfont;size:.3', position='-8 -2.7 0.1', rotation='', scale='2 2 0.01', material='')
+        // DLUX Spotlight
+        a-entity#spot-light(light='angle:35;intensity:0.2;type:spot', position='0 8.5 31', rotation='-10.5 0 0')
+      // Environment
       a-entity(environment='preset: forest')
-      a-entity#point-light(light='type:point;intensity:0.75', position='0 15 15')
-      // camera
+      a-entity#ambient-light(light='type:ambient;intensity:0.5')
+      // Camera
       a-entity#cameraRig
         a-camera(set-camera='', wasd-controls='', look-controls='')
           a-cursor
-      // dlux login
-      a-entity#dlux-cube-container(position='0 -0.13415502430593165 -12.623592051133942')
-        a-entity#dlux-cube(geometry='height:8;width:8;depth:8', material='side:double;color:#ff0033;opacity:0.5', position='-0.23520907077682374 4 0')
-          a-entity#cube-col-1(position='0.5094452993592824 -2.24 4.099999999999992')
-            a-entity#dlux(text-geometry='value:dlux;font:#bf', position='', scale='2 2 0.01', visible='', material='color:#1ed6a4')
-            a-entity#steempowered(text-geometry='value:Steem-Powered VR;font:#bf;height:0.5;size:0.1', position='0.25257686960285675 -0.40458286302652624 0', scale='2 2 0.01', visible='', material='color:#ffffff')
-        a-entity#login-btn.link(position='-1.608 1.719 3.119', url='/auth', geometry='height:2.4;width:2.4;depth:2.4', material='opacity:0.7;color:#3F8BF8')
-          a-entity#login-col-1(position='0 0 1.22')
-            a-plane#steemconnect(height='.5', width='2', color='', rotation='', position='', material='color:#FFF;shader:flat;side:double;src:#sclogo', geometry='')
-        a-entity#boxes(position='0.9509077048919101 0.710367665203627 6.305')
-          a-entity#box-1(geometry='', position='-1.9867610577502477 4.052706343560493 -3.4493498143325443', material='color:#ffff00')
-          a-entity#box-2(geometry='', mixin='null', material='color:#ff8000', position='0.2764692448037831 3.7490400473780987 -7.126213875581079', scale='2.510708693442104 2.510708693442104 2.510708693442104')
-          a-entity#box-3(geometry='', position='2.6380178618649524 7.285748107782961 -7.597022784196335', material='color:#00ff80')
-          a-entity#box-4(geometry='', position='-4.884657546014574 4.6913579379938195 -7.544614208662843', scale='1.77 1.77 1.77', material='color:#0080ff')
-      // about dlux
-      a-entity#about-cube(geometry='height:8;width:8;depth:8', material='side:double;color:#ffffff;opacity:0.5', position='-9.695 3.854 -10.072957077671417', rotation='0 29.999999999999996 0')
-        a-entity#about-inner(position='0.12545218659686697 -0.15317288792748318 0', geometry='height:4.22;width:5.98;depth:8.2', material='color:#303030;opacity:0.52;side:double')
-          a-entity#about-col-1(position='0 0 4.112999646391557')
-            a-entity#what-text(text-geometry='value:What is this?;font:#bf;size:0.36', position='-2.8689872759518886 0.909208288785714 0', scale='2 2 0.01', visible='', material='color:#ffffff')
-            a-entity#first-free(text-geometry='value:dlux is the first free;font:#bf;height:0.5;size:0.1', position='-1.125193996938262 0.121 0', scale='2 2 0.01', visible='', material='color:#ffffff')
-            a-entity#vr-platform(text-geometry='value:decentralized virtual reality platform;font:#bf;height:0.5;size:0.1', position='-2.240551886010688 -0.2679448983783086 0', scale='2 2 0.01', visible='', material='color:#ffffff')
-            a-entity#make-vr(text-geometry='value:anyone can use to make VR;font:#bf;height:0.5;size:0.1', position='-1.6039890901188238 -0.6392146992199157 0', scale='2 2 0.01', visible='', material='color:#ffffff')
-            a-entity#earn-crypto(text-geometry='value:and earn crypto;font:#bf;height:0.5;size:0.1', position='-0.8914035561630618 -1 0', scale='2 2 0.01', visible='', material='color:#ffffff')
-            a-entity#ctl-alt(text-geometry='value:press CTL + ALT + i to look under the hood;font:#bf;height:0.5;size:0.1', position='-2.7322050407273206 -1.6409436250956624 0', scale='2 2 0.01', visible='', material='color:#ffffff')
-            a-entity#learn-btn.link(geometry='width:3', color='', rotation='', position='0 -2.7687544116120306 0', material='color:#ff8080;shader:flat;opacity:0.5', url='about/')
-              a-entity#learn-more(text-geometry='value:LEARN MORE;font:#bf;height:0.5;size:0.16', position='-1.337018946866647 -0.17840292473618158 0', scale='2 2 0.01', visible='', material='color:#000')
-      // about Steem
-      a-entity#steem-cube(geometry='height:8;width:8;depth:8', material='side:double;color:#72f883;opacity:0.5', position='9.218063715676063 3.854 -10.097917230529825', rotation='0 -29.999999999999996 0')
-        a-entity#steem-inner(position='0.12545218659686697 -0.15317288792748318 0', geometry='height:4.22;width:5.98;depth:8.2', material='color:#303030;opacity:0.52;side:double')
-          a-entity#steem-col-1(position='0 0 4.112999646391557')
-            a-entity#why-steem(text-geometry='value:Why Steem?;font:#bf;size:0.36', position='-2.7161802649523166 0.909208288785714 0', scale='2 2 0.01', visible='', material='color:#ffffff')
-            a-entity#social-blockchain(text-geometry='value:Steem is a social blockchain;font:#bf;height:0.5;size:0.1', position='-1.622650008325217 0.12110590476450334 0', scale='2 2 0.01', visible='', material='color:#ffffff')
-            a-entity#rewards-upvotes(text-geometry='value:that rewards upvotes with;font:#bf;height:0.5;size:0.1', position='-1.5128352915117036 -0.24781911478752594 0', scale='2 2 0.01', visible='', material='color:#ffffff')
-            a-entity#crypto-currency(text-geometry='value:crypto currency you can;font:#bf;height:0.5;size:0.1', position='-1.4087455383185157 -0.616285335823548 0', scale='2 2 0.01', visible='', material='color:#ffffff')
-            a-entity#spend-trade(text-geometry='value:spend, trade, or transfer;font:#bf;height:0.5;size:0.1', position='-1.4227131388029557 -1.0065043959147628 0', scale='2 2 0.01', visible='', material='color:#ffffff')
-            a-entity#no-ads(text-geometry='value:No Ads. No Censorship. Decentralized on IPFS;font:#bf;height:0.5;size:0.1', position='-2.8619850834476424 -1.6409436250956624 0', scale='2 2 0.01', visible='', material='color:#ffffff')
-            a-entity#steem-btn.link(geometry='width:3', color='', rotation='', position='0 -2.7687544116120306 0', material='color:#ffffff;shader:flat;opacity:0.5', url='https://signup.steemit.com/')
-              a-entity#get-steem(text-geometry='value:GET STEEM;font:#bf;height:0.5;size:0.16', position='-1.08 -0.17840292473618158 0', scale='2 2 0.01', visible='', material='color:#000')
-      // otolux tag
-      a-entity#ototag(geometry='primitive:plane;height:0.77;width:5.91', material='side:double', position='0 0.369 8', rotation='0 -180 0')
-        a-entity#heart(obj-model='obj:/viz/love.obj', material='color:#ff0000', position='', rotation='', scale='0.015 0.015 0.015', url='http://otolux.la')
-        a-entity(id='made in', text-geometry='value:made in LA        by OTOLUX;font:#bf;size:0.15', position='-2.5343438681418977 -0.13075031335592513 0.09999999999999998', scale='2 2 0.01', visible='', material='color:#333333', rotation='')
-        a-entity(id='made in', text-geometry='value:made in LA        by OTOLUX;font:#bf;size:0.15', position='2.4983945090055526 -0.13075031335592513 -0.09999999999999935', scale='2 2 0.01', visible='', material='color:#333333', rotation='0 180 0')
+      // Portals
+      a-entity(position='0 1.6 0', rotation='0 60 0', bind-for='for: portalItem; in: portals', layout='type: circle; radius: 8; plane: xz; angle: 20')
+        template
+          a-entity.poster-image(show-info='', geometry='primitive:sphere', material='side:double;src:https://ipfs.io/ipfs/{{ portalItem.Hash360 }}', crossorigin='', position='0 0 0', rotation='0 180 0', scale='1 1 1')
+            a-sphere(url='{{ portalItem.postUrl}}', opacity='0', scale='1.001 1.001 1.001')
+            a-entity(look-at='[camera]')
+              a-plane.voteButton(vote='{{ portalItem.postUrl }}/10000', position='-1.25 0 .5', depth='0.5', width='0.5', material='side:double;src:https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Fupvote.png?1528448497979;transparent:true;alphaTest:0.82')
+            a-entity.hidebutton(id='{{portalItem.postId}}', visible='false', look-at='[camera]', position='0 1.2 0')
+              a-entity.col-1(position='0 3.6 0')
+                a-entity.r1-title(geometry='primitive:plane;width:6;height:1', material='side:double;color:#16398D;opacity:0.7', position='0 0.5 0')
+                  a-entity.title-text(text-geometry='value:{{portalItem.title}};font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.4', position='-2.610104380706663 -0.22664574459161102 0.1', rotation='', scale='1 1 0.01', material='')
+                a-entity.r2-author(geometry='primitive:plane;width:6;height:1', material='side:double;color:#25D193;opacity:0.7', position='0 -0.5 0', rotation='0 0 0', url='/@{{ portalItem.author}}')
+                  a-entity.author-pic(geometry='primitive:circle;radius:0.45', material='side:double;src:{{portalItem.authorImage}}', crossorigin='', position='-2.34 0 0.1', scale='1 1 1')
+                  a-entity.username(text-geometry='value:{{portalItem.author}};font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.34', position='-1.367 -0.155 0.1', rotation='', scale='1 1 0.01', material='')
+                  a-entity.rep(text-geometry='value:{{portalItem.rep}};font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.3', position='2.194796349166291 -0.12506570270188472 0.1', rotation='', scale='1 1 0.01', material='')
+                a-entity.r3-body(geometry='primitive:plane;width:6;height:2', material='side:double;opacity:0.7', position='0 -2 0')
+                  a-entity.body-text(wrap-count='100', text-geometry='value:{{ portalItem.category }};font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.3', position='-2.7 .46 0.1', rotation='', scale='1 1 .01', material='color:black')
+                a-entity.r4-voting(geometry='primitive:plane;width:6;height:1', material='side:double;color:#999999;opacity:0.7', position='0 -3.5 0')
+                  a-entity.value(text-geometry='value:{{ portalItem.votesVal }};font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.3', position='1.385 -0.09268436887713527 0.1', rotation='', scale='1 1 0.01', material='')
+                  a-entity.value(text-geometry='value:{{ portalItem.votesNum }};font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.3', position='0.25 -0.09268436887713527 0.1', rotation='', scale='1 1 0.01', material='')

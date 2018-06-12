@@ -274,6 +274,20 @@ AFRAME.registerComponent('set-camera', {
         return authorData;
     });
   }
+    function setImage(username) {
+      var c = getCookie('usrImg');
+      if (c !== '') {
+      AFRAME.scenes[0].emit('setLoggedInImage', {val: c});
+      } else {
+      steem.api.getAccounts([username], (err, result) => {
+        let user = result[0]
+        let jsonData = JSON.parse(user.json_metadata)
+        let profileData = jsonData.profile
+        AFRAME.scenes[0].emit('setLoggedInImage', {val: profileData.profile_image});
+        setCookie('usrImg', profileData.profile_image, 300)
+      });
+    }
+    }
     function getAccountInfo(username) {
       steem.api.getDynamicGlobalProperties((err, result) => {
         let totalVestingShares = result.total_vesting_shares;
@@ -327,7 +341,7 @@ AFRAME.registerComponent('set-camera', {
               }
           let data = {
             name: authorData.name,
-            image: authorData.profile_image,
+            userImage: authorData.profile_image,
             cover: authorData.cover_image,
             rep: steem.formatter.reputation(user.reputation),
             effectiveSp: parseInt(steemPower  + delegatedSteemPower - -outgoingSteemPower),
@@ -344,6 +358,7 @@ AFRAME.registerComponent('set-camera', {
             username: user.name,
             createdDate: new Date (user.created)
           }
+          console.log(data)
           AFRAME.scenes[0].emit('setData', {val: data});
         });
         });
@@ -408,6 +423,7 @@ AFRAME.registerComponent('set-camera', {
     AFRAME.registerState({
       initialState: {
         loggedIn: false,
+        loggedInImage:"https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2FOTOLUX%20Tag.png?1528445998829",
         username: "Acquiring sync",
         name: "Welcome to dlux",
         userImage:"https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2FOTOLUX%20Tag.png?1528445998829",
@@ -441,7 +457,7 @@ AFRAME.registerComponent('set-camera', {
         setData: function (state, action) {
           state.name = action.val.name
           state.username = action.val.username
-          state.image = action.val.image
+          state.userImage = action.val.userImage
           state.cover = action.val.cover
           state.userRep = action.val.rep
           state.effectiveSp = action.val.effectiveSp
@@ -456,12 +472,16 @@ AFRAME.registerComponent('set-camera', {
           state.followingCount = action.val.followingCount
           state.usdValue = action.val.usdValue
           state.createdDate = action.val.createdDate
+          console.log(state)
         },
         setcreatedDate: function (state, action) {
           state.createdDate = action.val;
         },
         setusdValue: function (state, action) {
           state.usdValue = action.val;
+        },
+        setLoggedInImage: function (state, action) {
+          state.loggedInImage = action.val;
         },
         setfollowingCount: function (state, action) {
           state.followingCount = action.val;

@@ -144,3 +144,8 @@ html(lang='en')
                 a-entity.r4-voting(geometry='primitive:plane;width:6;height:1', material='side:double;color:#999999;opacity:0.7', position='0 -3.5 0')
                   a-entity.value(text-geometry='value:{{ portalItem.votesVal }};font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.3', position='1.385 -0.09268436887713527 0.1', rotation='', scale='1 1 0.01', material='')
                   a-entity.value(text-geometry='value:{{ portalItem.votesNum }};font:https://rawgit.com/mrdoob/three.js/dev/examples/fonts/optimer_bold.typeface.json;size:0.3', position='0.25 -0.09268436887713527 0.1', rotation='', scale='1 1 0.01', material='')
+      // otolux tag
+      a-entity#ototag(url="http://otolux.la", geometry='primitive:plane;height:0.77;width:5.91', material='side:double', position='0 0.369 10', rotation='0 -180 0')
+        a-entity#heart(obj-model='obj:/viz/love.obj', material='color:#ff0000', position='', rotation='', scale='0.015 0.015 0.015', url='http://otolux.la')
+        a-entity(id='made in', text-geometry='value:made in LA        by OTOLUX;font:#obfont;size:0.15', position='-2.5343438681418977 -0.13075031335592513 0.09999999999999998', scale='2 2 0.01', visible='', material='color:#333333', rotation='')
+        a-entity(id='made in', text-geometry='value:made in LA        by OTOLUX;font:#obfont;size:0.15', position='2.4983945090055526 -0.13075031335592513 -0.09999999999999935', scale='2 2 0.01', visible='', material='color:#333333', rotation='0 180 0')

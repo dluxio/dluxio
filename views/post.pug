@@ -5,11 +5,16 @@ block content
 
   main.create-post
     h1 New WebVR Post
+    form(action="/")
+      fieldset
+        label Upload your dlux file
+        input#dluxfile(type="file" name="file")
+        button.btn.btn-primary(type="button" onclick="upload()") Upload to IPFS
     form(action="/post/create-post/" method="post")
       label Title
       input(type="text" name="title")
       label VR IPFS Hash
-      input(type="text" name="vrHash")
+      input#vrHash(type="text" name="vrHash")
       label 360 Hash
       input(type="text" name="Hash360")
       label Image Hash

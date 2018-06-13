@@ -208,7 +208,6 @@ AFRAME.registerComponent('set-camera', {
             }
           }
           setPortals(filteredResults)
-          displayContent(result,initial)
         } else {
           console.log(err);
         }

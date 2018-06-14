@@ -1,3 +1,5 @@
+//mostly depreciated reference code
+
 let allUsers = []
 let allContent = []
 let converter = new showdown.Converter({ tables: true })

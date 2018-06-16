@@ -7,6 +7,16 @@ html
     script(src='https://unpkg.com/ipfs-api@9.0.0/dist/index.js' crossorigin='anonymous' integrity='sha384-5bXRcW9kyxxnSMbOoHzraqa7Z0PQWIao+cgeg327zit1hz5LZCEbIMx/LWKPReuB')
     script(src='js/buffer.js')
     script.
+      var xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+      xhr.addEventListener("readystatechange", function () {
+      if (this.readyState === 4) {
+      console.log(this.responseText);
+      }
+      });
+      xhr.open("POST", "https://ipfs-dev.dlux.io:443/api/v0/add?stream-channels=true");
+      xhr.setRequestHeader("Cache-Control", "no-cache");
+      xhr.setRequestHeader("Postman-Token", "b601c87f-e966-4b09-b0ac-f653cbbc7147");
       function upload() {
       if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
       alert('The File APIs are not fully supported in this browser.');
@@ -23,15 +33,11 @@ html
       file = input.files[0];
       const reader = new FileReader(file);
       reader.onloadend = function() {
-      const ipfs = window.IpfsApi('ipfs-dev.dlux.io', '443', {protocol: 'https'}) // Connect to IPFS
-      const buf = buffer.Buffer(reader.result) // Convert data into buffer
-      ipfs.files.add(buf, (err, result) => { // Upload buffer to IPFS
-      if(err) {
-      console.error(err)
-      return
-      }
-      let url = `https://ipfs.io/ipfs/${result[0].hash}`
-      let hash = result[0].hash
+      var data = new FormData();
+      data.append("", reader.result);
+      xhr.send(data);
+      let url = `https://ipfs.io/ipfs/${xhr.response[0].hash}`
+      let hash = xhr.response[0].hash
       console.log(`Url --> ${url}`)
       document.getElementById("vrHash").value = hash
       })

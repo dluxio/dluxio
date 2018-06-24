@@ -23,7 +23,7 @@ html
       file = input.files[0];
       const reader = new FileReader(file);
       reader.onloadend = function() {
-      const ipfs = window.IpfsApi('ipfs-dev.dlux.io', '443', {protocol: 'https'}) // Connect to IPFS
+      const ipfs = window.IpfsApi('54.174.183.119', '5001', {protocol: 'http'}) // Connect to IPFS
       const buf = buffer.Buffer(reader.result) // Convert data into buffer
       ipfs.files.add(buf, (err, result) => { // Upload buffer to IPFS
       if(err) {

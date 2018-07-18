@@ -43,7 +43,26 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
 })
 });
 
+/* POST a create customJson broadcast to STEEM network. */
+
+router.post('/custom', util.isAuthenticated, (req, res) => {
+  var params = {
+    required_auths: req.body.requiredAuths,
+    required_posting_auths: req.body.requiredPostingAuths,
+    id: req.body.id,
+    json: req.body.json
+};
+  steem.broadcast([['custom_json', params]], function(err, result) {
+    if (err) {
+      res.json({ err: err })
+    } else {
+      res.json({ msg: result })
+    }
+});
+});
+
 /* POST a vote broadcast to STEEM network. */
+
 router.post('/vote', util.isAuthenticatedJSON, (req, res) => {
     let postId = req.body.postId
     let voter = req.session.steemconnect.name

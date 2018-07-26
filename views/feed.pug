@@ -124,7 +124,7 @@ html(lang='en')
       a-entity#cameraRig
         a-camera(set-camera='', wasd-controls='', look-controls='')
       // Portals
-      a-entity(position='4 1.6 -8', rotation='0 60 0', bind-for='for: portalItem; in: portals', layout='type: line; plane: x; margin: 3')
+      a-entity(position='4 1.6 -8', rotation='0 0 0', bind-for='for: portalItem; in: portals', layout='type: line; plane: x; margin: 3')
         template
           a-entity.poster-image(show-info='', geometry='primitive:sphere', material='side:double;src:https://ipfs.io/ipfs/{{ portalItem.Hash360 }}', crossorigin='anonymous', position='0 0 0', rotation='0 180 0', scale='1 1 1')
             a-sphere(url='{{ portalItem.postUrl}}', opacity='0', scale='1.001 1.001 1.001')

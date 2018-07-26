@@ -133,6 +133,7 @@ html
       iframe.scrolling = 'no'
       iframe.width = '100%'
       iframe.height = '100%'
+      iframe.setAttribute('allowfullscreen', true)
       iframe.setAttribute('allow', 'gyroscope; accelerometer; microphone https://ipfs.io https://dlux.io;')
       iframe.src = 'https://ipfs.io/ipfs/' + hashy
       document.body.appendChild(iframe);

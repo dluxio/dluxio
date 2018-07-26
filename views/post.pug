@@ -5,11 +5,7 @@ block content
 
   main.create-post
     h1 New WebVR Post
-    form(action="/")
-      fieldset
-        label Upload your dlux file
-        input#dluxfile(type="file" name="file")
-        button.btn.btn-primary(type="button" onclick="upload()") Upload to IPFS
+    a(class='button' href='https://glitch.com/remix/#!/cheerful-suggestion') Start Here
     form(action="/post/create-post/" method="post")
       label Title
       input(type="text" name="title")

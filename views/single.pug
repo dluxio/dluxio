@@ -127,8 +127,8 @@ html
       var metadata = result.content[sux].json_metadata
       var hashy = JSON.parse(metadata).vrHash
       if (hashy.split('/')[3] == 'ipfs') {
-        hashy = hashy.split('/')[4];
-      };
+      hashy = hashy.split('/')[4];
+      }
       var iframe = document.createElement('iframe');
       iframe.allowvr = 'yes'
       iframe.id = 'theIframe'

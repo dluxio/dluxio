@@ -127,12 +127,12 @@ html
       var metadata = result.content[sux].json_metadata
       var hashy = JSON.parse(metadata).vrHash
       if (hashy.indexOf('://')) {
-        console.log(hashy.split('/')[0])
-        console.log(hashy.split('/')[1])
-        console.log(hashy.split('/')[2])
-        console.log(hashy.split('/')[3])
-        console.log(hashy.split('/')[4])
-        hashy = hashy.split('/')[3]
+        console.log(hashy.split('/')[0]);
+        console.log(hashy.split('/')[1]);
+        console.log(hashy.split('/')[2]);
+        console.log(hashy.split('/')[3]);
+        console.log(hashy.split('/')[4]);
+        hashy = hashy.split('/')[3];
       };
       var iframe = document.createElement('iframe');
       iframe.allowvr = 'yes'
@@ -143,7 +143,7 @@ html
       iframe.height = '100%'
       iframe.setAttribute('allowfullscreen', true)
       iframe.setAttribute('allow', 'gyroscope; accelerometer; microphone https://ipfs.io https://dlux.io;')
-      iframe.src = 'https://ipfs.io/ipfs/' + hashy
+      iframe.src = 'https://ipfs.io/ipfs/' + hashy;
       document.body.appendChild(iframe);
       })
     body

@@ -127,7 +127,12 @@ html
       var metadata = result.content[sux].json_metadata
       var hashy = JSON.parse(metadata).vrHash
       if (hashy.indexOf('://')) {
-        hashy = hashy.split('/')[4]
+        console.log(hashy.split('/')[0])
+        console.log(hashy.split('/')[1])
+        console.log(hashy.split('/')[2])
+        console.log(hashy.split('/')[3])
+        console.log(hashy.split('/')[4])
+        hashy = hashy.split('/')[3]
       };
       var iframe = document.createElement('iframe');
       iframe.allowvr = 'yes'

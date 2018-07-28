@@ -126,9 +126,9 @@ html
       var sux = '#{username}/#{permlink}'
       var metadata = result.content[sux].json_metadata
       var hashy = JSON.parse(metadata).vrHash
-      if (hashy.char[1] != 't') {
-        hashy = 'https://ipfs.io/ipfs/' + hashy
-      }
+      if (hashy.indexOf('://')) {
+        hashy = hashy.split('/')[4]
+      };
       var iframe = document.createElement('iframe');
       iframe.allowvr = 'yes'
       iframe.id = 'theIframe'
@@ -138,7 +138,7 @@ html
       iframe.height = '100%'
       iframe.setAttribute('allowfullscreen', true)
       iframe.setAttribute('allow', 'gyroscope; accelerometer; microphone https://ipfs.io https://dlux.io;')
-      iframe.src = hashy
+      iframe.src = 'https://ipfs.io/ipfs/' + hashy
       document.body.appendChild(iframe);
       })
     body

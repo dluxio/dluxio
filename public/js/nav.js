@@ -418,7 +418,10 @@ AFRAME.registerComponent('set-camera', {
         } else {
           val = Math.round( parseFloat(post.total_payout_value.substring(0,5)) * 100) / 100
         }
-        console.log(val)
+        var portalImage = JSON.parse(post.json_metadata).Hash360
+        if (portalImage.split('/')[3] == 'ipfs') {
+        portalImage = portalImage.split('/')[4];
+        }
       let portal = {
         postId: post.id,
         postUrl: post.url,
@@ -426,7 +429,7 @@ AFRAME.registerComponent('set-camera', {
         authorImage: authorData.profile_image,
         title: post.title,
         body: post.body,
-        Hash360: JSON.parse(post.json_metadata).Hash360,
+        Hash360: portalImage,
         permlink: post.permlink ,
         rep: steem.formatter.reputation(post.author_reputation),
         votesNum: post.net_votes,

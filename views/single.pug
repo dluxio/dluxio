@@ -126,8 +126,8 @@ html
       var sux = '#{username}/#{permlink}'
       var metadata = result.content[sux].json_metadata
       var hashy = JSON.parse(metadata).vrHash
-      if(vrHash.split('/')[0] == 'https') {
-      vrHash = vrHash.split('/')[4]
+      if(hashy.split('/')[0] == 'https') {
+      vrHash = hashy.split('/')[4]
       }
       var iframe = document.createElement('iframe');
       iframe.allowvr = 'yes'

@@ -1,6 +1,6 @@
 let express = require('express');
 let router = express.Router();
-
+let request = require('request');
 /* GET home page. */
 router.get('/', (req, res, next) =>  {
   if(req.session.steemconnect){
@@ -41,12 +41,6 @@ router.get('/:category/@:username/:permlink', async (req, res, next) => {
       let category = req.params.category
       let username = req.params.username
       let permlink = req.params.permlink
-      var dataString = '{"jsonrpc":"2.0", "method":"condenser_api.get_content", "params":["' + username + '", "' + permlink + '"], "id":1}';
-      var options = {
-      url: 'https://api.steemit.com',
-      method: 'POST',
-      body: dataString
-      };
       let title = 'dlux VR'
       let description = 'Blockchain powered social VR'
       let image = 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h'
@@ -75,7 +69,13 @@ router.get('/:category/@:username/:permlink', async (req, res, next) => {
               iAm: iAm
             });
           }
-          const robot = await request(options, function(err, res, body) {
+          var dataString = '{"jsonrpc":"2.0", "method":"condenser_api.get_content", "params":["' + username + '", "' + permlink + '"], "id":1}';
+          var options = {
+          url: 'https://api.steemit.com',
+          method: 'POST',
+          body: dataString
+          };
+          request(options, function(err, res, body) {
             let json = JSON.parse(body);
             title = json.result.title
             description = json.result.body

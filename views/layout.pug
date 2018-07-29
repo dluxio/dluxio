@@ -2,10 +2,11 @@ doctype html
 html
   head
     title= title
+    meta(property='og:title', content='dlux')
+    meta(property='og:description', content='Blockchain powered social VR where everybody earns and there are no ads and no private tracking.')
+    meta(property='og:image', content='https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h')
     link(rel='stylesheet', href='/css/style.css')
     link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous")
-    script(src='https://unpkg.com/ipfs-api@9.0.0/dist/index.js' crossorigin='anonymous' integrity='sha384-5bXRcW9kyxxnSMbOoHzraqa7Z0PQWIao+cgeg327zit1hz5LZCEbIMx/LWKPReuB')
-    script(src='js/buffer.js')
     script.
       function validateForm() {
       var x = document.forms["steemPostForm"]["vrHash"].value;

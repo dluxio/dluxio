@@ -45,8 +45,7 @@ router.get('/:category/@:username/:permlink', async (req, res, next) => {
       let description = 'Blockchain powered social VR'
       let image = 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h'
       let iAm = 'Guest'
-      if(req.session.steemconnect){
-        iAm = req.session.steemconnect.name
+      function render() {
         res.render('single', {
           category: category,
           username: username,
@@ -56,19 +55,12 @@ router.get('/:category/@:username/:permlink', async (req, res, next) => {
           OGimage: image,
           iAm: iAm
         });
+      }
+      if(req.session.steemconnect){
+        iAm = req.session.steemconnect.name
+        render();
       } else {
         try {
-          function render() {
-            res.render('single', {
-              category: category,
-              username: username,
-              permlink: permlink,
-              OGtitle: title,
-              OGdescription: description,
-              OGimage: image,
-              iAm: iAm
-            });
-          }
           var dataString = '{"jsonrpc":"2.0", "method":"condenser_api.get_content", "params":["' + username + '", "' + permlink + '"], "id":1}';
           var options = {
           url: 'https://api.steemit.com',
@@ -84,16 +76,8 @@ router.get('/:category/@:username/:permlink', async (req, res, next) => {
             render();
           });
         } catch (e) {
-          console.log('API error, vanillia template served\n' + e)
-          res.render('single', {
-            category: category,
-            username: username,
-            permlink: permlink,
-            OGtitle: title,
-            OGdescription: description,
-            OGimage: image,
-            iAm: iAm
-          });
+          console.log('API error(vanillia template served):\n' + e)
+          render();
         }
       }
       });

@@ -7,11 +7,36 @@ html
     script(src='https://unpkg.com/ipfs-api@9.0.0/dist/index.js' crossorigin='anonymous' integrity='sha384-5bXRcW9kyxxnSMbOoHzraqa7Z0PQWIao+cgeg327zit1hz5LZCEbIMx/LWKPReuB')
     script(src='js/buffer.js')
     script.
-      function validateForm() {
-      var x = document.forms["steemPostForm"]["vrHash"].value;
-      if (!x.indexOf('Qm')) {
-      alert("Must contain valid IPFS hash");
-      return false;
+      function upload() {
+      if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+      alert('The File APIs are not fully supported in this browser.');
+      return;
+      }
+      input = document.getElementById('dluxfile');
+      if (!input) {
+      alert("Um, couldn't find the fileinput element.");
+      } else if (!input.files) {
+      alert("This browser doesn't seem to support the `files` property of file inputs.");
+      } else if (!input.files[0]) {
+      alert("Please select a file before clicking 'Load'");
+      } else {
+      file = input.files[0];
+      const reader = new FileReader(file);
+      reader.onloadend = function() {
+      const ipfs = window.IpfsApi('ipfs-dev.dlux.io', '443', {protocol: 'https'}) // Connect to IPFS
+      const buf = buffer.Buffer(reader.result) // Convert data into buffer
+      ipfs.files.add(buf, (err, result) => { // Upload buffer to IPFS
+      if(err) {
+      console.error(err)
+      return
+      }
+      let url = `https://ipfs.io/ipfs/${result[0].hash}`
+      let hash = result[0].hash
+      console.log(`Url --> ${url}`)
+      document.getElementById("vrHash").value = hash
+      })
+      }
+      reader.readAsArrayBuffer(dluxfile.files[0]); // Read Provided File
       }
       }
   body.cf

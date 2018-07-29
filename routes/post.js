@@ -22,17 +22,8 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
   let otherTags = tags.slice(0, 4)
   let title = req.body.title
   let hashy = req.body.vrHash
-  if (hashy.split('/')[3] == 'ipfs') {
-  hashy = hashy.split('/')[4];
-  }
   let image = req.body.image
-  if (image.split('/')[3] != 'ipfs') {
-  image = 'https://ipfs.io/ipfs/' + image;
-  }
   let Hash360 = req.body.Hash360
-  if (Hash360.split('/')[3] == 'ipfs') {
-  Hash360 = Hash360.split('/')[4];
-  }
   let customData = JSON.stringify({
     'app': 'dlux/v0.0.1',
     'vrHash': hashy,
@@ -40,7 +31,8 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
     'Hash360': Hash360
   })
   var linker = `
-  #### [View in VR @dlux-io](https://dlux.io/dlux/@` + author + `/` + permlink + `)`
+  #### [View in VR @ dlux.io](https://dlux.io/dlux/@` + author + `/` + permlink + `)
+  #!botStuff @dlux-io `
   var body = topbody + linker
   steem.broadcast([['comment',{'parent_author': '','parent_permlink': 'dlux','author': author,'permlink': permlink,'title': title,'body': body,'json_metadata': customData}],['comment_options',{'author': author,'permlink': permlink,'max_accepted_payout': '1000000.000 SBD','percent_steem_dollars': 10000,'allow_votes': true,'allow_curation_rewards': true,'extensions': [[0,{'beneficiaries': [{'account': 'dlux-io','weight': 1000}]}]]}]], function (err, response) {
   if (err) {

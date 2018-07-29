@@ -37,7 +37,7 @@ router.get('/@:username/transfers', (req, res, next) => {
 });
 
 /* GET a single post page page. */
-router.get('/:category/@:username/:permlink', async (req, res, next) => {
+router.get('/:category/@:username/:permlink', (req, res, next) => {
       let category = req.params.category
       let username = req.params.username
       let permlink = req.params.permlink

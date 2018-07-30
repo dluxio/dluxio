@@ -9,7 +9,6 @@ let expressSanitized = require('express-sanitize-escape');
 let cors = require('cors');
 let socketIo = require("socket.io");        // web socket external module
 let easyrtc = require("easyrtc");               // EasyRTC external module
-let ipfsAPI = require('ipfs-api')
 let request = require('request');
 let index = require('./routes/index');
 let auth = require('./routes/auth');

@@ -17,7 +17,6 @@
     "express": "^4.16.3",
     "express-sanitize-escape": "^1.1.0",
     "express-session": "^1.15.6",
-    "ipfs-api": "^22.2.4",
     "morgan": "~1.9.0",
     "networked-aframe": "^0.6.1",
     "npm": "^6.2.0",

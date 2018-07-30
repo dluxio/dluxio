@@ -103,8 +103,15 @@ html
       });
       }
       function sendLink(link) {
-      if (link == '/' || link == '/auth') { setCookie('dropOff', `/#{category}/@#{username}/#{permlink}`, 15); }
+      if (link == '/auth') { setCookie('dropOff', `/#{category}/@#{username}/#{permlink}`, 15);
       location.href = '/auth';
+      } else if (link.split('/')[0].includes(":")) {
+      if (confirm('The was a request to navigate away from dlux.io\nWould you like to navigate to:\n' + link)){
+      location.href = link;
+      }
+      } else {
+      location.href = link;
+      }
       }
       function iloaded(){
       steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {

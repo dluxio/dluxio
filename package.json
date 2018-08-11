@@ -6,8 +6,6 @@
     "start": "node server"
   },
   "dependencies": {
-    "aframe": "^0.8.2",
-    "aframe-state-component": "^3.5.4",
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",

@@ -3,7 +3,7 @@ const ENV = process.env;
 const PORT = ENV.PORT || 3000;
 const SECRET = ENV.SECRET || 'placeholder_secret';
 const CLIENT_ID = ENV.CLIENT_ID || 'dlux';
-const REDIRECT_URI = ENV.REDIRECT_URI || 'http://localhost:3000/auth/';
+const REDIRECT_URI = ENV.REDIRECT_URI || 'https://dlux.io/auth/';
 
 let config = {
     port: PORT,

@@ -12,6 +12,7 @@ let easyrtc = require("easyrtc");               // EasyRTC external module
 let request = require('request');
 let index = require('./routes/index');
 let auth = require('./routes/auth');
+let qr = require('./routes/qr');
 let feed = require('./routes/feed');
 let post = require('./routes/post');
 let config = require('./config');
@@ -50,6 +51,7 @@ app.use('/logout', auth);
 app.use('/feed', feed);
 app.use('/post', post);
 app.use('/post/create-post', post);
+app.use('/qr', qr);
 
 
 // catch 404 and forward to error handler

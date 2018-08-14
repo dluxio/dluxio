@@ -136,6 +136,9 @@ html
       var sux = '#{username}/#{permlink}'
       var metadata = result.content[sux].json_metadata
       var hashy = JSON.parse(metadata).vrHash
+      if (!hashy) {
+      hashy = JSON.parse(metadata).arHash
+      }
       if (hashy.split('/')[3] == 'ipfs') {
       hashy = hashy.split('/')[4];
       }

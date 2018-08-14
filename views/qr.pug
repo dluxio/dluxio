@@ -1,0 +1,28 @@
+doctype html
+html(lang='en')
+  head
+    title QR and Marker
+  body
+    canvas#canvas
+    script(src='https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+    script.
+      var qrcode = new QRCode("qrcode");
+      function getUrlVars() {
+      var vars = {};
+      var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+      vars[key] = value;
+      });
+      return vars;
+      }
+      function makeCode () {
+      var elText = getUrlVars().link
+      if (!elText.value) {
+      alert("Input a text");
+      elText.focus();
+      return;
+      }
+      qrcode.makeCode(elText.value);
+      }
+      makeCode();
+    img(src='')

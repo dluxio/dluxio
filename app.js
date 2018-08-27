@@ -55,7 +55,9 @@ app.use('/logout', auth);
 app.use('/feed', feed);
 app.use('/post', post);
 app.use('/post/create-post', post);
-
+app.use("/js", express.static(__dirname + '/easyrtc/js'));
+app.use("/images", express.static(__dirname + '/easyrtc/images'));
+app.use("/css", express.static(__dirname + '/easyrtc/css'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

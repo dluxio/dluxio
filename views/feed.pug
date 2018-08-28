@@ -31,11 +31,13 @@ html(lang='en')
         getLatest(`#{tag}`);
         getAccountInfo(`#{user.name}`);
         setImage(`#{user.name}`)
+        doOnLoad()
         }
     else
       script.
         function popData () {
         getTrending('dlux');
+        doOnLoad()
         }
   body(onload='popData()')
     a-scene(antialias='true')
@@ -105,16 +107,16 @@ html(lang='en')
           a-entity#robotolux-update(geometry='primitive:plane;width:18;height:6.5', material='side:double;color:#4C4C4C;opacity:0.7', position='0 3.5 0', scale='.7 .7 .7', rotation='')
             a-entity#robotolux-pic(geometry='primitive:circle', crossorigin='anonymous', material='side:double;src:#greeter-pic-photo', position='-9 3.25 0.1', scale='2 2 2', do-on-asset-load='#user')
             a-entity#robotolux-name(text-geometry='value:@robotolux;font:#obfont', position='-6.2 1.94 0.1', rotation='', scale='2 2 0.01', material='')
-            a-entity#robotolux-pinned-post-1(text-geometry='value:DLUX Update 0.2;font:#obfont;size:.3', position='-8 .2 0.1', rotation='', scale='2 2 0.01', material='')
-            a-entity#robotolux-pinned-post-2(text-geometry='value:Dynamic post population;font:#obfont;size:.3', position='-8 -.8 0.1', rotation='', scale='2 2 0.01', material='')
-            a-entity#robotolux-pinned-post-3(text-geometry='value:Uploader coming soon!;font:#obfont;size:.3', position='-8 -1.8 0.1', rotation='', scale='2 2 0.01', material='')
+            a-entity#robotolux-pinned-post-1(bind__text-geometry.value='lineOne', text-geometry='value:;font:#obfont;size:.3', position='-8 .2 0.1', rotation='', scale='2 2 0.01', material='')
+            a-entity#robotolux-pinned-post-2(bind__text-geometry.value='lineTwo', text-geometry='value:;font:#obfont;size:.3', position='-8 -.8 0.1', rotation='', scale='2 2 0.01', material='')
+            a-entity#robotolux-pinned-post-3(bind__text-geometry.value='lineThree', text-geometry='value:;font:#obfont;size:.3', position='-8 -1.8 0.1', rotation='', scale='2 2 0.01', material='')
         else
           a-entity#guest-greeting( geometry='primitive:plane;width:18;height:6.5', material='side:double;color:#4C4C4C;opacity:0.7', position='0 3.5 0', scale='.7 .7 .7', rotation='')
             a-entity#greeter-pic(geometry='primitive:circle', crossorigin='anonymous', material='side:double;src:#greeter-pic-photo', position='-9 3.25 0.1', scale='2 2 2', do-on-asset-load='#user')
             a-entity#greeter-name(text-geometry='value:@robotolux;font:#obfont', position='-6.2 1.94 0.1', rotation='', scale='2 2 0.01', material='')
-            a-entity#greeter-pinned-post-1(text-geometry='value:Welcome to DLUX where;font:#obfont;size:.3', position='-8 .1 0.1', rotation='', scale='2 2 0.01', material='')
-            a-entity#greeter-pinned-post-2(text-geometry='value:VR creators and curators;font:#obfont;size:.3', position='-8 -1.3 0.1', rotation='', scale='2 2 0.01', material='')
-            a-entity#greeter-pinned-post-3(text-geometry='value:earn cryptocurrency.;font:#obfont;size:.3', position='-8 -2.7 0.1', rotation='', scale='2 2 0.01', material='')
+            a-entity#greeter-pinned-post-1(bind__text-geometry.value='lineOne', text-geometry='value:;font:#obfont;size:.3', position='-8 .1 0.1', rotation='', scale='2 2 0.01', material='')
+            a-entity#greeter-pinned-post-2(bind__text-geometry.value='lineTwo', text-geometry='value:;font:#obfont;size:.3', position='-8 -1.3 0.1', rotation='', scale='2 2 0.01', material='')
+            a-entity#greeter-pinned-post-3(bind__text-geometry.value='lineThree', text-geometry='value:;font:#obfont;size:.3', position='-8 -2.7 0.1', rotation='', scale='2 2 0.01', material='')
         // DLUX Spotlight
         a-entity#spot-light(light='angle:35;intensity:0.2;type:spot', position='0 8.5 31', rotation='-10.5 0 0')
       // Environment

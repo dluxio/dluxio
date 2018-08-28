@@ -1,3 +1,36 @@
+function doOnLoad () {
+  isChrome();
+}
+function isChrome () {
+// Check for chrome to alert user they may not be seeing everything
+var isChromium = window.chrome;
+var winNav = window.navigator;
+var vendorName = winNav.vendor;
+var isOpera = typeof window.opr !== "undefined";
+var isIEedge = winNav.userAgent.indexOf("Edge") > -1;
+var isIOSChrome = winNav.userAgent.match("CriOS");
+
+if (isIOSChrome) {
+   // is Google Chrome on IOS
+   AFRAME.scenes[0].emit('updateText', {lineOne: 'Welcome to dlux',lineTwo: 'Mobile Chrome is untested.',lineThree: 'Please use firefox'});
+   console.log('Moble Chrome')
+} else if(
+  isChromium !== null &&
+  typeof isChromium !== "undefined" &&
+  vendorName === "Google Inc." &&
+  isOpera === false &&
+  isIEedge === false
+) {
+  // Chrome
+  console.log('Chrome :(')
+  AFRAME.scenes[0].emit('updateText', {lineOne: 'Welcome to dlux',lineTwo: 'Chrome detected! Please',lineThree: 'use firefox to see portals.'});
+} else {
+  // Not Chrome
+  console.log('Anything but Chrome')
+  AFRAME.scenes[0].emit('updateText', {lineOne: 'Welcome to dlux',lineTwo: 'Share anything!',lineThree: 'Earn rewards!'});
+}
+};
+
 AFRAME.registerComponent('url', {
   schema: {default: ''},
   init: function () {
@@ -102,13 +135,14 @@ AFRAME.registerComponent('set-camera', {
         const isMobile = AFRAME.utils.device.isMobile();
         const isHMD = !AFRAME.utils.device.isMobile() && AFRAME.utils.device.checkHeadsetConnected();
         const isGearVR = AFRAME.utils.device.isGearVR();
+        const cursorColor = '#4CC3D9'; //change cursor color
         var cameraRigEl = document.querySelector('#cameraRig');
         let cameraEl = this.el;
         cameraEl.setAttribute('id','head');
         var cursorEl = document.createElement('a-cursor');
         cursorEl.setAttribute('position', '0 0 -1');
 
-        cursorEl.setAttribute('color','#4CC3D9');
+        cursorEl.setAttribute('color','cursorColor');
 
         if (isDesktop === true) { // setup fps controls
           cameraEl.removeAttribute('look-controls');
@@ -127,7 +161,7 @@ AFRAME.registerComponent('set-camera', {
             // fuse cursor
             cursorEl.setAttribute('fuse', true);
             cursorEl.setAttribute('timeout','100');
-            cursorEl.setAttribute('color','#4CC3D9');
+            cursorEl.setAttribute('color','cursorColor');
           });
           // exit VR
           window.addEventListener('exit-vr', e => {
@@ -172,7 +206,7 @@ AFRAME.registerComponent('set-camera', {
             cameraEl.setAttribute('fps-look-controls', true);
             // add cursor
             cursorEl.setAttribute('position', '0 0 -1');
-            cursorEl.setAttribute('color','#4CC3D9');
+            cursorEl.setAttribute('color','cursorColor');
             cameraEl.appendChild(cursorEl);
             //remove hands
             rightCon.parentNode.removeChild(rightCon);
@@ -470,7 +504,10 @@ AFRAME.registerComponent('set-camera', {
         followingCount: "77",
         usdValue: "45",
         createdDate: "ago",
-        menuVis: false
+        menuVis: false,
+        lineOne: '',
+        lineTwo: '',
+        lineThree: ''
       },
       handlers: {
         setLoggedIn: function (state, action) {
@@ -570,6 +607,11 @@ AFRAME.registerComponent('set-camera', {
       },
       addToPortals: function (state, action) {
         state.portals.push(action.portalObj);
+      },
+      updateText: function (state, action) {
+        state.lineOne = action.lineOne;
+        state.lineTwo = action.lineTwo;
+        state.lineThree = action.lineThree;
       },
       delPortals: function (state, action) {
         state.portals = [];

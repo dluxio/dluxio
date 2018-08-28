@@ -55,8 +55,8 @@ function normalizePort(val) {
 var socketServer = socketIo.listen(server, {"log level":1});
 
 var myIceServers = [
+  {"url":"stun:stun.l.google.com:19302"},
   {"url":"stun:stun1.l.google.com:19302"},
-  {"url":"stun:stun.xten.com"},
   {"url":"stun:stun2.l.google.com:19302"},
   {"url":"stun:stun3.l.google.com:19302"}
   // {

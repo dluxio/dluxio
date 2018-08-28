@@ -25,13 +25,15 @@ html(lang='en')
         function popData () {
         setDiscussionsByBlog(`#{username}`);
         getAccountInfo(`#{username}`);
-        setImage(`#{user.name}`)
+        setImage(`#{user.name}`);
+        doOnLoad();
         }
     else
       script.
         function popData () {
         setDiscussionsByBlog(`#{username}`);
         getAccountInfo(`#{username}`);
+        doOnLoad();
         }
   body(onload='popData()')
     a-scene(antialias='true')

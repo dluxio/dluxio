@@ -14,6 +14,8 @@ let index = require('./routes/index');
 let auth = require('./routes/auth');
 let feed = require('./routes/feed');
 let post = require('./routes/post');
+let qr = require('./routes/qr');
+let arpost = require('./routes/arpost');
 let config = require('./config');
 
 let util = require('./modules/util');
@@ -23,9 +25,9 @@ app.set('trust proxy');
 app.use(cors({
   methods: 'GET',
   optionsSuccessStatus: 200,
-  origin: '*'
+  origin: '*, *'
 }));
-app.options('*', cors());
+app.options(cors());
 app.use(session({
     secret: config.session.secret,
     saveUninitialized: true,
@@ -53,6 +55,8 @@ app.use('/', index);
 app.use('/auth', auth);
 app.use('/logout', auth);
 app.use('/feed', feed);
+app.use('/arpost', arpost);
+app.use('/qr', qr);
 app.use('/post', post);
 app.use('/post/create-post', post);
 

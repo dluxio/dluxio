@@ -79,7 +79,17 @@ function getTrendingTags(){
     displayContent(filteredResults, 1)
    })
  }
-
+function generateHotLink(to,amount,memo,uri) {
+ var link = api.sign('transfer', {
+   to: to,
+   amount: amount,
+   memo: memo,
+ }, uri);
+ sendLink(link);
+}
+function passGenerateHotLink(message) {
+            generateHotLink(message.to,message.amount,message.memo,message.uri)
+          }
 /**
  * Gets a set of latest posts from specific authors feed (who they follow)
  * @function

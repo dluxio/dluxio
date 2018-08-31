@@ -108,5 +108,44 @@ router.post('/comment',  util.isAuthenticatedJSON, (req, res) => {
       }
     });
 });
+router.post('/create-arpost', util.isAuthenticated, (req, res) => {
+  let author = req.session.steemconnect.name
+  let topbody = req.body.post
+  let permlink = util.urlString()
+  var tags = req.body.tags.split(',').map(item => item.trim())
+  let primaryTag = 'dluxAR'
+  let otherTags = tags.slice(0, 4)
+  let title = req.body.title
+  let hashy = req.body.vrHash
+  if (hashy.split('/')[3] == 'ipfs') {
+  hashy = hashy.split('/')[4];
+  }
+  let image = req.body.image
+  if (image.split('/')[3] != 'ipfs') {
+  image = 'https://ipfs.io/ipfs/' + image;
+  }
+  let customData = JSON.stringify({
+    'app': 'dlux/v0.0.1',
+    'arHash': hashy,
+    'header': topbody.length
+  })
+  var resource = 'https://dlux.io/dluxAR/@' + author + '/' + permlink
+  var qrCodeURL = 'https://dlux.io/qr?link=https://dlux.io/dluxAR/@' + author + '/' + permlink
+  var linker = `
+  ![scan with phone](` + qrCodeURL + `)
+  QR Code contains [link](` + resource + `) to AR dApp
+  ![point phone here](https://ipfs.io/ipfs/QmasdnvAhsQM5PsN4AzqPXmLcPHNRiLTqaPX6tmFcCR6vd)
+  This is an AR Marker
+  Posted on [dlux](https://dlux.io)`
 
+  var body = topbody + linker
+  steem.broadcast([['comment',{'parent_author': '','parent_permlink': 'dlux','author': author,'permlink': permlink,'title': title,'body': body,'json_metadata': customData}],['comment_options',{'author': author,'permlink': permlink,'max_accepted_payout': '1000000.000 SBD','percent_steem_dollars': 10000,'allow_votes': true,'allow_curation_rewards': true,'extensions': [[0,{'beneficiaries': [{'account': 'dlux-io','weight': 1000}]}]]}]], function (err, response) {
+  if (err) {
+    console.log(err)
+    //res.redirect(`/@${parentAuthor}/${parentPermlink}`)
+  } else {
+    res.redirect('https://dlux.io/@' + author)
+  }
+})
+});
 module.exports = router;

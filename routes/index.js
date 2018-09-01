@@ -45,7 +45,7 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
       let description = 'Blockchain powered social VR'
       let image = 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h'
       let iAm = 'Guest'
-      if (req.session.steemconnect.name){
+      if (req.session.steemconnect){
         iAm = req.session.steemconnect.name
       }
       function render() {

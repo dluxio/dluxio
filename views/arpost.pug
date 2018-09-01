@@ -10,15 +10,15 @@ block content
     form(id="steemPostForm" onsubmit="return validateForm()"  action="/post/create-arpost/" method="post")
       label Title
       input(type="text" name="title")
-      label AR HTML Hash &nbsp;
-        img(src='viz/info-icon.png', width='30', title='Upload the html file containing your scene to IPFS, then copy the hash at the end of the ipfs link: "QmRandomGarbageText"')
-      input#vrHash(type="text" name="vrHash" required)
+      label AR HTML Hash - Leave default if you didn't code a new project. &nbsp;
+        img(src='viz/info-icon.png', width='30', title='You can modify the dApp and post it to IPFS and reference it here')
+      input#vrHash(type="text" name="vrHash" value="QmUFuX4UZqaauD8RLSvnhqXfv7gXaGy27ndVgFj3bAEQJg"required)
       label 360° Image Hash &nbsp;
         img(src='viz/info-icon.png', width='30', title='Take a 360° photo from inside your scene by pressing SHIFT + CTL + ALT + S, upload to IPFS and copy the hash at the end of the ipfs link: "QmRandomGarbageText". This will become the preview for your post in VR.')
-      input(type="text" name="Hash360")
+      input(type="text" name="Hash360" value="QmQnxDkRvmxgfH85Rj1cY4tMfw8B1A9PTDqMNsgWEDZNzG")
       label Blog Image Hash &nbsp;
         img(src='viz/info-icon.png', width='30', title='Take a traditional 16x9 photo by pressing CTL + ALT + S, upload to IPFS and copy the hash at the end of the ipfs link: "QmRandomGarbageText". This will be the main photo for your Steem blog post.')
-      input(type="text" name="image")
+      input(type="text" name="image" value="QmPthDMHuHLpSTaJMWpdPzYxFc3V2ZoFXyevDBoqqzZAwh")
       label Blog Post
       textarea(name="post")
       label Tags separated by commas, all lowercase, no spaces!

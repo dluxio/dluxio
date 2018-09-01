@@ -44,11 +44,10 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
       let title = 'dlux VR'
       let description = 'Blockchain powered social VR'
       let image = 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h'
-      if (req.session.steemconnect.name){
-        let iAm = req.session.steemconnect.name
-      } else
       let iAm = 'Guest'
-      } 
+      if (req.session.steemconnect.name){
+        iAm = req.session.steemconnect.name
+      }
       function render() {
         res.render('single', {
           category: category,

@@ -136,7 +136,7 @@ html
       var sux = '#{username}/#{permlink}'
       var metadata = result.content[sux].json_metadata
       var hashy = JSON.parse(metadata).vrHash
-      if (!hashy) { 
+      if (!hashy) {
       hashy = JSON.parse(metadata).arHash
       }
       if (hashy.split('/')[3] == 'ipfs') {
@@ -150,7 +150,7 @@ html
       iframe.width = '100%'
       iframe.height = '100%'
       iframe.setAttribute('allowfullscreen', true)
-      iframe.setAttribute('allow', 'gyroscope; accelerometer; microphone https://ipfs.io https://dlux.io; camera https://ipfs.io https://dlux.io;')
+      iframe.setAttribute('allow', 'gyroscope; accelerometer; microphone; camera')
       iframe.src = 'https://ipfs.io/ipfs/' + hashy;
       document.body.appendChild(iframe);
       })

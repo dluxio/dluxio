@@ -56,30 +56,7 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
           iAm: iAm
         });
       }
-      if(req.session.steemconnect){
-        iAm = req.session.steemconnect.name
-        render();
-      } else {
-        try {
-          var dataString = '{"jsonrpc":"2.0", "method":"condenser_api.get_content", "params":["' + username + '", "' + permlink + '"], "id":1}';
-          var options = {
-          url: 'https://api.steemit.com',
-          method: 'POST',
-          body: dataString
-          };
-          request(options, function(err, res, body) {
-            let json = JSON.parse(body);
-            title = json.result.title
-            description = json.result.body
-            var metadata = json.result.json_metadata
-            image = JSON.parse(metadata).image[0]
-            render();
-          });
-        } catch (e) {
-          console.log('API error(vanillia template served):\n' + e)
-          render();
-        }
-      }
+      render();
       });
 
 router.get('/@:username/:permlink', (req, res, next) => {

@@ -80,7 +80,7 @@ function getTrendingTags(){
    })
  }
 function generateHotLink(to,amount,memo,uri) {
- var link = api.sign('transfer', {
+ var link = steem.api.sign('transfer', {
    to: to,
    amount: amount,
    memo: memo,
@@ -88,6 +88,9 @@ function generateHotLink(to,amount,memo,uri) {
  sendLink(link);
 }
 function passGenerateHotLink(message) {
+            if(message.uri == ''){
+              message.uri = window.location;
+            }
             generateHotLink(message.to,message.amount,message.memo,message.uri)
           }
 /**

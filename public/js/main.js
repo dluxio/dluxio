@@ -80,11 +80,7 @@ function getTrendingTags(){
    })
  }
 function generateHotLink(to,amount,memo,uri) {
- var link = steem.api.sign('transfer', {
-   to: to,
-   amount: amount,
-   memo: memo,
- }, uri);
+ var link = 'https://steemconnect.com/sign/transfer?from=' + userLoggedIn + '&to=' + to + '&amount=' + amount + '&memo=' + memo + '&uri=' + uri
  sendLink(link);
 }
 function passGenerateHotLink(message) {

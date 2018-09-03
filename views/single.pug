@@ -63,7 +63,9 @@ html
       if (event.origin !== "https://ipfs.io") return;
       var data = event.data;
       if (typeof(window[data.func]) == "function") {
+      if (data.func == 'vote' || data.func == 'aVote' || data.func == 'sendLink' || data.func == 'iloaded' || data.func == 'passGenerateHotLink' ){
       window[data.func].call(null, data.message);
+      }
       }
       }
       function vote(message) {
@@ -113,6 +115,7 @@ html
       location.href = link;
       }
       }
+      userLoggedIn = '#{iAm}'
       function iloaded(){
       steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
       var target = document.getElementById('theIframe').contentWindow

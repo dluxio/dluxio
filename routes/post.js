@@ -34,7 +34,8 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
   Hash360 = Hash360.split('/')[4];
   }
   let customData = JSON.stringify({
-    'app': 'dlux/v0.0.1',
+    'tags': otherTags,
+    'app': 'dlux/0.1',
     'vrHash': hashy,
     'image': 'https://ipfs.io/ipfs/' + image,
     'Hash360': Hash360
@@ -125,7 +126,8 @@ router.post('/create-arpost', util.isAuthenticated, (req, res) => {
   image = 'https://ipfs.io/ipfs/' + image;
   }
   let customData = JSON.stringify({
-    'app': 'dlux/v0.0.1',
+    'tags': otherTags,
+    'app': 'dlux/0.1',
     'arHash': hashy,
     'header': topbody.length
   })

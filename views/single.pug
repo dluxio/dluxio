@@ -145,6 +145,7 @@ html
       if (hashy.split('/')[3] == 'ipfs') {
       hashy = hashy.split('/')[4];
       }
+      var vars = window.location.split('?')[1]
       var iframe = document.createElement('iframe');
       iframe.allowvr = 'yes'
       iframe.id = 'theIframe'
@@ -154,7 +155,7 @@ html
       iframe.height = '100%'
       iframe.setAttribute('allowfullscreen', true)
       iframe.setAttribute('allow', 'gyroscope; accelerometer; microphone; camera')
-      iframe.src = 'https://ipfs.io/ipfs/' + hashy;
+      iframe.src = 'https://ipfs.io/ipfs/' + hashy + '?' + vars;
       document.body.appendChild(iframe);
       })
     body

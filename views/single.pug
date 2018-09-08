@@ -131,6 +131,10 @@ html
       'func': 'steemState',
       'message': result,
       }, "*");
+      target.postMessage({
+      'func': 'memoKey',
+      'message': hasMemoKey(),
+      }, "*");
       })
       }
     script.

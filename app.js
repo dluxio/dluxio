@@ -56,6 +56,7 @@ app.use('/auth', auth);
 app.use('/logout', auth);
 app.use('/feed', feed);
 app.use('/arpost', arpost);
+app.use('/keycam', index);
 app.use('/qr', qr);
 app.use('/post', post);
 app.use('/post/create-post', post);

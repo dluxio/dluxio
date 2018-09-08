@@ -86,6 +86,11 @@ function generateHotLink(to,amount,memo,uri) {
 function passGenerateHotLink(message) {
             if(message.uri == ''){
               message.uri = window.location;
+            } else if (message.uri.charAt(0) == '?') {
+            message.uri = window.location + message.uri
+            }
+            if (!message.skipEncode){
+            var message.memo = encodeMsg(message.memo, message.to)
             }
             generateHotLink(message.to,message.amount,message.memo,message.uri)
           }
@@ -602,6 +607,29 @@ $('.load-more-posts').on('click', (e) => {
   let tag = $('main').data('tag') || ''
   getMoreContent(filter, tag)
 })
+
+function hasMemoKey(){
+  if (localStorage.memoKey) {
+    return true
+  } else {
+    return false
+  }
+}
+
+function encodeMsg(msg, to) {
+  if (!localStorage.memoKey) {
+    return 'No Private Memo Key Found'
+  }
+  steem.api.getAccounts(['#{to}'], (err, result) => {
+    if (err) {
+      return 'Error retrieving Public Memo Key of reciever'
+    }
+    if (result.length === 0) {
+      return 'No such user'
+    }
+  let rcvrMemoKey = result[0].memo_key
+  return steem.memo.encode(localStorage.memoKey, rcvrMemoKey, `##{msg}`);
+}
 
 function setCookie(cname, cvalue, exmins) {
     var d = new Date();

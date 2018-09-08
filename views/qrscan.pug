@@ -1,0 +1,63 @@
+doctype html
+html(lang='en')
+  head
+    title QR and Marker
+    script(src='/js/instascan.min.js')
+    script(src="https://cdn.steemjs.com/lib/latest/steem.min.js")
+  body
+    h3#status Scan #{iAm}'s private or memo key
+    video#preview
+    p#memoMsg
+    p#postingMsg
+    input#clear(type='button' value='Clear Key Storage' onclick='clearLocalStorage()')
+    script.
+      function clearLocalStorage () {
+      localStorage.postingKey = ''
+      localStorage.memoKey = ''
+      document.getElementById('postingMsg').innerHTML = 'Scan Private Posting Key'
+      document.getElementById('memoMsg').innerHTML = 'Scan Private Memo Key'
+      }
+      if (localStorage.memoKey) {
+      document.getElementById('memoMsg').innerHTML = 'Memo Key Stored'
+      } else {
+      document.getElementById('memoMsg').innerHTML = 'Scan Private Memo Key'
+      }
+      if (localStorage.postingKey) {
+      document.getElementById('postingMsg').innerHTML = 'Posting Key Stored'
+      } else {
+      document.getElementById('postingMsg').innerHTML = 'Scan Private Posting Key'
+      }
+      let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+      scanner.addListener('scan', function (content) {
+      steem.api.getAccounts(['#{iAm}'], (err, result) => {
+      if (err) {
+      // Something went wrong
+      }
+      if (result.length === 0) {
+      // No such user
+      }
+      let publicPostingKey = result[0].posting.key_auths[0][0];
+      let publicMemoKey = result[0].memo_key
+      try {
+      //if (steem.auth.wifIsValid(content, publicPostingKey)) {
+      //localStorage.postingKey = content;
+      //document.getElementById('postingMsg').innerHTML = 'Posting Key Stored'
+      //} uncomment when posting has a use
+      if (steem.auth.wifIsValid(content, publicMemoKey)){
+      localStorage.memoKey = content;
+      document.getElementById('memoMsg').innerHTML = 'Memo Key Stored'
+      }
+      } catch (e) {
+      console.log(e)
+      }
+      });
+      });
+      Instascan.Camera.getCameras().then(function (cameras) {
+      if (cameras.length > 0) {
+      scanner.start(cameras[0]);
+      } else {
+      console.error('No cameras found.');
+      }
+      }).catch(function (e) {
+      console.error(e);
+      });

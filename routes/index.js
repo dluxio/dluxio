@@ -82,5 +82,15 @@ router.get('/@:username/:permlink', (req, res, next) => {
       });
     }
 });
+router.get('/keycam', (req, res, next) => {
+      if(req.session.steemconnect){
+        let iAm = req.session.steemconnect.name
+        res.render('qrscan', {
+          iAm: iAm
+        });
+      } else {
+      res.render('index', { title: 'dlux'});
+    }
+});
 
 module.exports = router;

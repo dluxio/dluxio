@@ -90,7 +90,7 @@ function passGenerateHotLink(message) {
             message.uri = window.location + message.uri
             }
             if (!message.skipEncode){
-            var message.memo = encodeMsg(message.memo, message.to)
+            message.memo = encodeMsg(message.memo, message.to);
             }
             generateHotLink(message.to,message.amount,message.memo,message.uri)
           }
@@ -629,6 +629,7 @@ function encodeMsg(msg, to) {
     }
   let rcvrMemoKey = result[0].memo_key
   return steem.memo.encode(localStorage.memoKey, rcvrMemoKey, `##{msg}`);
+});
 }
 
 function setCookie(cname, cvalue, exmins) {

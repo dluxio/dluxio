@@ -105,7 +105,8 @@ html
       });
       }
       function sendLink(link) {
-      if (link == '/auth') { setCookie('dropOff', `/#{category}/@#{username}/#{permlink}`, 15);
+      if (link == '/auth') {
+      setCookie('dropOff', `/#{category}/@#{username}/#{permlink}`, 15);
       location.href = '/auth';
       } else if (link.split('/')[0].includes(":")) {
       if (confirm('The was a request to navigate away from dlux.io\nWould you like to navigate to:\n' + link)){
@@ -149,7 +150,8 @@ html
       if (hashy.split('/')[3] == 'ipfs') {
       hashy = hashy.split('/')[4];
       }
-      var vars = window.location.split('?')[1]
+      console.log('right here')
+      var vars = location.href.split('?')[1]
       var iframe = document.createElement('iframe');
       iframe.allowvr = 'yes'
       iframe.id = 'theIframe'

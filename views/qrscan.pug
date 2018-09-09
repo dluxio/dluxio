@@ -5,16 +5,16 @@ html(lang='en')
     script(src='/js/instascan.min.js')
     script(src="https://cdn.steemjs.com/lib/latest/steem.min.js")
   body
-    h3#status Scan #{iAm}'s private or memo key
+    h3#status Scan #{iAm}'s memo key
     video#preview
     p#memoMsg
-    p#postingMsg
+    //p#postingMsg
     input#clear(type='button' value='Clear Key Storage' onclick='clearLocalStorage()')
     script.
       function clearLocalStorage () {
-      localStorage.postingKey = ''
+      //localStorage.postingKey = ''
       localStorage.memoKey = ''
-      document.getElementById('postingMsg').innerHTML = 'Scan Private Posting Key'
+      //document.getElementById('postingMsg').innerHTML = 'Scan Private Posting Key'
       document.getElementById('memoMsg').innerHTML = 'Scan Private Memo Key'
       }
       if (localStorage.memoKey) {
@@ -22,19 +22,19 @@ html(lang='en')
       } else {
       document.getElementById('memoMsg').innerHTML = 'Scan Private Memo Key'
       }
-      if (localStorage.postingKey) {
-      document.getElementById('postingMsg').innerHTML = 'Posting Key Stored'
-      } else {
-      document.getElementById('postingMsg').innerHTML = 'Scan Private Posting Key'
-      }
+      //if (localStorage.postingKey) {
+      //document.getElementById('postingMsg').innerHTML = 'Posting Key Stored'
+      //} else {
+      //document.getElementById('postingMsg').innerHTML = 'Scan Private Posting Key'
+      //}
       let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
       scanner.addListener('scan', function (content) {
       steem.api.getAccounts(['#{iAm}'], (err, result) => {
       if (err) {
-      // Something went wrong
+      console.log(err)
       }
       if (result.length === 0) {
-      // No such user
+      console.log('No Such User')
       }
       let publicPostingKey = result[0].posting.key_auths[0][0];
       let publicMemoKey = result[0].memo_key

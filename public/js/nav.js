@@ -236,10 +236,11 @@ AFRAME.registerComponent('set-camera', {
     AFRAME.scenes[0].emit('setVoteMsg', {val: message});
   }
   function setDiscussionsByBlog (query, initial) {
-    var queryI = { tag: 'dlux', limit: 20 }
-    if(query) {queryI = { tag: query, limit: 20 }}
+    var queryI = { tag: 'dlux', limit: 99 }
+    if(query) {queryI = { tag: query, limit: 99 }}
     steem.api.getDiscussionsByBlog(queryI, (err, result) => {
       var filteredResults = []
+      console.log(result,result.length)
       for (i = 0; i < result.length; i++) {
         var vr = JSON.parse(result[i].json_metadata).vrHash
           if (vr) {
@@ -250,8 +251,8 @@ AFRAME.registerComponent('set-camera', {
       })
     }
   function getTrending(query, initial){
-    var queryI = { tag: 'dlux', limit: 20 }
-    if(query) {queryI = { tag: query, limit: 20 }}
+    var queryI = { tag: 'dlux', limit: 99 }
+    if(query) {queryI = { tag: query, limit: 99 }}
     steem.api.getDiscussionsByTrending(queryI, (err, result) => {
       if (err === null) {
         var filteredResults = []
@@ -268,8 +269,8 @@ AFRAME.registerComponent('set-camera', {
       });
     }
   function getLatest(query, initial){
-    var queryI = { tag: 'dlux', limit: 20 }
-    if(query) {queryI = { tag: query, limit: 20 }}
+    var queryI = { tag: 'dlux', limit: 99 }
+    if(query) {queryI = { tag: query, limit: 99 }}
     steem.api.getDiscussionsByCreated(queryI, (err, result) => {
       if (err === null) {
         var filteredResults = []

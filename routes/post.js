@@ -114,7 +114,7 @@ router.post('/create-arpost', util.isAuthenticated, (req, res) => {
   let topbody = req.body.post
   let permlink = util.urlString()
   var tags = req.body.tags.split(',').map(item => item.trim())
-  let primaryTag = 'dluxAR'
+  let primaryTag = 'dluxar'
   let otherTags = tags.slice(0, 4)
   let title = req.body.title
   let hashy = req.body.vrHash

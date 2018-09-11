@@ -18,7 +18,7 @@ html(lang='en')
     script(src='https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js')
     script(src='https://unpkg.com/aframe-state-component@3.4.0/dist/aframe-state-component.min.js')
     script(src='https://cdn.steemjs.com/lib/latest/steem.min.js')
-    script(src='https://rawgit.com/ngokevin/kframe/master/components/layout/dist/aframe-layout-component.js')
+    script(src='https://unpkg.com/aframe-layout-component@5.2/dist/aframe-layout-component.min.js')
     script(src='../js/nav.js')
     if user
       script.
@@ -137,5 +137,5 @@ html(lang='en')
       // otolux tag
       a-entity#ototag(url="http://otolux.la", geometry='primitive:plane;height:0.77;width:5.91', material='side:double', position='0 0.369 10', rotation='0 -180 0')
         a-entity#heart(obj-model='obj:/viz/love.obj', material='color:#ff0000', position='', rotation='', scale='0.015 0.015 0.015', url='http://otolux.la')
-        a-entity(id='made in', text-geometry='value:made in LA        by OTOLUX;font:#obfont;size:0.15', position='-2.5343438681418977 -0.13075031335592513 0.09999999999999998', scale='2 2 0.01', visible='', material='color:#333333', rotation='')
-        a-entity(id='made in', text-geometry='value:made in LA        by OTOLUX;font:#obfont;size:0.15', position='2.4983945090055526 -0.13075031335592513 -0.09999999999999935', scale='2 2 0.01', visible='', material='color:#333333', rotation='0 180 0')
+        a-entity(id='madein1', text-geometry='value:made in LA        by OTOLUX;font:#obfont;size:0.15', position='-2.5343438681418977 -0.13075031335592513 0.09999999999999998', scale='2 2 0.01', visible='', material='color:#333333', rotation='')
+        a-entity(id='madein2', text-geometry='value:made in LA        by OTOLUX;font:#obfont;size:0.15', position='2.4983945090055526 -0.13075031335592513 -0.09999999999999935', scale='2 2 0.01', visible='', material='color:#333333', rotation='0 180 0')

@@ -4,7 +4,7 @@ let favicon = require('serve-favicon');
 let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
-let session = require('express-session');
+let cookieSession = require('cookie-session');
 let expressSanitized = require('express-sanitize-escape');
 let cors = require('cors');
 let socketIo = require("socket.io");        // web socket external module
@@ -17,10 +17,11 @@ let post = require('./routes/post');
 let qr = require('./routes/qr');
 let arpost = require('./routes/arpost');
 let config = require('./config');
-
 let util = require('./modules/util');
-
+let steemconnect2 = require('sc2-sdk');
 let app = express();
+var passport = require('passport');
+var SteemConnectStrategy = require('passport-steemconnect').Strategy;
 app.set('trust proxy');
 app.use(cors({
   methods: 'GET',
@@ -28,10 +29,10 @@ app.use(cors({
   origin: '*, *'
 }));
 app.options(cors());
-app.use(session({
-    secret: config.session.secret,
-    saveUninitialized: true,
-    resave: false
+app.use(cookieSession({
+  name: 'session',
+  keys: ['secret'],
+  maxAge: 6 * 60 * 60 * 1000   //6 hours
 }));
 
 // view engine setup
@@ -50,10 +51,46 @@ app.use(express.static(path.join(__dirname, 'public')));
 // custom middleware
 app.use(util.setUser);
 
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
+});
+
+passport.deserializeUser(function(obj, cb) {
+  cb(null, obj);
+});
+
+
+passport.use(new SteemConnectStrategy({
+  authorizationURL: `https://v2.steemconnect.com/oauth2/authorize`,
+  tokenURL: `https://v2.steemconnect.com/api/oauth2/token`,
+  clientID: config.auth.client_id,
+  clientSecret: config.session.secret,
+  callbackURL: config.auth.redirect_uri,
+  scope: ['login','vote','comment','comment_options','custom_json'],
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    profile.steem = accessToken
+    return cb(null, profile);
+   }   ));
+app.use(passport.initialize());
+app.use(passport.session());
+app.get('/auth/logout', function (req, res){
+          req.logOut();
+          res.redirect('/');
+});
+app.get('/auth',
+    passport.authenticate('steemconnect'));
+app.get('/auth/oauth/oauth2/callback',
+    passport.authenticate('steemconnect', { failureRedirect: '/arpost' }),
+    function(req, res) {
+          res.redirect('/');
+          delete req.session.returnTo;
+        });
+
 
 app.use('/', index);
-app.use('/auth', auth);
-app.use('/logout', auth);
+//app.use('/auth', auth);
+//app.use('/logout', auth);
 app.use('/feed', feed);
 app.use('/arpost', arpost);
 app.use('/keycam', index);

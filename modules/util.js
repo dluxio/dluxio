@@ -8,14 +8,14 @@ module.exports.urlString = () => {
 }
 
 module.exports.isAuthenticated = (req, res, next) => {
-  if (req.session.access_token)
+  if (req.user)
       return next();
 
   res.redirect('/');
 }
 
 module.exports.isAuthenticatedJSON = (req, res, next) => {
-  if (req.session.access_token)
+  if (req.user)
       return next();
 
   res.json({ error: { error_description: 'Please Sign In' }})

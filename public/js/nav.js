@@ -240,7 +240,6 @@ AFRAME.registerComponent('set-camera', {
     if(query) {queryI = { tag: query, limit: 99 }}
     steem.api.getDiscussionsByBlog(queryI, (err, result) => {
       var filteredResults = []
-      console.log(result,result.length)
       for (i = 0; i < result.length; i++) {
         var vr = JSON.parse(result[i].json_metadata).vrHash
           if (vr) {
@@ -324,7 +323,6 @@ AFRAME.registerComponent('set-camera', {
           youtube: profileData.youtube,
           vrhome: profileData.vrhome
         }
-        console.log(authorData)
         return authorData;
     });
   }
@@ -412,7 +410,6 @@ AFRAME.registerComponent('set-camera', {
             username: user.name,
             createdDate: new Date (user.created)
           }
-          console.log(data)
           AFRAME.scenes[0].emit('setData', {val: data});
         });
         });
@@ -420,6 +417,7 @@ AFRAME.registerComponent('set-camera', {
       });
     }
     function setPortals(action) {
+
       //if (!action.initial) {action.result.shift()}
       for (let i = 0; i < action.length ; i++) {
         let post = action[i];
@@ -471,11 +469,10 @@ AFRAME.registerComponent('set-camera', {
         votesVal: '$' + val,
         category: post.category
       }
-      console.log(portal)
       AFRAME.scenes[0].emit('addToPortals', {portalObj: portal});
       });
       }
-      AFRAME.scenes[0].emit('setPortalsIndex', {val: i});
+      AFRAME.scenes[0].emit('setPortalsIndex', null);
     }
     AFRAME.registerState({
       initialState: {
@@ -506,6 +503,7 @@ AFRAME.registerComponent('set-camera', {
         usdValue: "45",
         createdDate: "ago",
         menuVis: false,
+        portalToucher: false,
         lineOne: '',
         lineTwo: '',
         lineThree: ''
@@ -532,7 +530,6 @@ AFRAME.registerComponent('set-camera', {
           state.followingCount = action.val.followingCount
           state.usdValue = action.val.usdValue
           state.createdDate = action.val.createdDate
-          console.log(state)
         },
         setcreatedDate: function (state, action) {
           state.createdDate = action.val;
@@ -589,7 +586,7 @@ AFRAME.registerComponent('set-camera', {
         state.portals = action.val;
       },
       setPortalsIndex: function (state, action) {
-        state.portalIndex = action.val;
+        state.portals.__dirty = true;
       },
       setPortalCat: function (state, action) {
         state.portalCat = action.val;
@@ -619,6 +616,7 @@ AFRAME.registerComponent('set-camera', {
       }
     }
   });
+
 
   function setCookie(cname, cvalue, exmins) {
       var d = new Date();

@@ -1,20 +1,22 @@
 let express = require('express');
 let util = require('../modules/util');
-let steem = require('../modules/steemconnect')
+let steem = require('../modules/steemconnect');
+let passport = require('passport');
 let router = express.Router();
 
 
 /* GET a create post page. */
 router.get('/', util.isAuthenticated, (req, res, next) => {
     res.render('post', {
-      name: req.session.steemconnect.name
+      user: req.user.username
     });
 });
 
 /* POST a create post broadcast to STEEM network. */
 
 router.post('/create-post', util.isAuthenticated, (req, res) => {
-  let author = req.session.steemconnect.name
+  steem.setAccessToken(req.user.steem)
+  let author = req.user.username
   let topbody = req.body.post
   let permlink = util.urlString()
   var tags = req.body.tags.split(',').map(item => item.trim())
@@ -43,7 +45,7 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
   var linker = `
   #### [View in VR @dlux-io](https://dlux.io/dlux/@` + author + `/` + permlink + `)`
   var body = topbody + linker
-  steem.broadcast([['comment',{'parent_author': '','parent_permlink': 'dlux','author': author,'permlink': permlink,'title': title,'body': body,'json_metadata': customData}],['comment_options',{'author': author,'permlink': permlink,'max_accepted_payout': '1000000.000 SBD','percent_steem_dollars': 10000,'allow_votes': true,'allow_curation_rewards': true,'extensions': [[0,{'beneficiaries': [{'account': 'dlux-io','weight': 1000}]}]]}]], function (err, response) {
+  passport.steemconnect.broadcast([['comment',{'parent_author': '','parent_permlink': 'dlux','author': author,'permlink': permlink,'title': title,'body': body,'json_metadata': customData}],['comment_options',{'author': author,'permlink': permlink,'max_accepted_payout': '1000000.000 SBD','percent_steem_dollars': 10000,'allow_votes': true,'allow_curation_rewards': true,'extensions': [[0,{'beneficiaries': [{'account': 'dlux-io','weight': 1000}]}]]}]], function (err, response) {
   if (err) {
     console.log(err)
     //res.redirect(`/@${parentAuthor}/${parentPermlink}`)
@@ -56,6 +58,7 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
 /* POST a create customJson broadcast to STEEM network. */
 
 router.post('/custom', util.isAuthenticated, (req, res) => {
+  steem.setAccessToken(req.user.steem)
   var params = {
     required_auths: req.body.requiredAuths,
     required_posting_auths: req.body.requiredPostingAuths,
@@ -74,8 +77,9 @@ router.post('/custom', util.isAuthenticated, (req, res) => {
 /* POST a vote broadcast to STEEM network. */
 
 router.post('/vote', util.isAuthenticatedJSON, (req, res) => {
+    steem.setAccessToken(req.user.steem)
     let postId = req.body.postId
-    let voter = req.session.steemconnect.name
+    let voter = req.user.username
     let author = req.body.author
     let permlink = req.body.permlink
     let weight = parseInt(req.body.weight, 10)
@@ -90,8 +94,9 @@ router.post('/vote', util.isAuthenticatedJSON, (req, res) => {
 })
 
 /* POST a comment broadcast to STEEM network. */
-router.post('/comment',  util.isAuthenticatedJSON, (req, res) => {
-    let author = req.session.steemconnect.name
+router.post('/comment', util.isAuthenticatedJSON, (req, res) => {
+    steem.setAccessToken(req.user.steem)
+    let author = req.user.username
     let permlink = req.body.parentPermlink + '-' + util.urlString()
     let title = 'RE: ' + req.body.parentTitle
     let body = req.body.message
@@ -109,8 +114,9 @@ router.post('/comment',  util.isAuthenticatedJSON, (req, res) => {
       }
     });
 });
-router.post('/create-arpost', util.isAuthenticated, (req, res) => {
-  let author = req.session.steemconnect.name
+router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
+  steem.setAccessToken(req.user.steem)
+  let author = req.user.username
   let topbody = req.body.post
   let permlink = util.urlString()
   var tags = req.body.tags.split(',').map(item => item.trim())

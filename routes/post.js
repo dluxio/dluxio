@@ -45,7 +45,7 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
   var linker = `
   #### [View in VR @dlux-io](https://dlux.io/dlux/@` + author + `/` + permlink + `)`
   var body = topbody + linker
-  passport.steemconnect.broadcast([['comment',{'parent_author': '','parent_permlink': 'dlux','author': author,'permlink': permlink,'title': title,'body': body,'json_metadata': customData}],['comment_options',{'author': author,'permlink': permlink,'max_accepted_payout': '1000000.000 SBD','percent_steem_dollars': 10000,'allow_votes': true,'allow_curation_rewards': true,'extensions': [[0,{'beneficiaries': [{'account': 'dlux-io','weight': 1000}]}]]}]], function (err, response) {
+  steem.broadcast([['comment',{'parent_author': '','parent_permlink': 'dlux','author': author,'permlink': permlink,'title': title,'body': body,'json_metadata': customData}],['comment_options',{'author': author,'permlink': permlink,'max_accepted_payout': '1000000.000 SBD','percent_steem_dollars': 10000,'allow_votes': true,'allow_curation_rewards': true,'extensions': [[0,{'beneficiaries': [{'account': 'dlux-io','weight': 1000}]}]]}]], function (err, response) {
   if (err) {
     console.log(err)
     //res.redirect(`/@${parentAuthor}/${parentPermlink}`)

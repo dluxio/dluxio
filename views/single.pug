@@ -112,6 +112,8 @@ html
       if (confirm('The was a request to navigate away from dlux.io\nWould you like to navigate to:\n' + link)){
       location.href = link;
       }
+      } else if (link == 'back()'){
+      window.history.back();
       } else {
       location.href = link;
       }

@@ -61,8 +61,8 @@ passport.deserializeUser(function(obj, cb) {
 
 
 passport.use(new SteemConnectStrategy({
-  authorizationURL: `https://v2.steemconnect.com/oauth2/authorize`,
-  tokenURL: `https://v2.steemconnect.com/api/oauth2/token`,
+  authorizationURL: `https://steemconnect.com/oauth2/authorize`,
+  tokenURL: `https://steemconnect.com/api/oauth2/token`,
   clientID: config.auth.client_id,
   clientSecret: config.session.secret,
   callbackURL: config.auth.redirect_uri,

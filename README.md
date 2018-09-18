@@ -1,7 +1,7 @@
 # dluxio
 ## Decentralized Limitless User Experiences
 
-A community driven decentralized project that aims to provide VR as a decentralized alternative to social media/media distribution that is inherently monetized. And AR as an alternative to extra devices for modern points of interactivity; terminals and points-of-sale.
+A community driven decentralized project that aims to provide VR as a decentralized alternative to social media/media distribution that is inherently monetized. Also AR as an alternative to extra devices for modern points of interactivity; terminals and points-of-sale.
 
 [![Waffle.io - Columns and their card count](https://badge.waffle.io/dluxio/dluxio.svg?columns=all)](https://waffle.io/dluxio/dluxio)
 
@@ -33,22 +33,25 @@ Check out our [Waffle board](https://waffle.io/dluxio/dluxio/join)
 [Waffle board](https://waffle.io/dluxio/dluxio/join)
 [Discord](https://discord.gg/Beeb38j)
 
-Have node installed, clone our github:
+### Run dlux locally
+Everything about dlux except for the domain in posted hyperlinks is decentralized.
+
+> Caution, potential security risk: The steemconnect default localhost credentials are public, if somebody gets your access token/localhost cookie they can trigger scope actions such as vote and post on your behalf, running ipfs content from a localhost node may present a XSS vector.
+
+Have node installed, clone our .git
 ```
 dluxio$ npm install
 dluxio$ npm start
 ```
-navigate to `localhost:3000` which will now ask you to log in to steemconnect.
-There is a VR welcome screen that leads to a single page steem explorer. There is a hidden `/post` feature that stores a blog post with an reference to an IPFS hash.
+navigate to `localhost:3000`
 
 ### Contributors
 
-* @disregardfiat - Steven Ettinger | Technical Lead
-* @markegiles - Mark E Giles | Project Lead
+* @disregardfiat - Steven Ettinger
+* @markegiles - Mark E Giles
 
 ### Many Thanks
-@sambillingham - STEEM boilerplate
 The A-frame community at large. Especially if you've written tutorials or answered questions on SO:
 @ngokevin, @donmccurdy, @haydenlee, etc etc
-All the open-source developers and companies that believe in open protocols.
-Further contributors prove Creative Commons & MIT licensing can be blended with proof of brain rewards to further our development as a society.
+All the open-source developers and companies that believe in open protocols. The developers, witnesses, and users/believers of the steem blockchain.
+Further contributors prove Creative Commons & MIT licensing can be blended with proof of brain rewards to further our development as a society :)

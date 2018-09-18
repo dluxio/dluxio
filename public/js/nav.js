@@ -40,17 +40,14 @@ AFRAME.registerComponent('url', {
           });
       }
     });
+
 AFRAME.registerComponent('vote', {
         schema: {default: ''},
         init: function () {
-          console.log(this.data)
           var author = this.data.split( '/' )[2]
-          author = author.split( '@' )[1]
-          console.log(author)
-          var permlink = this.data.split( '/' )[3]
-          console.log(permlink)
-          var weight = parseInt(this.data.split( '/' )[4])
-          console.log(weight)
+          author = author.split( '@' )[1] || 'disregardfiat'
+          var permlink = this.data.split( '/' )[3] || 'nope'
+          var weight = parseInt(this.data.split( '/' )[4]) || 1
           var voteMessage = {'permlink': permlink, 'author': author, 'weight': weight}
           this.el.addEventListener('click', function () {
             aVote(voteMessage);
@@ -471,8 +468,10 @@ AFRAME.registerComponent('set-camera', {
       }
       AFRAME.scenes[0].emit('addToPortals', {portalObj: portal});
       });
+      if (i == action.length - 1) {
+        AFRAME.scenes[0].emit('setPortalsIndex', '');
       }
-      AFRAME.scenes[0].emit('setPortalsIndex', null);
+      }
     }
     AFRAME.registerState({
       initialState: {
@@ -483,7 +482,7 @@ AFRAME.registerComponent('set-camera', {
         userImage:"https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2FOTOLUX%20Tag.png?1528445998829",
         userCover:"",
         userRep: "",
-        portals: [],
+        portals:[],
         portalIndex: 0,
         portalCat: "",
         portalSub: "dlux-io",
@@ -586,7 +585,10 @@ AFRAME.registerComponent('set-camera', {
         state.portals = action.val;
       },
       setPortalsIndex: function (state, action) {
-        state.portals.__dirty = true;
+        var ph = document.querySelector('#portalsHolder')
+        var asceneEl = ph.parentNode
+        setTimeout(function(){asceneEl.removeChild(ph)
+        asceneEl.appendChild(ph)}, 1000)
       },
       setPortalCat: function (state, action) {
         state.portalCat = action.val;

@@ -126,9 +126,9 @@ html(lang='en')
       a-entity#cameraRig
         a-camera(set-camera='', wasd-controls='', look-controls='')
       // Portals
-      a-entity#portalsHolder(position='4 1.6 -8', rotation='0 0 0', bind-for='for: portalItem; in: portals', layout='type: line; plane: x; margin: 3')
+      a-entity#portalsHolder(position='4 1.6 -8', rotation='0 0 0', bind-for='for: portalItem; in: portals', layout='layout: line; plane: x; margin: 3')
         template
-          a-entity.poster-image(show-info='', loaded, geometry='primitive:sphere', material='side:double;src:https://ipfs.io/ipfs/{{ portalItem.Hash360 }}', crossorigin='anonymous', position='0 0 0', rotation='0 180 0', scale='1 1 1')
+          a-entity.poster-image(show-info='', geometry='primitive:sphere', material='side:double;src:https://ipfs.io/ipfs/{{ portalItem.Hash360 }}', crossorigin='anonymous', position='0 0 0', rotation='0 180 0', scale='1 1 1')
             a-sphere(url='{{ portalItem.postUrl}}', opacity='0', scale='1.001 1.001 1.001')
             a-entity(look-at='[camera]')
               a-plane.voteButton(vote='{{ portalItem.postUrl }}/10000', position='-1.25 0 .5', depth='0.5', width='0.5', material='side:double;src:https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2Fupvote.png?1528448497979;transparent:true;alphaTest:0.82')

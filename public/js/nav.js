@@ -34,11 +34,17 @@ if (isIOSChrome) {
 AFRAME.registerComponent('url', {
   schema: {default: ''},
   init: function () {
-          var url = this.data;
+          var url = this.data
           this.el.addEventListener('click', function () {
-            window.location.href = url;
+            window.location.href = url
           });
-      }
+      },
+  update: function () {
+          var url = this.data
+          this.el.addEventListener('click', function () {
+                window.location.href = url
+              });
+          }
     });
 
 AFRAME.registerComponent('vote', {
@@ -538,7 +544,7 @@ AFRAME.registerComponent('set-camera', {
         userCover:"",
         userRep: "",
         p1: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p2: {key: '', visible: true, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p2: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
         p3: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
         p4: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
         p5: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},

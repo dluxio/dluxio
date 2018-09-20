@@ -23,7 +23,7 @@ if (isIOSChrome) {
 ) {
   // Chrome
   console.log('Chrome :(')
-  AFRAME.scenes[0].emit('updateText', {lineOne: 'Welcome to dlux',lineTwo: 'Chrome detected! Please',lineThree: 'use firefox to see portals.'});
+  AFRAME.scenes[0].emit('updateText', {lineOne: 'Welcome to dlux',lineTwo: 'Share anything!',lineThree: 'Earn rewards!'});
 } else {
   // Not Chrome
   console.log('Anything but Chrome')
@@ -45,7 +45,7 @@ AFRAME.registerComponent('vote', {
         schema: {default: ''},
         init: function () {
           var author = this.data.split( '/' )[2]
-          author = author.split( '@' )[1] || 'disregardfiat'
+          //author = author.split( '@' )[1] || 'disregardfiat'
           var permlink = this.data.split( '/' )[3] || 'nope'
           var weight = parseInt(this.data.split( '/' )[4]) || 1
           var voteMessage = {'permlink': permlink, 'author': author, 'weight': weight}
@@ -58,14 +58,16 @@ AFRAME.registerComponent('vote', {
 AFRAME.registerComponent('trending', { //trending="tag" to pull another tag, default delux
         schema: {default: ''},
         init: function () {
-            AFRAME.scenes[0].emit('delPortals', {portalObj: portal});
+          this.el.addEventListener('click', function () {
+            AFRAME.scenes[0].emit('delPortals', null);
             getTrending(this.data);
-          }
+          });
+        }
         });
 AFRAME.registerComponent('profile', { //trending="tag" to pull another tag, default delux
         schema: {default: ''},
         init: function () {
-            AFRAME.scenes[0].emit('delPortals', {portalObj: portal});
+            AFRAME.scenes[0].emit('delPortals', null);
             if (!this.data) { this.data = 'dlux-io' }
             setDiscussionsByBlog(this.data);
             getAccountInfo(this.data);
@@ -74,8 +76,10 @@ AFRAME.registerComponent('profile', { //trending="tag" to pull another tag, defa
 AFRAME.registerComponent('new', { //new="username" to pull user feeds, defalt dlux tag
         schema: {default: ''},
         init: function () {
-            AFRAME.scenes[0].emit('delPortals', {portalObj: portal});
+          this.el.addEventListener('click', function () {
+            AFRAME.scenes[0].emit('delPortals', null);
             getLatest(this.data);
+          });
       }
     });
 AFRAME.registerComponent('show-info', {
@@ -133,97 +137,84 @@ AFRAME.registerComponent('set-camera', {
         const isHMD = !AFRAME.utils.device.isMobile() && AFRAME.utils.device.checkHeadsetConnected();
         const isGearVR = AFRAME.utils.device.isGearVR();
         const cursorColor = '#4CC3D9'; //change cursor color
-        var cameraRigEl = document.querySelector('#cameraRig');
+        var cameraRigEl = document.querySelector('#player');
         let cameraEl = this.el;
-        cameraEl.setAttribute('id','head');
-        var cursorEl = document.createElement('a-cursor');
-        cursorEl.setAttribute('position', '0 0 -1');
 
-        cursorEl.setAttribute('color','cursorColor');
+        // create & add cursor
+        var cursorEl = document.querySelector('#myCursor');
+        cursorEl.setAttribute('position', '0 0 -1');
+        cursorEl.setAttribute('color', cursorColor);
 
         if (isDesktop === true) { // setup fps controls
-          cameraEl.removeAttribute('look-controls');
-          cameraEl.setAttribute('position', '0 0 0');
-          cameraEl.setAttribute('fps-look-controls', true);
-          cameraEl.appendChild(cursorEl);
     		}
-        if (isMobile === true) { // setup twoway controls
-          cameraEl.removeAttribute('look-controls');
-          cameraEl.setAttribute('twoway-motion', 'speed:40');
-          cursorEl.setAttribute('fuse', false);
-          cursorEl.setAttribute('color','#000');
-          cameraEl.appendChild(cursorEl);
+        if (isMobile === true) {
           // enter VR
           window.addEventListener('enter-vr', e => {
             // fuse cursor
-            cursorEl.setAttribute('fuse', true);
-            cursorEl.setAttribute('timeout','100');
-            cursorEl.setAttribute('color','cursorColor');
+            //cursorEl.setAttribute('fuse', true);
+            //cursorEl.setAttribute('timeout','100');
           });
+
           // exit VR
           window.addEventListener('exit-vr', e => {
-          // disable fuse
-            cursorEl.setAttribute('fuse', false);
-            cursorEl.setAttribute('color','#000');
+            // disab  le fuse
+            //cursorEl.setAttribute('fuse', false);
           });
         }
         if (isHMD === true) {
-          // switch to fps controls
-          cameraEl.removeAttribute('look-controls');
-          cameraEl.setAttribute('position', '0 0 0');
-          cameraEl.setAttribute('fps-look-controls', true);
-          // add hands
-          var rightCon = document.createElement('a-entity');
-          rightCon.setAttribute('id','right-hand');
-          rightCon.setAttribute('laser-controls','right');
-          rightCon.setAttribute('teleport-controls', 'button: trigger; collision-entities: #env; cameraRig: #cameraRig; teleportOrigin: #head;');
-          var leftCon = document.createElement('a-entity');
-          leftCon.setAttribute('id','left-hand');
-          leftCon.setAttribute('hand-controls','left');
-          leftCon.setAttribute('teleport-controls', 'button: trigger; collision-entities: #env; cameraRig: #cameraRig; teleportOrigin: #head;');
-          // add cursor
-          cameraEl.appendChild(cursorEl);
-          // enter VR - switch to look controls, remove cursor, add controllers
+          // on enter VR
           window.addEventListener('enter-vr', e => {
-            // switch to look controls
-            cameraEl.removeAttribute('fps-look-controls');
-            cameraEl.setAttribute('position', '0 0 0');
-            cameraEl.setAttribute('look-controls', true);
+
             // remove cursor
             cursorEl.parentNode.removeChild(cursorEl);
+             // create hands
+            var rightCon = document.createElement('a-entity');
+            rightCon.setAttribute('id','rightHand');
+            rightCon.setAttribute('laser-controls','right');
+            rightCon.setAttribute('teleport-controls', 'button: trigger; collision-entities: #env; cameraRig: #player; teleportOrigin: #head;');
+            //rightCon.setAttribute('networked', 'template:#hand-template;attachTemplateToLocal:false;');
+
+            var leftCon = document.createElement('a-entity');
+            leftCon.setAttribute('id','leftHand');
+            leftCon.setAttribute('hand-controls','left');
+            leftCon.setAttribute('teleport-controls', 'button: trigger; collision-entities: #env; cameraRig: #player; teleportOrigin: #head;')
+            //leftCon.setAttribute('networked', 'template:#hand-template;attachTemplateToLocal:false;');
+
             //attach hands
             cameraRigEl.appendChild(rightCon);
             cameraRigEl.appendChild(leftCon);
           });
-          // exit VR - switch to fps controls, add cursor, remove controllers
+
+          // on exit VR
           window.addEventListener('exit-vr', e => {
-            // switch to fps controls
-            cameraEl.removeAttribute('look-controls');
-            cameraEl.setAttribute('position', '0 0 0');
-            cameraEl.setAttribute('fps-look-controls', true);
+
             // add cursor
             cursorEl.setAttribute('position', '0 0 -1');
-            cursorEl.setAttribute('color','cursorColor');
+            cursorEl.setAttribute('color', cursorColor);
             cameraEl.appendChild(cursorEl);
+            var rightCon = document.querySelector('#rightHand')
+            var leftCon = document.querySelector('#leftHand')
             //remove hands
             rightCon.parentNode.removeChild(rightCon);
             leftCon.parentNode.removeChild(leftCon);
           });
         }
         if (isGearVR === true) {
-          // remove cursor added by mobile
+          // remove cursor
           cursorEl.parentNode.removeChild(cursorEl);
+
           // add gear controller
-          var leftCon = document.createElement('a-entity');
-          leftCon.setAttribute('id','left-hand');
-          leftCon.setAttribute('laser-controls','button: trackpaddown');
-          leftCon.setAttribute('teleport-controls', 'button: trigger; collision-entities: #env; cameraRig: #cameraRig; teleportOrigin: #head;');
-          cameraRigEl.appendChild(leftCon);
           var rightCon = document.createElement('a-entity');
-          rightCon.setAttribute('id','right-hand');
+          rightCon.setAttribute('id','rightHand');
           rightCon.setAttribute('laser-controls','button: trackpaddown');
-          rightCon.setAttribute('teleport-controls', 'button: trigger; collision-entities: #env; cameraRig: #cameraRig; teleportOrigin: #head;');
+          rightCon.setAttribute('teleport-controls', 'button: trigger; collision-entities: #env; cameraRig: #player; teleportOrigin: #head;');
           cameraRigEl.appendChild(rightCon);
+
+          var leftCon = document.createElement('a-entity');
+          leftCon.setAttribute('id','leftHand');
+          leftCon.setAttribute('laser-controls','button: trackpaddown');
+          leftCon.setAttribute('teleport-controls', 'button: trigger; collision-entities: #env; cameraRig: #player; teleportOrigin: #head;');
+          cameraRigEl.appendChild(leftCon);
         }
     	}
     });
@@ -414,7 +405,6 @@ AFRAME.registerComponent('set-camera', {
       });
     }
     function setPortals(action) {
-
       //if (!action.initial) {action.result.shift()}
       for (let i = 0; i < action.length ; i++) {
         let post = action[i];
@@ -452,24 +442,89 @@ AFRAME.registerComponent('set-camera', {
         if (portalImage.split('/')[3] == 'ipfs') {
         portalImage = portalImage.split('/')[4];
         }
+        function removeMD(md, options) {
+  options = options || {};
+  options.listUnicodeChar = options.hasOwnProperty('listUnicodeChar') ? options.listUnicodeChar : false;
+  options.stripListLeaders = options.hasOwnProperty('stripListLeaders') ? options.stripListLeaders : true;
+  options.gfm = options.hasOwnProperty('gfm') ? options.gfm : true;
+  options.useImgAltText = options.hasOwnProperty('useImgAltText') ? options.useImgAltText : false;
+
+  var output = md || '';
+
+  // Remove horizontal rules (stripListHeaders conflict with this rule, which is why it has been moved to the top)
+  output = output.replace(/^(-\s*?|\*\s*?|_\s*?){3,}\s*$/gm, '');
+
+  try {
+    if (options.stripListLeaders) {
+      if (options.listUnicodeChar)
+        output = output.replace(/^([\s\t]*)([\*\-\+]|\d+\.)\s+/gm, options.listUnicodeChar + ' $1');
+      else
+        output = output.replace(/^([\s\t]*)([\*\-\+]|\d+\.)\s+/gm, '$1');
+    }
+    if (options.gfm) {
+      output = output
+        // Header
+        .replace(/\n={2,}/g, '\n')
+        // Fenced codeblocks
+        .replace(/~{3}.*\n/g, '')
+        // Strikethrough
+        .replace(/~~/g, '')
+        // Fenced codeblocks
+        .replace(/`{3}.*\n/g, '');
+    }
+    output = output
+      // Remove HTML tags
+      .replace(/<[^>]*>/g, '')
+      // Remove setext-style headers
+      .replace(/^[=\-]{2,}\s*$/g, '')
+      // Remove footnotes?
+      .replace(/\[\^.+?\](\: .*?$)?/g, '')
+      .replace(/\s{0,2}\[.*?\]: .*?$/g, '')
+      // Remove images
+      .replace(/\!\[(.*?)\][\[\(].*?[\]\)]/g, options.useImgAltText ? '$1' : '')
+      // Remove inline links
+      .replace(/\[(.*?)\][\[\(].*?[\]\)]/g, '$1')
+      // Remove blockquotes
+      .replace(/^\s{0,3}>\s?/g, '')
+      // Remove reference-style links?
+      .replace(/^\s{1,2}\[(.*?)\]: (\S+)( ".*?")?\s*$/g, '')
+      // Remove atx-style headers
+      .replace(/^(\n)?\s{0,}#{1,6}\s+| {0,}(\n)?\s{0,}#{0,} {0,}(\n)?\s{0,}$/gm, '$1$2$3')
+      // Remove emphasis (repeat the line to remove double emphasis)
+      .replace(/([\*_]{1,3})(\S.*?\S{0,1})\1/g, '$2')
+      .replace(/([\*_]{1,3})(\S.*?\S{0,1})\1/g, '$2')
+      // Remove code blocks
+      .replace(/(`{3,})(.*?)\1/gm, '$2')
+      // Remove inline code
+      .replace(/`(.+?)`/g, '$1')
+      // Replace two or more newlines with exactly two? Not entirely sure this belongs here...
+      .replace(/\n{2,}/g, '\n\n');
+  } catch(e) {
+    console.error(e);
+    return md;
+  }
+  return output;
+};
       let portal = {
+        key: i,
+        visible: true,
         postId: post.id,
         postUrl: post.url,
         author: post.author,
         authorImage: authorData.profile_image,
         title: post.title,
-        body: post.body,
-        Hash360: portalImage,
+        body: removeMD(post.body).trim().substr(0, 220),
+        Hash360: 'https://ipfs.io/ipfs/' + portalImage,
         permlink: post.permlink ,
         rep: steem.formatter.reputation(post.author_reputation),
         votesNum: post.net_votes,
         votesVal: '$' + val,
         category: post.category
       }
-      AFRAME.scenes[0].emit('addToPortals', {portalObj: portal});
+      AFRAME.scenes[0].emit('setPortalsIndex', portal);
       });
-      if (i == action.length - 1) {
-        AFRAME.scenes[0].emit('setPortalsIndex', '');
+      if (i == action.length -1) {
+        AFRAME.scenes[0].emit('touchState', null);
       }
       }
     }
@@ -482,7 +537,26 @@ AFRAME.registerComponent('set-camera', {
         userImage:"https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2FOTOLUX%20Tag.png?1528445998829",
         userCover:"",
         userRep: "",
-        portals:[],
+        p1: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p2: {key: '', visible: true, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p3: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p4: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p5: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p6: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p7: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p8: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p9: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p10: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p11: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p12: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p13: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p14: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p15: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p16: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p17: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p18: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p19: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p20: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
         portalIndex: 0,
         portalCat: "",
         portalSub: "dlux-io",
@@ -502,7 +576,7 @@ AFRAME.registerComponent('set-camera', {
         usdValue: "45",
         createdDate: "ago",
         menuVis: false,
-        portalToucher: false,
+        toucher: false,
         lineOne: '',
         lineTwo: '',
         lineThree: ''
@@ -585,10 +659,69 @@ AFRAME.registerComponent('set-camera', {
         state.portals = action.val;
       },
       setPortalsIndex: function (state, action) {
-        var ph = document.querySelector('#portalsHolder')
-        var asceneEl = ph.parentNode
-        setTimeout(function(){asceneEl.removeChild(ph)
-        asceneEl.appendChild(ph)}, 1000)
+        switch (action.key) {
+          case 0:
+              state.p1 = action;
+              break;
+          case 1:
+              state.p2 = action;
+              break;
+          case 2:
+              state.p3 = action;
+              break;
+          case 3:
+              state.p4 = action;
+              break;
+          case 4:
+              state.p5 = action;
+              break;
+          case 5:
+              state.p6 = action;
+              break;
+          case 6:
+              state.p7 = action;
+              break;
+          case 7:
+              state.p8 = action;
+              break;
+          case 8:
+              state.p9 = action;
+              break;
+          case 9:
+              state.p10 = action;
+              break;
+          case 10:
+              state.p11 = action;
+              break;
+          case 11:
+              state.p12 = action;
+              break;
+          case 12:
+              state.p13 = action;
+              break;
+          case 13:
+              state.p14 = action;
+              break;
+          case 14:
+              state.p15 = action;
+              break;
+          case 15:
+              state.p16 = action;
+              break;
+          case 16:
+              state.p17 = action;
+              break;
+          case 17:
+              state.p18 = action;
+              break;
+          case 18:
+              state.p19 = action;
+              break;
+          case 19:
+              state.p20 = action;
+        }
+      },
+      touchState: function (state, action) {
       },
       setPortalCat: function (state, action) {
         state.portalCat = action.val;
@@ -614,7 +747,26 @@ AFRAME.registerComponent('set-camera', {
         state.lineThree = action.lineThree;
       },
       delPortals: function (state, action) {
-        state.portals = [];
+        state.p1 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p2 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p3 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p4 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p5 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p6 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p7 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p8 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p9 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p10 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p11 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p12 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p13 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p14 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p15 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p16 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p17 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p18 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p19 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p20 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
       }
     }
   });

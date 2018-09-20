@@ -155,12 +155,11 @@ html
       console.log('right here')
       var vars = location.href.split('?')[1]
       var iframe = document.createElement('iframe');
-      iframe.allowvr = 'yes'
       iframe.id = 'theIframe'
-      iframe.allowfullscreen = 'yes'
       iframe.scrolling = 'no'
       iframe.width = '100%'
       iframe.height = '100%'
+      iframe.setAttribute('allowvr', true)
       iframe.setAttribute('allowfullscreen', true)
       iframe.setAttribute('allow', 'gyroscope; accelerometer; microphone; camera')
       iframe.src = 'https://ipfs.io/ipfs/' + hashy + '?' + vars;

@@ -14,22 +14,22 @@ router.get('/', (req, res, next) =>  {
 
 /* GET a users blog profile page. */
 router.get('/@:username', (req, res, next) => {
-  if(req.user){
+  if(req.user){ var user = req.user.username} else {var user = 'Guest'}
       let username = req.params.username
       res.render('profile', {
-        user: username,
+        user: user,
+        userfeed: username,
       });
-    } else {
-      res.render('profile');
-    }
 });
 
 /* GET a users blog feed page. */
 router.get('/@:username/feed', (req, res, next) => {
+  if(req.user){ var user = req.user.username} else {var user = 'Guest'}
       let username = req.params.username
-      res.render('feed', {
+      res.render('profile', {
+        user: user,
         feed: 'user-feed',
-        user: username
+        userfeed: username,
       });
 });
 

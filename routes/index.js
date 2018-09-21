@@ -108,7 +108,7 @@ router.get('/@:username/feed', (req, res, next) => {
         description = removeMD(result.body).trim().substr(0, 220)
         if (JSON.parse(result.json_metadata).image[0]) {
           image = JSON.parse(result.json_metadata).image[0]
-          if (!image.split('/')[1]){
+          if (image.charAt(0) == 'Q'){
           image = 'https://ipfs.io/ipfs/' + image;
         }
         }
@@ -118,7 +118,6 @@ router.get('/@:username/feed', (req, res, next) => {
     }
       /* GET a single post page page. */
 router.get('/:category/@:username/:permlink', (req, res, next) => {
-      console.log(req.route.stack[0].method, req.route.stack[0])
       let category = req.params.category
       let username = req.params.username
       let permlink = req.params.permlink
@@ -129,7 +128,7 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
       if (req.user){
         iAm = req.user.username
         render()
-      } else if(req.route.stack[0].method == 'get'){
+      } else if(req.route.stack[0].method == 'get'){ //something that would only get sent when requestiong from off platform? hmm
         getSteemContent(username, permlink).then(data => {
         steemData = data;
         title = steemData.title;

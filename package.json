@@ -26,7 +26,8 @@
     "request": "^2.87.0",
     "sc2-sdk": "^1.0.2",
     "serve-favicon": "~2.4.5",
-    "socketio": "^1.0.0"
+    "socketio": "^1.0.0",
+    "steem": "^0.7.1"
   },
   "devDependencies": {
     "claudia": "^4.0.0",

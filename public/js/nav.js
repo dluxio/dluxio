@@ -534,6 +534,7 @@ AFRAME.registerComponent('set-camera', {
       }
       }
     }
+    const InitPortal = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''};
     AFRAME.registerState({
       initialState: {
         loggedIn: false,
@@ -543,26 +544,26 @@ AFRAME.registerComponent('set-camera', {
         userImage:"https://cdn.glitch.com/5ba0e9a1-e1be-470c-be6c-b6bd1b8e349e%2FOTOLUX%20Tag.png?1528445998829",
         userCover:"",
         userRep: "",
-        p1: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p2: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p3: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p4: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p5: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p6: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p7: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p8: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p9: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p10: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p11: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p12: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p13: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p14: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p15: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p16: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p17: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p18: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p19: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
-        p20: {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''},
+        p1: InitPortal,
+        p2: InitPortal,
+        p3: InitPortal,
+        p4: InitPortal,
+        p5: InitPortal,
+        p6: InitPortal,
+        p7: InitPortal,
+        p8: InitPortal,
+        p9: InitPortal,
+        p10: InitPortal,
+        p11: InitPortal,
+        p12: InitPortal,
+        p13: InitPortal,
+        p14: InitPortal,
+        p15: InitPortal,
+        p16: InitPortal,
+        p17: InitPortal,
+        p18: InitPortal,
+        p19: InitPortal,
+        p20: InitPortal,
         portalIndex: 0,
         portalCat: "",
         portalSub: "dlux-io",
@@ -753,26 +754,26 @@ AFRAME.registerComponent('set-camera', {
         state.lineThree = action.lineThree;
       },
       delPortals: function (state, action) {
-        state.p1 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
-        state.p2 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
-        state.p3 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
-        state.p4 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
-        state.p5 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
-        state.p6 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
-        state.p7 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
-        state.p8 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
-        state.p9 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
-        state.p10 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
-        state.p11 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
-        state.p12 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
-        state.p13 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
-        state.p14 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
-        state.p15 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
-        state.p16 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
-        state.p17 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
-        state.p18 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
-        state.p19 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
-        state.p20 = {key: '', visible: false, postId: '', postUrl: '', author: '', authorImage: '', title: '', body: '', Hash360: '', permlink: '', rep: '', votesNum: '', votesVal: '$', category: ''}
+        state.p1 = InitPortal
+        state.p2 = InitPortal
+        state.p3 = InitPortal
+        state.p4 = InitPortal
+        state.p5 = InitPortal
+        state.p6 = InitPortal
+        state.p7 = InitPortal
+        state.p8 = InitPortal
+        state.p9 = InitPortal
+        state.p10 = InitPortal
+        state.p11 = InitPortal
+        state.p12 = InitPortal
+        state.p13 = InitPortal
+        state.p14 = InitPortal
+        state.p15 = InitPortal
+        state.p16 = InitPortal
+        state.p17 = InitPortal
+        state.p18 = InitPortal
+        state.p19 = InitPortal
+        state.p20 = InitPortal
       }
     }
   });

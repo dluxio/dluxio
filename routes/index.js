@@ -100,38 +100,22 @@ router.get('/@:username/feed', (req, res, next) => {
 
 
 /* OG:data call for .head requests*/
-router.head('/:category/@:username/:permlink', (req, res, next) => {
-      let category = 'none'
-      let username = req.params.username
-      let permlink = req.params.permlink
-      let title = 'dlux VR'
-      let description = 'Blockchain powered social VR'
-      let image = 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h'
-      let iAm = 'Guest'
+      function getSteemContent(username, permlink) {
+        return new Promise(function(resolve, reject) {
       steem.api.getContent(username, permlink, function(err, result) {
-        if (err) {render()}
+        if (err) {resolve({title: 'dlux VR', description: 'Blockchain powered social VR', image: 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h'});}
         title = result.title
         description = removeMD(result.body).trim().substr(0, 220)
-        image = JSON.parse(result.json_metadata).image[0]
-        if (image.split('/')[1]){
-        render()
-      } else {
-        image = 'https://ipfs.io/ipfs/' + image;
-        render()
-      }
+        if (JSON.parse(result.json_metadata).image[0]) {
+          image = JSON.parse(result.json_metadata).image[0]
+          if (!image.split('/')[1]){
+          image = 'https://ipfs.io/ipfs/' + image;
+        }
+        }
+        resolve({title: title, description: description, image: image});
       });
-      function render() {
-        res.render('single', {
-          category: category,
-          username: username,
-          permlink: permlink,
-          OGtitle: title,
-          OGdescription: description,
-          OGimage: image,
-          iAm: iAm
-        });
-      }
       });
+    }
       /* GET a single post page page. */
 router.get('/:category/@:username/:permlink', (req, res, next) => {
       let category = req.params.category
@@ -143,7 +127,15 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
       let iAm = 'Guest'
       if (req.user){
         iAm = req.user.username
-      }
+        render()
+      } else if(req.route.stack[0].method == 'head'){
+        try { var steemData = getSteemContent(username, permlink)
+        title = steemData.title
+        description = steemData.description
+        image = steemData.image
+        render()
+        } catch(e){render()}
+      } else {render()}
       function render() {
         res.render('single', {
           category: category,
@@ -155,7 +147,6 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
           iAm: iAm
         });
       }
-      render();
       });
 
 router.get('/@:username/:permlink', (req, res, next) => {

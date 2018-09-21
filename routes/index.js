@@ -101,7 +101,7 @@ router.get('/@:username/feed', (req, res, next) => {
 
 /* OG:data call for .head requests*/
       function getSteemContent(username, permlink) {
-        return new Promise(function(resolve, reject) {
+        return new Promise((resolve, reject) => {
       steem.api.getContent(username, permlink, function(err, result) {
         if (err) {resolve({title: 'dlux VR', description: 'Blockchain powered social VR', image: 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h'});}
         title = result.title
@@ -118,6 +118,7 @@ router.get('/@:username/feed', (req, res, next) => {
     }
       /* GET a single post page page. */
 router.get('/:category/@:username/:permlink', (req, res, next) => {
+      console.log(req.route.stack[0].method, req.route.stack[0])
       let category = req.params.category
       let username = req.params.username
       let permlink = req.params.permlink
@@ -128,13 +129,14 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
       if (req.user){
         iAm = req.user.username
         render()
-      } else if(req.route.stack[0].method == 'head'){
-        try { var steemData = getSteemContent(username, permlink)
-        title = steemData.title
-        description = steemData.description
-        image = steemData.image
-        render()
-        } catch(e){render()}
+      } else if(req.route.stack[0].method == 'get'){
+        getSteemContent(username, permlink).then(data => {
+        steemData = data;
+        title = steemData.title;
+        description = steemData.description;
+        image = steemData.image;
+        render();
+      });
       } else {render()}
       function render() {
         res.render('single', {

@@ -105,7 +105,7 @@ router.get('/@:username/feed', (req, res, next) => {
       steem.api.getContent(username, permlink, function(err, result) {
         if (err) {resolve({title: 'dlux VR', description: 'Blockchain powered social VR', image: 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h'});}
         title = result.title
-        description = removeMD(result.body).trim().substr(0, 220)
+        description = removeMD(result.body).trim().substr(0, 220) + '... by@' + result.author
         if (JSON.parse(result.json_metadata).image[0]) {
           image = JSON.parse(result.json_metadata).image[0]
           if (image.charAt(0) == 'Q'){
@@ -130,12 +130,11 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
         render()
       } else if(req.route.stack[0].method == 'get'){ //something that would only get sent when requestiong from off platform? hmm
         getSteemContent(username, permlink).then(data => {
-        steemData = data;
-        title = steemData.title;
-        description = steemData.description;
-        image = steemData.image;
-        render();
-      });
+          title = data.title;
+          description = data.description;
+          image = data.image;
+          render();
+        });
       } else {render()}
       function render() {
         res.render('single', {

@@ -9,6 +9,7 @@ html(lang='en')
     video#preview
     p#memoMsg
     //p#postingMsg
+    //input#keyField(type='text')
     input#clear(type='button' value='Clear Key Storage' onclick='clearLocalStorage()')
     script.
       function clearLocalStorage () {
@@ -29,6 +30,10 @@ html(lang='en')
       //}
       let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
       scanner.addListener('scan', function (content) {
+      storeKey(content);
+      console.log('scanned')
+      });
+      function storeKey(key){
       steem.api.getAccounts(['#{iAm}'], (err, result) => {
       if (err) {
       console.log(err)
@@ -39,19 +44,19 @@ html(lang='en')
       let publicPostingKey = result[0].posting.key_auths[0][0];
       let publicMemoKey = result[0].memo_key
       try {
-      //if (steem.auth.wifIsValid(content, publicPostingKey)) {
-      //localStorage.postingKey = content;
+      //if (steem.auth.wifIsValid(key, publicPostingKey)) {
+      //localStorage.postingKey = key;
       //document.getElementById('postingMsg').innerHTML = 'Posting Key Stored'
       //} uncomment when posting has a use
-      if (steem.auth.wifIsValid(content, publicMemoKey)){
-      localStorage.memoKey = content;
+      if (steem.auth.wifIsValid(key, publicMemoKey)){
+      localStorage.memoKey = key;
       document.getElementById('memoMsg').innerHTML = 'Memo Key Stored'
       }
       } catch (e) {
       console.log(e)
       }
       });
-      });
+      }
       Instascan.Camera.getCameras().then(function (cameras) {
       if (cameras.length > 0) {
       scanner.start(cameras[0]);

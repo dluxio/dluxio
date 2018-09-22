@@ -40,7 +40,8 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
     'app': 'dlux/0.1',
     'vrHash': hashy,
     'image': 'https://ipfs.io/ipfs/' + image,
-    'Hash360': Hash360
+    'Hash360': Hash360,
+    'headerLength': topbody.length
   })
   var linker = `
   #### [View in VR @dlux-io](https://dlux.io/dlux/@` + author + `/` + permlink + `)`

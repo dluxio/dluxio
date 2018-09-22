@@ -63,7 +63,7 @@ html
       if (event.origin !== "https://ipfs.io") return;
       var data = event.data;
       if (typeof(window[data.func]) == "function") {
-      if (data.func == 'vote' || data.func == 'aVote' || data.func == 'sendLink' || data.func == 'iloaded' || data.func == 'passGenerateHotLink' ){
+      if (data.func == 'vote' || data.func == 'follow' || data.func == 'aVote' || data.func == 'sendLink' || data.func == 'iloaded' || data.func == 'passGenerateHotLink' ){
       window[data.func].call(null, data.message);
       }
       }
@@ -82,6 +82,24 @@ html
       var target = document.getElementById('theIframe').contentWindow
       target.postMessage({
       'func': 'steemState',
+      'message': result,
+      }, "*");
+      })
+      })
+      }
+      function follow(message) {
+      console.log('got ' + message)
+      $.post({
+      url: '/post/follow/',
+      dataType: 'json',
+      data: {
+      'following': message
+      }
+      }, (response) => {
+      steem.api.getAccounts([`#{iAm}`], (err, result) => {
+      var target = document.getElementById('theIframe').contentWindow
+      target.postMessage({
+      'func': 'accountUpdate',
       'message': result,
       }, "*");
       })

@@ -105,7 +105,7 @@ router.get('/@:username/feed', (req, res, next) => {
       steem.api.getContent(username, permlink, function(err, result) {
         if (err) {resolve({title: 'dlux VR', description: 'Blockchain powered social VR', image: 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h'});}
         title = result.title
-        description = removeMD(result.body).trim().substr(0, 220) + '... by@' + result.author
+        description = removeMD(result.body).trim().substr(0, 220) + '... by @' + result.author
         if (JSON.parse(result.json_metadata).image[0]) {
           image = JSON.parse(result.json_metadata).image[0]
           if (image.charAt(0) == 'Q'){

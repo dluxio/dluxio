@@ -74,6 +74,17 @@ router.post('/custom', util.isAuthenticated, (req, res) => {
 });
 });
 
+router.post('/follow', util.isAuthenticated, (req, res) => {
+  steem.setAccessToken(req.user.steem)
+  steem.follow(req.user.username, req.body.following, function (err, res) {
+    if (err) {
+      res.json({ err: err })
+    } else {
+      res.json({ msg: result })
+    }
+});
+});
+
 /* POST a vote broadcast to STEEM network. */
 
 router.post('/vote', util.isAuthenticatedJSON, (req, res) => {
@@ -120,7 +131,7 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
   let topbody = req.body.post
   let permlink = util.urlString()
   var tags = req.body.tags.split(',').map(item => item.trim())
-  let primaryTag = 'dluxar'
+  //let primaryTag = 'dluxar'
   let otherTags = tags.slice(0, 4)
   let title = req.body.title
   let hashy = req.body.vrHash
@@ -135,10 +146,10 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
     'tags': otherTags,
     'app': 'dlux/0.1',
     'arHash': hashy,
-    'header': topbody.length
+    'headerLength': topbody.length
   })
-  var resource = 'https://dlux.io/dluxAR/@' + author + '/' + permlink
-  var qrCodeURL = 'https://dlux.io/qr?link=https://dlux.io/dluxAR/@' + author + '/' + permlink
+  var resource = 'https://dlux.io/dluxar/@' + author + '/' + permlink
+  var qrCodeURL = 'https://dlux.io/qr?link=' + resource
   var linker = `
   ![scan with phone](` + qrCodeURL + `)
   QR Code contains [link](` + resource + `) to AR dApp

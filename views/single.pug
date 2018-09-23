@@ -147,14 +147,18 @@ html
       var encoded = steem.memo.encode(localStorage.memoKey, result[0].memo_key, `#` + message.memo);
       target.postMessage({
       'func': 'encoded',
-      'message': encoded,
+      'message': {
+      'encoded': encoded,
+      'msgid': message.msgid, }
       }, "*");
       }
       function signDecode(message) {
       var decoded = steem.memo.decode(localStorage.memoKey, message.encoded);
       target.postMessage({
       'func': 'decoded',
-      'message': decoded,
+      'message': {
+      'decoded': decoded,
+      'msgid': message.msgid, }
       }, "*");
       }
       userLoggedIn = '#{iAm}'

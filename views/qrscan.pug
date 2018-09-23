@@ -9,14 +9,18 @@ html(lang='en')
     video#preview
     p#memoMsg
     //p#postingMsg
-    //input#keyField(type='text')
-    input#clear(type='button' value='Clear Key Storage' onclick='clearLocalStorage()')
+    input#keyField(type='text')
+    input#clear(type='button' value='Clear or Store Key' onclick='clearLocalStorage()')
     script.
       function clearLocalStorage () {
+      if(document.querySelector('#keyField').value == '') {
       //localStorage.postingKey = ''
       localStorage.memoKey = ''
       //document.getElementById('postingMsg').innerHTML = 'Scan Private Posting Key'
       document.getElementById('memoMsg').innerHTML = 'Scan Private Memo Key'
+      } else {
+      storeKey(document.querySelector('#keyField').value)
+      }
       }
       if (localStorage.memoKey) {
       document.getElementById('memoMsg').innerHTML = 'Memo Key Stored'

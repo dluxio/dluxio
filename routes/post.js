@@ -154,7 +154,7 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
   var linker = `
   ![scan with phone](` + qrCodeURL + `)
   QR Code contains [link](` + resource + `) to AR dApp
-  ![point phone here](https://ipfs.io/ipfs/QmasdnvAhsQM5PsN4AzqPXmLcPHNRiLTqaPX6tmFcCR6vd)
+  ![point phone here](https://ipfs.io/ipfs/QmXursyDdgcXHuVPSNtTN8G95SPDJGfUhyZVE97kngBWnN)
   This is an AR Marker
   Posted on [dlux](https://dlux.io)`
 

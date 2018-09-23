@@ -63,7 +63,7 @@ html
       if (event.origin !== "https://ipfs.io") return;
       var data = event.data;
       if (typeof(window[data.func]) == "function") {
-      if (data.func == 'vote' || data.func == 'follow' || data.func == 'aVote' || data.func == 'sendLink' || data.func == 'iloaded' || data.func == 'passGenerateHotLink' ){
+      if (data.func == 'vote' || data.func == 'signDecode' || data.func == 'signEncode' || data.func == 'follow' || data.func == 'aVote' || data.func == 'sendLink' || data.func == 'iloaded' || data.func == 'passGenerateHotLink' ){
       window[data.func].call(null, data.message);
       }
       }
@@ -135,6 +135,27 @@ html
       } else {
       location.href = link;
       }
+      }
+      function signEncode(message) {
+      steem.api.getAccounts([message.to], (err, result) => {
+      if (err) {
+      console.log(err)
+      }
+      if (result.length === 0) {
+      console.log('No Such User')
+      }
+      var encoded = steem.memo.encode(localStorage.memoKey, result[0].memo_key, `#` + message.memo);
+      target.postMessage({
+      'func': 'encoded',
+      'message': encoded,
+      }, "*");
+      }
+      function signDecode(message) {
+      var decoded = steem.memo.decode(localStorage.memoKey, message.encoded);
+      target.postMessage({
+      'func': 'decoded',
+      'message': decoded,
+      }, "*");
       }
       userLoggedIn = '#{iAm}'
       function iloaded(){

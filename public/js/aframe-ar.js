@@ -8060,7 +8060,7 @@ AFRAME.registerComponent('arjs-anchor', {
 				arProfile.defaultMarkerParameters.markersAreaEnabled = false
 			}else if( _this.data.preset === 'dlux' ){
 				arProfile.defaultMarkerParameters.type = 'pattern'
-				arProfile.defaultMarkerParameters.patternUrl = 'https://dlux.io/js/dlux.patt'
+				arProfile.defaultMarkerParameters.patternUrl = 'https://cdn.glitch.com/33ccaf44-5a7d-415b-bf71-6123ce2c7d0e%2Fpattern-marker-new.patt?1537593528289'
 				arProfile.defaultMarkerParameters.markersAreaEnabled = false
 			}else if( _this.data.preset === 'kanji' ){
 				arProfile.defaultMarkerParameters.type = 'pattern'

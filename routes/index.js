@@ -128,7 +128,7 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
       if (req.user){
         iAm = req.user.username
         render()
-      } else if(req.route.stack[0].method == 'get'){ //something that would only get sent when requestiong from off platform? hmm
+      } else if(req.route.stack[0].method == 'get'){ //something that would only get sent when requestiong from off platform for OG:data? hmm
         getSteemContent(username, permlink).then(data => {
           title = data.title;
           description = data.description;
@@ -150,25 +150,36 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
       });
 
 router.get('/@:username/:permlink', (req, res, next) => {
-      let username = req.params.username
-      let permlink = req.params.permlink
-      if(req.user){
-        let iAm = req.user.username
-        res.render('single', {
-          category: 'dlux',
-          username: username,
-          permlink: permlink,
-          iAm: iAm
-        });
-      } else {
-      res.render('single', {
-        category: 'dlux',
-        username: username,
-        permlink: permlink,
-        iAm: "Guest"
-      });
-    }
+  let username = req.params.username
+  let permlink = req.params.permlink
+  let title = 'dlux VR'
+  let description = 'Blockchain powered social VR'
+  let image = 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h'
+  let iAm = 'Guest'
+  if (req.user){
+    iAm = req.user.username
+    render()
+  } else if(req.route.stack[0].method == 'get'){ //something that would only get sent when requestiong from off platform for OG:data? hmm
+    getSteemContent(username, permlink).then(data => {
+      title = data.title;
+      description = data.description;
+      image = data.image;
+      render();
+    });
+  } else {render()}
+  function render() {
+    res.render('single', {
+      category: category,
+      username: username,
+      permlink: permlink,
+      OGtitle: title,
+      OGdescription: description,
+      OGimage: image,
+      iAm: iAm
+    });
+  }
 });
+
 router.get('/keycam', (req, res, next) => {
       if(req.user){
         let iAm = req.user.username

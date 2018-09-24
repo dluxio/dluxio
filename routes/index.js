@@ -104,14 +104,14 @@ router.get('/@:username/feed', (req, res, next) => {
         return new Promise((resolve, reject) => {
       steem.api.getContent(username, permlink, function(err, result) {
         if (err) {resolve({title: 'dlux VR', description: 'Blockchain powered social VR', image: 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h'});}
-        title = result.title
-        description = removeMD(result.body).trim().substr(0, 220) + '... by @' + result.author
+        var title = result.title
+        var description = removeMD(result.body).trim().substr(0, 220) + '... by @' + result.author
+        var image
         if (JSON.parse(result.json_metadata).image[0]) {
           image = JSON.parse(result.json_metadata).image[0]
           if (image.charAt(0) == 'Q'){
-          image = 'https://ipfs.io/ipfs/' + image;
-        }
-        }
+          image = 'https://ipfs.io/ipfs/' + image;}
+        } else {image = 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h' }
         resolve({title: title, description: description, image: image});
       });
       });

@@ -132,10 +132,11 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
   let topbody = req.body.post
   let permlink = util.urlString()
   var tags = req.body.tags.split(',').map(item => item.trim())
-  //let primaryTag = 'dluxar'
+  let primaryTag = 'dluxar'
   let otherTags = tags.slice(0, 4)
   let title = req.body.title
   let hashy = req.body.vrHash
+  let header = topbody.length
   if (hashy.split('/')[3] == 'ipfs') {
   hashy = hashy.split('/')[4];
   }
@@ -147,7 +148,7 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
     'tags': otherTags,
     'app': 'dlux/0.1',
     'arHash': hashy,
-    'headerLength': topbody.length
+    'headerLength': header
   })
   var resource = 'https://dlux.io/dluxar/@' + author + '/' + permlink
   var qrCodeURL = 'https://dlux.io/qr?link=' + resource

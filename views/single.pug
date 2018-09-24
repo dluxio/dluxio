@@ -138,6 +138,7 @@ html
       }
       }
       function signEncode(message) {
+      //store these public keys maybe?
       steem.api.getAccounts([message.to], (err, result) => {
       if (err) {
       console.log(err)
@@ -152,6 +153,7 @@ html
       'memo': encoded,
       'msgid': message.msgid, }
       }, "*");
+      });
       }
       function signDecode(message) {
       var decoded = steem.memo.decode(localStorage.memoKey, message.encoded);

@@ -9,7 +9,7 @@ let router = express.Router();
 router.get('/', (req, res, next) => {
   if (req){
     res.render('arpost', {
-      name: req.user.username
+      user: req.user.username
     });
   }
   else {

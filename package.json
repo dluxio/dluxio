@@ -16,22 +16,22 @@
     "express": "^4.16.3",
     "express-sanitize-escape": "^1.1.0",
     "express-session": "^1.15.6",
-    "morgan": "~1.9.0",
+    "morgan": "^1.9.1",
     "networked-aframe": "^0.6.1",
-    "npm": "^6.4.0",
+    "npm": "^6.4.1",
     "passport": "^0.4.0",
     "passport-steemconnect": "^1.1.0",
     "pug": "2.0.0-beta11",
     "qr-image": "^3.2.0",
-    "request": "^2.87.0",
-    "sc2-sdk": "^1.0.2",
+    "request": "^2.88.0",
+    "sc2-sdk": "^1.1.0",
     "serve-favicon": "~2.4.5",
     "socketio": "^1.0.0",
     "steem": "^0.7.1"
   },
   "devDependencies": {
     "claudia": "^4.0.0",
-    "webpack": "^4.16.2",
+    "webpack": "^4.19.1",
     "webpack-cli": "^2.1.5"
   }
 }

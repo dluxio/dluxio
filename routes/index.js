@@ -107,11 +107,13 @@ router.get('/@:username/feed', (req, res, next) => {
         var title = result.title
         var description = removeMD(result.body).trim().substr(0, 220) + '... by @' + result.author
         var image
+        try {
         if (JSON.parse(result.json_metadata).image[0]) {
           image = JSON.parse(result.json_metadata).image[0]
           if (image.charAt(0) == 'Q'){
           image = 'https://ipfs.io/ipfs/' + image;}
-        } else {image = 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h' }
+        }
+        } catch (e) {image = 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h' }
         resolve({title: title, description: description, image: image});
       });
       });

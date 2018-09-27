@@ -148,6 +148,7 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
     'tags': otherTags,
     'app': 'dlux/0.1',
     'arHash': hashy,
+    'image': 'https://ipfs.io/ipfs/' + image,
     'headerLength': header
   })
   var resource = 'https://dlux.io/dluxar/@' + author + '/' + permlink

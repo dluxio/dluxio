@@ -96,7 +96,7 @@ router.get('/p/esther', (req, res, next) => {
       res.redirect('/dluxar/@dlux-io/tydl2qzlcimah1bjhm7gw9n0ev6f9yhz');
 });
 router.get('/ico', (req, res, next) => {
-      res.redirect('/dlux/@dlux-io/nt25obzrmdlb1pe13fgelwb2g32gdvcg');
+      res.redirect('/dlux/@dlux-io/c87j8xxkq1eudykaelft40lt6n1gg91z');
 });
 
 /* GET a users blog feed page. */

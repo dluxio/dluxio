@@ -95,6 +95,9 @@ router.get('/p/steve', (req, res, next) => {
 router.get('/p/esther', (req, res, next) => {
       res.redirect('/dluxar/@dlux-io/tydl2qzlcimah1bjhm7gw9n0ev6f9yhz');
 });
+router.get('/ico', (req, res, next) => {
+      res.redirect('/dlux/@dlux-io/nt25obzrmdlb1pe13fgelwb2g32gdvcg');
+});
 
 /* GET a users blog feed page. */
 router.get('/@:username/feed', (req, res, next) => {

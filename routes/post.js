@@ -3,6 +3,7 @@ let util = require('../modules/util');
 let steem = require('../modules/steemconnect');
 let passport = require('passport');
 let router = express.Router();
+var steemR = require('steem');
 
 
 /* GET a create post page. */
@@ -10,6 +11,67 @@ router.get('/', util.isAuthenticated, (req, res, next) => {
     res.render('post', {
       user: req.user.username
     });
+});
+
+function getSteemContent(username, permlink) {
+  return new Promise((resolve, reject) => {
+steemR.api.getContent(username, permlink, function(err, result) {
+  if (err) {resolve({err: 'Log in as author?'});}
+  var title = result.title
+  var description = result.body
+  var image
+  var vrHash = JSON.parse(result.json_metadata).vrHash
+  var arHash = 0
+  var hash360 = JSON.parse(result.json_metadata).Hash360
+  try {
+  if (JSON.parse(result.json_metadata).image[0]) {
+    image = JSON.parse(result.json_metadata).image[0]
+    if (image.charAt(0) == 'Q'){
+    image = 'https://ipfs.io/ipfs/' + image;}
+  }
+  } catch (e) {image = 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h' }
+  try {
+  if (JSON.parse(result.json_metadata).vrHash) {
+    vrHash = JSON.parse(result.json_metadata).vrHash
+  }
+  } catch (e) {vrHash = 0 }
+  if (vrHash == 0){
+    resolve({title: title, description: description, image: image, arHash: JSON.parse(result.json_metadata).arHash});
+  }
+  resolve({title: title, description: description, image: image, vrHash: vrHash, hash360: hash360 });
+});
+});
+}
+
+//blockchain editor
+router.get('/edit/@:username/:permlink', util.isAuthenticated, (req, res, next) => {
+  getSteemContent(req.user.username, req.params.permlink).then(data => {
+    if (data.err){
+      res.render('post', {
+        user: data.err,
+      });
+    } else {
+    if (data.vrHash){
+    res.render('post', {
+      user: req.user.username,
+      title: data.title,
+      description: data.description,
+      image: data.image,
+      vrHash: data.vrHash,
+      hash360: data.hash360
+    });
+  } else {
+    res.render('arpost', {
+      user: req.user.username,
+      title: data.title,
+      description: data.description,
+      image: data.image,
+      arHash: data.arHash,
+      hash360: data.hash360
+    });
+  }
+}
+});
 });
 
 /* POST a create post broadcast to STEEM network. */

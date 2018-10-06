@@ -87,13 +87,13 @@ router.get('/@:username', (req, res, next) => {
       });
 });
 router.get('/p/mark', (req, res, next) => {
-      res.redirect('/dluxar/@dlux-io/tydl2qzlcimah1bjhm7gw9n0ev6f9yhz');
+      res.redirect('/dluxar/@dlux-io/wmh3czr34xiiukx4kgluag6na9d7r7uj');
 });
 router.get('/p/steve', (req, res, next) => {
-      res.redirect('/dluxar/@dlux-io/tydl2qzlcimah1bjhm7gw9n0ev6f9yhz');
+      res.redirect('/dluxar/@dlux-io/wmh3czr34xiiukx4kgluag6na9d7r7uj');
 });
 router.get('/p/esther', (req, res, next) => {
-      res.redirect('/dluxar/@dlux-io/tydl2qzlcimah1bjhm7gw9n0ev6f9yhz');
+      res.redirect('/dluxar/@dlux-io/wmh3czr34xiiukx4kgluag6na9d7r7uj');
 });
 router.get('/ico', (req, res, next) => {
       res.redirect('/dlux/@dlux-io/c87j8xxkq1eudykaelft40lt6n1gg91z');

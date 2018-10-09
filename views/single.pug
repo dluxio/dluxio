@@ -22,6 +22,31 @@ html
       display:inline-block;
       }
     script.
+      var stateObj
+      var steemKey = '#{username}/#{permlink}'
+      steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
+      console.log('did thing')
+      stateObj = result
+      var metadata = result.content[steemKey].json_metadata
+      var hashy = JSON.parse(metadata).vrHash
+      if (!hashy) {
+      hashy = JSON.parse(metadata).arHash
+      }
+      if (hashy.split('/')[3] == 'ipfs') {
+      hashy = hashy.split('/')[4];
+      }
+      var vars = location.href.split('?')[1]
+      var iframe = document.createElement('iframe');
+      iframe.id = 'theIframe'
+      iframe.scrolling = 'no'
+      iframe.width = '100%'
+      iframe.height = '100%'
+      iframe.setAttribute('allowvr', true)
+      iframe.setAttribute('allowfullscreen', true)
+      iframe.setAttribute('allow', 'gyroscope; accelerometer; microphone; camera; xr')
+      iframe.src = 'https://ipfs.io/ipfs/' + hashy + '?' + vars;
+      document.body.appendChild(iframe);
+      });
       if (isIOS()) {
       window.addEventListener('devicemotion', function(e) {
       document.getElementById('theIframe').contentWindow.postMessage({
@@ -64,7 +89,7 @@ html
       if (event.origin !== "https://ipfs.io") return;
       var data = event.data;
       if (typeof(window[data.func]) == "function") {
-      if (data.func == 'vote' || data.func == 'signDecode' || data.func == 'signEncode' || data.func == 'follow' || data.func == 'aVote' || data.func == 'sendLink' || data.func == 'iloaded' || data.func == 'passGenerateHotLink' ){
+      if (data.func == 'vote' || data.func == 'signDecode' || data.func == 'signEncode' || data.func == 'follow' || data.func == 'aVote' || data.func == 'sendLink' || data.func == 'iloaded' || data.func == 'passGenerateHotLink' || data.func == 'comment' ){
       window[data.func].call(null, data.message);
       }
       }
@@ -77,6 +102,28 @@ html
       'permlink': '#{permlink}',
       'author': '#{username}',
       'weight': message
+      }
+      }, (response) => {
+      steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
+      var target = document.getElementById('theIframe').contentWindow
+      target.postMessage({
+      'func': 'steemState',
+      'message': result,
+      }, "*");
+      })
+      })
+      }
+      function comment(message) {
+      confirm(`Confirm posting the ${message.message} with ${message.customJSON} as a steem comment.`)
+      $.post({
+      url: '/post/comment/',
+      dataType: 'json',
+      data: {
+      'parentPermlink': '#{permlink}',
+      'parentAuthor': '#{username}',
+      'message': message.message,
+      'parentTitle': stateObj.content[steemKey].title,
+      'customJSON': message.customJSON
       }
       }, (response) => {
       steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
@@ -186,29 +233,4 @@ html
       }, "*");
       })
       }
-    script.
-      steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
-      console.log(result)
-      var sux = '#{username}/#{permlink}'
-      var metadata = result.content[sux].json_metadata
-      var hashy = JSON.parse(metadata).vrHash
-      if (!hashy) {
-      hashy = JSON.parse(metadata).arHash
-      }
-      if (hashy.split('/')[3] == 'ipfs') {
-      hashy = hashy.split('/')[4];
-      }
-      console.log('right here')
-      var vars = location.href.split('?')[1]
-      var iframe = document.createElement('iframe');
-      iframe.id = 'theIframe'
-      iframe.scrolling = 'no'
-      iframe.width = '100%'
-      iframe.height = '100%'
-      iframe.setAttribute('allowvr', true)
-      iframe.setAttribute('allowfullscreen', true)
-      iframe.setAttribute('allow', 'gyroscope; accelerometer; microphone; camera; xr')
-      iframe.src = 'https://ipfs.io/ipfs/' + hashy + '?' + vars;
-      document.body.appendChild(iframe);
-      })
     body

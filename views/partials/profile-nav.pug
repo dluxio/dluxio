@@ -1,7 +1,10 @@
 section.container.profile__subnav
   .row
-    a.btn.btn-dark(href=`/@${username}`) Blog
+    a.btn.btn-dark(href=`/@${username}`) VR Blog
+    a.btn.btn-dark(href=`/2d/@${username}`) 2D Blog
     a.btn.btn-dark(href=`/@${username}/transfers`) Transfers
     if user
       if user.name == user
-        a.btn.btn-dark(href=`/@${username}/feed`) Your Feed
+        a.btn.btn-dark(href=`/@${username}/feed`) Your VR Feed
+      if user.name == user
+        a.btn.btn-dark(href=`/2d/@${username}/feed`) Your 2D Feed

@@ -112,24 +112,39 @@ router.get('/@:username/feed', (req, res, next) => {
 
 
 /* OG:data call for .head requests*/
-      function getSteemContent(username, permlink) {
-        return new Promise((resolve, reject) => {
-      steem.api.getContent(username, permlink, function(err, result) {
-        if (err) {resolve({title: 'dlux VR', description: 'Blockchain powered social VR', image: 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h'});}
-        var title = result.title
-        var description = removeMD(result.body).trim().substr(0, 220) + '... by @' + result.author
-        var image
-        try {
-        if (JSON.parse(result.json_metadata).image[0]) {
-          image = JSON.parse(result.json_metadata).image[0]
-          if (image.charAt(0) == 'Q'){
-          image = 'https://ipfs.io/ipfs/' + image;}
-        }
-        } catch (e) {image = 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h' }
-        resolve({title: title, description: description, image: image});
-      });
-      });
-    }
+function getSteemContent(username, permlink) {
+  return new Promise((resolve, reject) => {
+steem.api.getContent(username, permlink, function(err, result) {
+  if (err) {resolve({err: 'Log in as author?'});}
+  var title = result.title
+  var description = result.body
+  var image
+  var vrHash = 0
+  var arHash = 0
+  //var hash360 = JSON.parse(result.json_metadata).Hash360
+  try {
+  if (JSON.parse(result.json_metadata).image[0]) {
+    image = JSON.parse(result.json_metadata).image[0]
+    if (image.charAt(0) == 'Q'){
+    image = 'https://ipfs.io/ipfs/' + image;}
+  }
+  } catch (e) {image = 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h' }
+  try {
+  if (JSON.parse(result.json_metadata).vrHash) {
+    vrHash = JSON.parse(result.json_metadata).vrHash
+    resolve({title: title, description: description, image: image, vrHash: vrHash});
+  }
+} catch (e) {console.log('error in Retrival')}
+  try {
+  if (JSON.parse(result.json_metadata).arHash) {
+    vrHash = JSON.parse(result.json_metadata).arHash
+    resolve({title: title, description: description, image: image, arHash: vrHash})
+  }
+} catch (e) {}
+  resolve({title: title, description: description, image: image});
+});
+});
+}
       /* GET a single post page page. */
 router.get('/:category/@:username/:permlink', (req, res, next) => {
       let category = req.params.category
@@ -141,18 +156,24 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
       let iAm = 'Guest'
       if (req.user){
         iAm = req.user.username
-        render()
-      } else if(req.route.stack[0].method == 'get'){ //something that would only get sent when requestiong from off platform for OG:data? hmm
+      }
+       //something that would only get sent when requestiong from off platform for OG:data? hmm
         getSteemContent(username, permlink).then(data => {
           title = data.title;
           description = data.description;
           image = data.image;
+          var dlux = 0
+          if (data.vrHash){dlux = 1}
+          if (data.arHash){dlux = 1}
+          if(dlux){
           render();
+        } else {
+          render2d();
+        }
         });
-      } else {render()}
       function render() {
         res.render('single', {
-          category: category,
+          category: 'dlux',
           username: username,
           permlink: permlink,
           OGtitle: title,
@@ -161,6 +182,18 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
           iAm: iAm
         });
       }
+        function render2d() {
+          console.log('2d')
+          res.render('single2d', {
+            category: category,
+            username: username,
+            permlink: permlink,
+            OGtitle: title,
+            OGdescription: description,
+            OGimage: image,
+            iAm: iAm
+          });
+        }
       });
 
 router.get('/@:username/:permlink', (req, res, next) => {
@@ -172,18 +205,25 @@ router.get('/@:username/:permlink', (req, res, next) => {
   let iAm = 'Guest'
   if (req.user){
     iAm = req.user.username
-    render()
-  } else if(req.route.stack[0].method == 'get'){ //something that would only get sent when requestiong from off platform for OG:data? hmm
+  }
+   //something that would only get sent when requestiong from off platform for OG:data? hmm
     getSteemContent(username, permlink).then(data => {
       title = data.title;
       description = data.description;
       image = data.image;
+      var dlux = 0
+      console.log('here')
+      if (data.vrHash){dlux = 1}
+      if (data.arHash){dlux = 1}
+      if(dlux){
       render();
+    } else {
+      render2d();
+    }
     });
-  } else {render()}
   function render() {
     res.render('single', {
-      category: category,
+      category: 'dlux',
       username: username,
       permlink: permlink,
       OGtitle: title,
@@ -192,6 +232,17 @@ router.get('/@:username/:permlink', (req, res, next) => {
       iAm: iAm
     });
   }
+    function render2d() {
+      res.render('single2d', {
+        category: 'dlux',
+        username: username,
+        permlink: permlink,
+        OGtitle: title,
+        OGdescription: description,
+        OGimage: image,
+        iAm: iAm
+      });
+    }
 });
 
 router.get('/keycam', (req, res, next) => {

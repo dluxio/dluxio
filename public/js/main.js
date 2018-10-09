@@ -239,6 +239,52 @@ function genImageInHTML(markdown){
  * @function
  * @param {String} url - '/category}/username/permlink'
  */
+ function getPostAndComments2d(url) {
+   steem.api.getState(url, (err, result) => {
+     let users = result.accounts;
+     let resultsArray = [];
+     for ( post in result.content ){
+
+       var html = result.content[post].body
+
+       resultsArray.push({
+         id: result.content[post].id,
+         title: result.content[post].root_title,
+         author: result.content[post].author,
+         body: html,
+         permlink: result.content[post].permlink,
+         depth: result.content[post].depth,
+         root_comment: result.content[post].root_comment,
+         parent_permlink: result.content[post].parent_permlink,
+         created: result.content[post].created,
+         votes: result.content[post].net_votes,
+         voters: result.content[post].active_votes.map(vote => vote.voter),
+         value: Math.round( parseFloat(result.content[post].pending_payout_value.substring(0,5)) * 100) / 100
+       })
+     }
+
+         // Sort By Date/ID
+         resultsArray = resultsArray.sort((a,b) => {
+           return b.id - a.id
+         });
+
+         // Find Deepest Comment
+         let maxDepthComment = resultsArray.reduce((prev, current) => {
+           return (prev.depth > current.depth) ? prev : current
+         })
+
+         // Multi demention array by
+         let resultsByDepth = [];
+         for (var i = 0; i < maxDepthComment.depth + 1; i++) {
+           resultsByDepth.push(resultsArray.filter(elem => {
+             return elem.depth === i
+           }))
+         }
+         appendSinglePost(resultsByDepth[0][0], users)
+         appendComments(resultsByDepth)
+
+       })
+     }
 function getPostAndComments(url) {
   steem.api.getState(url, (err, result) => {
     let users = result.accounts;
@@ -316,34 +362,34 @@ function generateProfileImage(author){
  * @param {Object} post - steem post object from getPostAndComments()
  * @param {Array} users - an Array of steem user accounts from steem api
  */
-function appendSinglePost(post, users){
-  let author = users[post.author]
-  console.log(author)
-  //let html = converter.makeHtml(post.body)
-  //let profileImage = generateProfileImage(author)
+ function appendSinglePost(post, users){
+   let author = users[post.author]
+   console.log(author)
+   let html = converter.makeHtml(post.body)
+   let profileImage = generateProfileImage(author)
 
-  //let tags = JSON.parse(post.json).tags.reduce( (all,tag) => all + `<span>${tag}</span>`, '')
-  let iframe = `
-  <iframe allowvr="yes" src="https://ipfs.io/ipfs/${JSON.parse(post.json).vrHash}"style="border: 0; width: 100%; height: 100%"></iframe>
-  `
-  /*
-  let voteButton = `
-  <form method="post">
-    <input type="hidden" name="postId" value="${post.id}">
-    <input type="hidden" name="author" value="${post.author}">
-    <input type="hidden" name="permlink" value="${post.permlink}">
-    <input type="submit" class="vote" value="Vote">
-  </form>`
-  let commentBox = `
-  <div>
-    <textarea class="comment-message" rows="5"></textarea>
-    <span class="send-comment" data-parent="${post.author}" data-parent-permlink="${post.permlink}" data-parent-title="${post.title}">Post Comment</span>
-  </div>
-  `
-  */
-
-  $body.append(iframe)
-}
+   let tags = JSON.parse(post.json).tags.reduce( (all,tag) => all + `<span>${tag}</span>`, '')
+   let header = `
+     <img src="${profileImage}" class="author-img" width="35" height="35" src="">
+     <a href="/@${post.author}" class="author-username">@${post.author}</a>
+     <div class="tags">${tags}</div>
+     <h2 class="title">${post.title}</h2>
+   `
+   let voteButton = `
+   <form method="post">
+     <input type="hidden" name="postId" value="${post.id}">
+     <input type="hidden" name="author" value="${post.author}">
+     <input type="hidden" name="permlink" value="${post.permlink}">
+     <input type="submit" class="vote" value="Vote">
+   </form>`
+   let commentBox = `
+   <div>
+     <textarea class="comment-message" rows="5"></textarea>
+     <span class="send-comment" data-parent="${post.author}" data-parent-permlink="${post.permlink}" data-parent-title="${post.title}">Post Comment</span>
+   </div>
+   `
+   $('main').append(header + html + voteButton + commentBox)
+ }
 
 /**
  * appends comments to single page after main content
@@ -520,7 +566,7 @@ if ($('main').hasClass('feed') ) {
 
 if ($('main').hasClass('single')) {
   let data = $('main').data()
-  getPostAndComments(`/${data.category}/@${data.username}/${data.permlink}`)
+  getPostAndComments2d(`/${data.category}/@${data.username}/${data.permlink}`)
 }
 
 if ($('main').hasClass('dashboard')) {

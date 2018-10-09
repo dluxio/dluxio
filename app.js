@@ -14,6 +14,7 @@ let index = require('./routes/index');
 let auth = require('./routes/auth');
 let feed = require('./routes/feed');
 let post = require('./routes/post');
+let twod = require('./routes/twod')
 let qr = require('./routes/qr');
 let arpost = require('./routes/arpost');
 let config = require('./config');
@@ -92,6 +93,7 @@ app.use('/', index);
 //app.use('/auth', auth);
 //app.use('/logout', auth);
 app.use('/feed', feed);
+app.use('/2d', twod);
 app.use('/arpost', arpost);
 app.use('/keycam', index);
 app.use('/qr', qr);

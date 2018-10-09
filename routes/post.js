@@ -13,6 +13,7 @@ router.get('/', util.isAuthenticated, (req, res, next) => {
     });
 });
 
+
 function getSteemContent(username, permlink) {
   return new Promise((resolve, reject) => {
 steemR.api.getContent(username, permlink, function(err, result) {
@@ -20,9 +21,9 @@ steemR.api.getContent(username, permlink, function(err, result) {
   var title = result.title
   var description = result.body
   var image
-  var vrHash = JSON.parse(result.json_metadata).vrHash
+  var vrHash = 0
   var arHash = 0
-  var hash360 = JSON.parse(result.json_metadata).Hash360
+  //var hash360 = JSON.parse(result.json_metadata).Hash360
   try {
   if (JSON.parse(result.json_metadata).image[0]) {
     image = JSON.parse(result.json_metadata).image[0]
@@ -33,12 +34,16 @@ steemR.api.getContent(username, permlink, function(err, result) {
   try {
   if (JSON.parse(result.json_metadata).vrHash) {
     vrHash = JSON.parse(result.json_metadata).vrHash
+    resolve({title: title, description: description, image: image, vrHash: vrHash});
   }
-  } catch (e) {vrHash = 0 }
-  if (vrHash == 0){
-    resolve({title: title, description: description, image: image, arHash: JSON.parse(result.json_metadata).arHash});
+} catch (e) {console.log('error in Retrival')}
+  try {
+  if (JSON.parse(result.json_metadata).arHash) {
+    vrHash = JSON.parse(result.json_metadata).arHash
+    resolve({title: title, description: description, image: image, arHash: vrHash})
   }
-  resolve({title: title, description: description, image: image, vrHash: vrHash, hash360: hash360 });
+} catch (e) {}
+  resolve({title: title, description: description, image: image});
 });
 });
 }
@@ -175,8 +180,9 @@ router.post('/comment', util.isAuthenticatedJSON, (req, res) => {
     let body = req.body.message
     let parentAuthor = req.body.parentAuthor
     let parentPermlink = req.body.parentPermlink
+    let customJSON = req.body.customJSON
 
-    steem.comment(parentAuthor, parentPermlink, author, permlink, title, body, '', (err, steemResponse) => {
+    steem.comment(parentAuthor, parentPermlink, author, permlink, title, body, customJSON, (err, steemResponse) => {
       if (err) {
         res.json({ error: err.error_description })
       } else {
@@ -187,6 +193,7 @@ router.post('/comment', util.isAuthenticatedJSON, (req, res) => {
       }
     });
 });
+
 router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
   steem.setAccessToken(req.user.steem)
   let author = req.user.username
@@ -222,7 +229,7 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
   Posted on [dlux](https://dlux.io)`
 
   var body = topbody + linker
-  steem.broadcast([['comment',{'parent_author': '','parent_permlink': 'dluxar','author': author,'permlink': permlink,'title': title,'body': body,'json_metadata': customData}],['comment_options',{'author': author,'permlink': permlink,'max_accepted_payout': '1000000.000 SBD','percent_steem_dollars': 10000,'allow_votes': true,'allow_curation_rewards': true,'extensions': [[0,{'beneficiaries': [{'account': 'dlux-io','weight': 1000}]}]]}]], function (err, response) {
+  steem.broadcast([['comment',{'parent_author': '','parent_permlink': 'dlux','author': author,'permlink': permlink,'title': title,'body': body,'json_metadata': customData}],['comment_options',{'author': author,'permlink': permlink,'max_accepted_payout': '1000000.000 SBD','percent_steem_dollars': 10000,'allow_votes': true,'allow_curation_rewards': true,'extensions': [[0,{'beneficiaries': [{'account': 'dlux-io','weight': 1000}]}]]}]], function (err, response) {
   if (err) {
     res.json({msg: err})
     //res.redirect(`/@${parentAuthor}/${parentPermlink}`)

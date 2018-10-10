@@ -184,8 +184,12 @@ html
       location.href = link;
       }
       }
+      var memoRights = 0
       function signEncode(message) {
-      //store these public keys maybe?
+      if(!memoRights){
+      memoRights = confirm('Allow this app to encrypt and decrypt messages')
+      }
+      if (memoRights  == true) {
       steem.api.getAccounts([message.to], (err, result) => {
       if (err) {
       console.log(err)
@@ -201,8 +205,13 @@ html
       'msgid': message.msgid, }
       }, "*");
       });
+      } else {}
       }
       function signDecode(message) {
+      if(!memoRights){
+      memoRights = confirm('Allow this app to encrypt and decrypt messages')
+      }
+      if (memoRights  == true) {
       var decoded = steem.memo.decode(localStorage.memoKey, message.encoded);
       target.postMessage({
       'func': 'decoded',
@@ -210,6 +219,7 @@ html
       'memo': decoded,
       'msgid': message.msgid, }
       }, "*");
+      } else {}
       }
       userLoggedIn = '#{iAm}'
       function iloaded(){

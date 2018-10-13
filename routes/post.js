@@ -58,6 +58,7 @@ router.get('/edit/@:username/:permlink', util.isAuthenticated, (req, res, next) 
     } else {
     if (data.vrHash){
     res.render('post', {
+      permlink: req.params.permlink,
       user: req.user.username,
       title: data.title,
       description: data.description,
@@ -67,6 +68,7 @@ router.get('/edit/@:username/:permlink', util.isAuthenticated, (req, res, next) 
     });
   } else {
     res.render('arpost', {
+      permlink: req.params.permlink,
       user: req.user.username,
       title: data.title,
       description: data.description,
@@ -85,7 +87,8 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
   steem.setAccessToken(req.user.steem)
   let author = req.user.username
   let topbody = req.body.post
-  let permlink = util.urlString()
+  let permlink = req.body.permlink
+  if (!permlink) {permlink = util.urlString()}
   var tags = req.body.tags.split(',').map(item => item.trim())
   let primaryTag = 'dlux'
   let otherTags = tags.slice(0, 4)
@@ -198,7 +201,8 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
   steem.setAccessToken(req.user.steem)
   let author = req.user.username
   let topbody = req.body.post
-  let permlink = util.urlString()
+  let permlink = req.body.permlink
+  if (!permlink) {permlink = util.urlString()}
   var tags = req.body.tags.split(',').map(item => item.trim())
   let primaryTag = 'dluxar'
   let otherTags = tags.slice(0, 4)

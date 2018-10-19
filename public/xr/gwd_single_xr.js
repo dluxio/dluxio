@@ -1,6 +1,5 @@
 window.gwd = window.gwd || {};
     gwd.toggleUserMenu = function(event) {
-      if (iAm == 'Guest') {sendLink('/auth')}
       var x = document.getElementById("userMenu");
       if (x.style.visibility === "hidden") {
         x.style.visibility = "visible";
@@ -120,6 +119,7 @@ window.gwd = window.gwd || {};
       }
     };
     gwd.toggleMenu = function(event) {
+      if (iAm == 'Guest') {sendLink('/auth')}
       var x = document.getElementById("side-menu");
       if (x.style.visibility === "visible") {
         x.style.visibility = "hidden";

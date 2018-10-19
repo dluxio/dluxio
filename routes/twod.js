@@ -16,6 +16,7 @@ router.get('/:feed/:tag?', (req, res, next) => {
     let feed = req.params.feed
     let tag = req.params.tag
     res.render('feed2d', {
+      user: iAm,
       feed: feed,
       tag: tag
     });
@@ -24,6 +25,7 @@ router.get('/@:username/feed', (req, res, next) => {
       let iAm = req.user.username || 'Guest'
       let username = req.params.username
       res.render('feed2d', {
+        user: iAm,
         feed: 'user-feed',
         username: username
       });
@@ -31,6 +33,7 @@ router.get('/@:username/feed', (req, res, next) => {
 router.get('/', (req, res, next) =>  {
   let iAm = req.user.username || 'Guest'
   res.render('feed2d', {
+    user: iAm,
     feed: 'feed',
     tag: 'dlux'
   });

@@ -25,7 +25,6 @@ html
       var stateObj
       var steemKey = '#{username}/#{permlink}'
       steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
-      console.log('did thing')
       stateObj = result
       var metadata = result.content[steemKey].json_metadata
       var hashy = JSON.parse(metadata).vrHash
@@ -174,8 +173,10 @@ html
       if (link == '/auth') {
       setCookie('dropOff', `/#{category}/@#{username}/#{permlink}`, 15);
       location.href = '/auth';
+      } else if (link.includes("steemconnect.com")) {
+      location.href = link;
       } else if (link.split('/')[0].includes(":")) {
-      if (confirm('The was a request to navigate away from dlux.io\nWould you like to navigate to:\n' + link)){
+      if (confirm('The was a request to navigate away from dlux.io | Would you like to navigate to | ' + link)){
       location.href = link;
       }
       } else if (link == 'back()'){

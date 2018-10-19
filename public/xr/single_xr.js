@@ -217,11 +217,14 @@ steem.api.getState(stateKey, (err, result) => {
       }
 
 
-      // handles links for site navigation
+      // handles links for site navigation setCookie('dropOff', stateKey, 15);
       function sendLink(link) {
       if (link == '/auth') {
       setCookie('dropOff', stateKey, 15);
       location.href = '/auth';
+    } else if (link == '/auth/logout') {
+      setCookie('dropOff', stateKey, 15);
+      location.href = '/auth/logout';
       } else if (link.includes("steemconnect.com")) {
       location.href = link;
       } else if (link.split('/')[0].includes(":")) {

@@ -53,6 +53,10 @@ window.gwd = window.gwd || {};
     }
     };
     gwd.pay = function(event) {
+      if (iAm == 'Guest') {
+        var toLogin = prompt('Must be logged in.')
+        if (toLogin){sendLink('/auth')}
+      } else {
       if (author == 'dlux-io'){
         var spDel = parseInt(prompt(`Amount of STEEM to send for ICO`)).toFixed(3)
         var link = `https://steemconnect.com/sign/transfer?from=${iAm}&to=robotolux&amount=${spDel}&memo=Via%20dlux&uri=${location.href}`
@@ -60,6 +64,7 @@ window.gwd = window.gwd || {};
         var spDel = parseInt(prompt(`Amount of STEEM to send to ${author}`)).toFixed(3)
         var link = `https://steemconnect.com/sign/transfer?from=${iAm}&to=${author}&amount=${spDel}&memo=Via%20dlux&uri=${location.href}`
     }
+  }
     };
     gwd.mute = function(event) {
       alert("Mute... soon...");
@@ -147,6 +152,10 @@ window.gwd = window.gwd || {};
       x.style.backgroundColor = "#008bfd";
     };
     gwd.delegateTap = function(event) {
+      if (iAm == 'Guest') {
+        var toLogin = prompt('Must be logged in.')
+        if (toLogin){sendLink('/auth')}
+      } else {
       if (author == 'dlux-io'){
         var inter = prompt(`Amount of SP to delegate to ${author} for ICO`)
         if (inter){
@@ -160,6 +169,7 @@ window.gwd = window.gwd || {};
       sendLink(`https://steemconnect.com/sign/delegateVestingShares?delegatee=${author}&vesting_shares=${spDel}%20SP`)
     }
     }
+  }
     };
     gwd.shutterBtn = function(event) {
       alert("Photo saved to camera roll");
@@ -172,6 +182,10 @@ window.gwd = window.gwd || {};
     }
     };
     gwd.sendSteemTap = function(event) {
+      if (iAm == 'Guest') {
+        var toLogin = prompt('Must be logged in.')
+        if (toLogin){sendLink('/auth')}
+      } else {
       if (author == 'dlux-io'){
         var spDel = parseInt(prompt(`Amount of STEEM to send for ICO`)).toFixed(3)
         var link = `https://steemconnect.com/sign/transfer?from=${iAm}&to=robotolux&amount=${spDel}&memo=Via%20dlux&uri=${location.href}`
@@ -179,6 +193,7 @@ window.gwd = window.gwd || {};
         var spDel = parseInt(prompt(`Amount of STEEM to send to ${author}`)).toFixed(3)
         var link = `https://steemconnect.com/sign/transfer?from=${iAm}&to=${author}&amount=${spDel}&memo=Via%20dlux&uri=${location.href}`
     }
+  }
     };
     gwd.aboutTap = function(event) {
       sendLink('/about')
@@ -187,8 +202,6 @@ window.gwd = window.gwd || {};
       if (iAm == 'Guest') {
         sendLink('/auth')
       } else {
-      console.log({stateKey})
-      setCookie('dropOff', stateKey, 15);
       sendLink('/auth/logout')
     }
     };

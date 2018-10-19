@@ -6,7 +6,6 @@ let router = express.Router();
 router.get('/@:username', (req, res, next) => {
       let username = req.params.username
       if (req.user) {
-        let iAm = req.user.username
         renderU();
       } else {
         renderG();
@@ -18,7 +17,7 @@ router.get('/@:username', (req, res, next) => {
     }
     function renderU() {
     res.render('profile2d', {
-      user: iAm,
+      user: req.user.username,
       username: username,
     });
   }
@@ -27,7 +26,6 @@ router.get('/:feed/:tag?', (req, res, next) => {
     let feed = req.params.feed
     let tag = req.params.tag
     if (req.user) {
-      let iAm = req.user.username
       renderU();
     } else {
       renderG();
@@ -38,9 +36,9 @@ router.get('/:feed/:tag?', (req, res, next) => {
       tag: tag
     });
   }
-  function renderU() {
+  function renderU(iAm) {
   res.render('feed2d', {
-    user: iAm,
+    user: req.user.username,
     feed: feed,
     tag: tag
   });
@@ -49,7 +47,6 @@ router.get('/:feed/:tag?', (req, res, next) => {
 router.get('/@:username/feed', (req, res, next) => {
     let username = req.params.username
     if (req.user) {
-      let iAm = req.user.username
       renderU();
     } else {
       renderG();
@@ -62,7 +59,7 @@ router.get('/@:username/feed', (req, res, next) => {
   }
     function renderU() {
     res.render('feed2d', {
-      user: iAm,
+      user: req.user.username,
       feed: 'user-feed',
       username: username
     });
@@ -70,7 +67,6 @@ router.get('/@:username/feed', (req, res, next) => {
 });
 router.get('/', (req, res, next) =>  {
   if (req.user) {
-    let iAm = req.user.username
     renderU();
   } else {
     renderG();
@@ -83,7 +79,7 @@ router.get('/', (req, res, next) =>  {
 }
   function renderU() {
   res.render('feed2d', {
-    user: iAm,
+    user: req.user.username,
     feed: 'feed',
     tag: 'dlux'
   });

@@ -19,7 +19,7 @@ steem.api.getState(stateKey, (err, result) => {
       document.getElementById('post-body').innerHTML = `<span class="gwd-span-15ly"><span id="post-title" class="gwd-span-1k3x">${postTitle}<br></span><br>
         ${html}
         <br><br><br></span>`
-      //if (iAm == 'Guest') {document.getElementById('logout-btn').innerHTML = 'Login'}
+      if (iAm == 'Guest') {document.getElementById('logout-btn').innerHTML = 'Login'}
       var metadata = result.content[postKey].json_metadata
       var hashy = JSON.parse(metadata).vrHash
       if (!hashy) {
@@ -126,7 +126,10 @@ steem.api.getState(stateKey, (err, result) => {
       window.attachEvent("onmessage", onMessage, false);
       }
       function onMessage(event) {
-        console.log(event)
+        if(event.data.message == '/auth') {
+          var check = confirm('The dApp is requesting a login')
+          if(!check){return;}
+        }
       //if (event.origin !== "https://cheerful-suggestion.glitch.me") return;
       var data = event.data;
       if (typeof(window[data.func]) == "function") {

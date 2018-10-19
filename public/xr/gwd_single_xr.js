@@ -185,7 +185,7 @@ window.gwd = window.gwd || {};
     };
     gwd.logoutTap = function(event) {
       if (iAm == 'Guest') {
-        //sendLink('/auth')
+        sendLink('/auth')
       } else {
       console.log({stateKey})
       setCookie('dropOff', `${stateKey}`, 15);
@@ -194,7 +194,7 @@ window.gwd = window.gwd || {};
     };
     gwd.userProfileTap = function(event) {
       if (iAm == 'Guest') {
-      //sendLink('/auth')
+      sendLink('/auth')
       } else {
       sendLink(`/@${iAm}`)
     }

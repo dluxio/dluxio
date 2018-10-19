@@ -160,7 +160,7 @@ window.gwd = window.gwd || {};
       sendLink('/auth/logout')
     };
     gwd.userProfileTap = function(event) {
-      sendLink(`/${iAm}`)
+      sendLink(`/@${iAm}`)
     };
     gwd.closeTap = function(event) {
       sendLink('/2d/@robotolux')

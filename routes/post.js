@@ -202,6 +202,7 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
   let author = req.user.username
   let topbody = req.body.post
   let permlink = req.body.permlink
+  let xr = req.body.xr
   if (!permlink) {permlink = util.urlString()}
   var tags = req.body.tags.split(',').map(item => item.trim())
   let primaryTag = 'dluxar'
@@ -221,12 +222,13 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
     'app': 'dlux/0.1',
     'arHash': hashy,
     'image': 'https://ipfs.io/ipfs/' + image,
-    'headerLength': header
+    'headerLength': header,
+    'xr': xr
   })
   var resource = 'https://dlux.io/dluxar/@' + author + '/' + permlink
   var qrCodeURL = 'https://dlux.io/qr?link=' + resource
   var linker = `
-  ![scan with phone](` + qrCodeURL + `)
+  ![scan with smart phone](` + qrCodeURL + `)
   QR Code contains [link](` + resource + `) to AR dApp
   ![point phone here](https://ipfs.io/ipfs/QmXursyDdgcXHuVPSNtTN8G95SPDJGfUhyZVE97kngBWnN)
   This is an AR Marker

@@ -17,6 +17,8 @@ block content
         input#permlink(type="text" name="permlink" value=permlink disabled required)
       else
         input(type="text" name="title" required)
+      label XR selector
+        input#xr(type="checkbox" checked name="xr")
       label AR HTML Hash. Leave default if you didn't code a new project. &nbsp;
         img(src='viz/info-icon.png', width='30', title='You can modify the dApp and post it to IPFS and reference it here')
       if arHash

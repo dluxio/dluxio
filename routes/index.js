@@ -118,6 +118,7 @@ steem.api.getContent(username, permlink, function(err, result) {
   var image
   var vrHash = 0
   var arHash = 0
+  var xr = false
   //var hash360 = JSON.parse(result.json_metadata).Hash360
   try {
   if (JSON.parse(result.json_metadata).image[0]) {
@@ -129,16 +130,21 @@ steem.api.getContent(username, permlink, function(err, result) {
   try {
   if (JSON.parse(result.json_metadata).vrHash) {
     vrHash = JSON.parse(result.json_metadata).vrHash
-    resolve({title: title, description: description, image: image, vrHash: vrHash});
+    resolve({title: title, description: description, image: image, vrHash: vrHash, xr: xr});
   }
+} catch (e) {console.log('error in Retrival')}
+  try {
+    if (JSON.parse(result.json_metadata).xr) {
+  xr = true
+}
 } catch (e) {console.log('error in Retrival')}
   try {
   if (JSON.parse(result.json_metadata).arHash) {
     vrHash = JSON.parse(result.json_metadata).arHash
-    resolve({title: title, description: description, image: image, arHash: vrHash})
+    resolve({title: title, description: description, image: image, arHash: vrHash, xr: xr})
   }
 } catch (e) {}
-  resolve({title: title, description: description, image: image});
+  resolve({title: title, description: description, image: image, xr: xr});
 });
 });
 }
@@ -160,9 +166,12 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
           description = data.description;
           image = data.image;
           var dlux = 0
+          var xr = 0
           if (data.vrHash){dlux = 1}
           if (data.arHash){dlux = 1}
-          if(dlux){
+          if(data.xr){
+          renderxr();
+        } else if (dlux) {
           render();
         } else {
           render2d();
@@ -183,6 +192,17 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
           console.log('2d')
           res.render('single2d', {
             category: category,
+            username: username,
+            permlink: permlink,
+            OGtitle: title,
+            OGdescription: description,
+            OGimage: image,
+            iAm: iAm
+          });
+        }
+        function renderxr() {
+          res.render('singlexr', {
+            category: 'dlux',
             username: username,
             permlink: permlink,
             OGtitle: title,
@@ -212,7 +232,9 @@ router.get('/@:username/:permlink', (req, res, next) => {
       console.log('here')
       if (data.vrHash){dlux = 1}
       if (data.arHash){dlux = 1}
-      if(dlux){
+      if(data.xr){
+      renderxr();
+    } else if (dlux) {
       render();
     } else {
       render2d();
@@ -231,6 +253,17 @@ router.get('/@:username/:permlink', (req, res, next) => {
   }
     function render2d() {
       res.render('single2d', {
+        category: 'dlux',
+        username: username,
+        permlink: permlink,
+        OGtitle: title,
+        OGdescription: description,
+        OGimage: image,
+        iAm: iAm
+      });
+    }
+    function renderxr() {
+      res.render('singlexr', {
         category: 'dlux',
         username: username,
         permlink: permlink,

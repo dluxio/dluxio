@@ -1,0 +1,136 @@
+doctype html
+html
+  head
+    meta(name='GCD', content='YTk3ODQ3ZWZhN2I4NzZmMzBkNTEwYjJl7e03e8817c8089f817fa51a8d666dfc8')
+    meta(charset='utf-8')
+    title decentralized XR experiences
+    meta(name='generator', content='Google Web Designer 4.2.0.0802')
+    link(href='../xr/gwdiframe_style.css', rel='stylesheet', data-version='4', data-exports-type='gwd-iframe')
+    link(href='../xr/gwdtaparea_style.css', rel='stylesheet', data-version='6', data-exports-type='gwd-taparea')
+    script(src='//cdn.steemjs.com/lib/latest/steem.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.5/showdown.min.js')
+    style#gwd-text-style(type='text/css').
+      p {margin: 0px;}a{color: #008bfd;}h1{margin:0px;}h2{margin:0px;}h3{margin:0px;}
+    link(rel='stylesheet', href='../xr/gwdxr_style.css', type='text/css')
+    link(href='https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,italic,600,600italic,700,700italic,800,800italic,400', rel='stylesheet', type='text/css')
+    script(data-source='googbase_min.js', data-version='4', data-exports-type='googbase', src='../xr/googbase_min.js')
+    script(data-source='gwd_webcomponents_min.js', data-version='5', data-exports-type='gwd_webcomponents', src='../xr/gwd_webcomponents_min.js')
+    script(data-source='gwdiframe_min.js', data-version='4', data-exports-type='gwd-iframe', src='../xr/gwdiframe_min.js')
+    script(type='text/javascript', src='../xr/gwdid.min.1.0.js', gwd-gwdid-version='1.0')
+    script(type='text/javascript', gwd-events='support', src='../xr/gwd-events-support.1.0.js')
+    script.
+      var iAm = '#{iAm}' //test user
+      var stateObj, host, hostRep, postDate, user, userImg, userRep, userBal, userVoteVal, postVal, postVotes, postBody, postTitle
+      var author = '#{username}' //test author
+      var permlink = '#{permlink}' //test permlink
+      var postKey = `${author}/${permlink}`
+      var stateKey = '/dlux/@' + postKey
+    script(type='text/javascript', src='../xr/single_xr.js')
+    script(type='text/javascript', gwd-events='handlers', src='../xr/gwd_single_xr.js')
+    script(type='text/javascript', gwd-events='registration', src='../xr/reg.js')
+    script(data-source='gwdtaparea_min.js', data-version='6', data-exports-type='gwd-taparea', src='../xr/gwdtaparea_min.js')
+  body.htmlNoPages
+    #info.gwd-div-iyo5.gwd-div-1fi4
+      svg#info-bg.gwd-rect-nd9b.gwd-svg-10ji(data-gwd-shape='rectangle')
+      #info-body.gwd-div-1i8k
+        #post-header.gwd-div-1lkk
+          svg#post-header-bg.gwd-rect-1jxz(data-gwd-shape='rectangle')
+          #author-profile.gwd-div-11jd
+            #author-txt-div.gwd-div-1n5n
+              p#author-name.gwd-a-1i66.gwd-a-trba
+              p#post-date.gwd-a-1i66.gwd-p-1kor
+              img#author-pic.gwd-img-rpfe(src='https://ipfs.io/ipfs/QmS1kYPivxqPgpzgkBP8Pw2eQaqHaPtnZRU7fpqG1UF7DX', crossorigin='anonymous')
+          #author-btns.gwd-div-1ows.gwd-div-1lnz.gwd-gen-3emigwdanimation
+            #author-follow-btn.gwd-div-1rqc.gwd-div-xfmy.gwd-div-qmap.gwd-gen-r7gmgwdanimation.gwd-div-136m.gwd-gen-1rmugwdanimation.gwd-div-1u91.gwd-div-1qdn.gwd-div-1sn1
+              svg.gwd-rect-1aqt.gwd-svg-1hlm.gwd-gen-1noxgwdanimation.gwd-svg-19jt.gwd-gen-zprjgwdanimation.gwd-rect-1e8t.gwd-svg-1k6v(data-gwd-shape='rectangle')
+              span.gwd-span-hmzp.gwd-span-vufj.gwd-span-xc61.gwd-gen-sdk2gwdanimation.gwd-span-8i72.gwd-gen-ffomgwdanimation.gwd-span-8a20.gwd-span-1ls5 follow
+              gwd-taparea#follow-taparea.gwd-taparea-7jae.gwd-taparea-aoqg.gwd-gen-1dcxgwdanimation.gwd-taparea-1l4s
+            #author-mute-btn.gwd-div-1rqc.gwd-div-12wt.gwd-gen-12w6gwdanimation.gwd-gen-179mgwdanimation.gwd-div-1g9m.gwd-div-g221.gwd-div-1c6d.gwd-div-cdcu
+              svg.gwd-rect-1aqt.gwd-svg-1n7w.gwd-gen-ghg5gwdanimation.gwd-rect-12s5.gwd-svg-a6ii(data-gwd-shape='rectangle')
+              span.gwd-span-hmzp.gwd-span-1pj8.gwd-gen-1wpegwdanimation.gwd-span-1x97.gwd-span-1mff mute
+              gwd-taparea#mute-taparea.gwd-taparea-7jae.gwd-taparea-bq0y.gwd-taparea-649t.gwd-taparea-un87.gwd-taparea-1roz
+            #author-pay-btn.gwd-div-1rqc.gwd-gen-r7gmgwdanimation.gwd-div-xfmy.gwd-div-1ivj.gwd-div-mov9.gwd-gen-kh5lgwdanimation.gwd-gen-zr4vgwdanimation.gwd-div-1hl9.gwd-div-1xa7.gwd-div-qe6k
+              svg.gwd-rect-1aqt.gwd-svg-kjte.gwd-svg-4akp.gwd-gen-7w2wgwdanimation.gwd-gen-kulxgwdanimation(data-gwd-shape='rectangle')
+              span.gwd-span-hmzp.gwd-gen-sdk2gwdanimation.gwd-span-vufj.gwd-span-1b8n.gwd-span-9d7b.gwd-gen-du8jgwdanimation.gwd-span-1klx.gwd-span-m2bc pay
+              gwd-taparea#pay-taparea.gwd-taparea-7jae.gwd-taparea-bq0y.gwd-taparea-1vvl.gwd-gen-1fuigwdanimation
+            #author-delegate-btn.gwd-div-1rqc.gwd-div-12wt.gwd-gen-12w6gwdanimation.gwd-gen-179mgwdanimation.gwd-div-65c5
+              svg.gwd-rect-1aqt.gwd-svg-1n7w.gwd-gen-ghg5gwdanimation.gwd-rect-hz5c(data-gwd-shape='rectangle')
+              span.gwd-span-hmzp.gwd-span-1pj8.gwd-gen-1wpegwdanimation.gwd-span-o8ob delegate
+              gwd-taparea#delegate-taparea.gwd-taparea-7jae.gwd-taparea-bq0y.gwd-taparea-649t.gwd-taparea-5r3k.gwd-taparea-1b8n
+        #post-body.gwd-div-1exg
+      #info-footer.gwd-div-1i36
+        svg#info-footer-bg.gwd-rect-1f4g.gwd-gen-stnngwdanimation.gwd-svg-1wik(data-gwd-shape='rectangle')
+        #footer-btns.gwd-div-1qyd.gwd-gen-1v5fgwdanimation
+          #value-votes.gwd-div-1get.gwd-gen-1wxngwdanimation
+            svg#value-oval.gwd-rect-1g98.gwd-svg-1l16.gwd-rect-1qif.gwd-rect-nasd.gwd-rect-1hx4.gwd-gen-1dcfgwdanimation(data-gwd-shape='rectangle')
+            span#value-txt.gwd-span-97gt.gwd-gen-1cn0gwdanimation $361.10  //  310 votes
+          #resteem-btn.gwd-div-vvu2.gwd-gen-9lu1gwdanimation
+            svg#resteem-oval.gwd-rect-1g98.gwd-svg-1l16.gwd-rect-1qif.gwd-gen-v6t5gwdanimation(data-gwd-shape='rectangle')
+            img#resteemIcon.gwd-img-92aa.gwd-gen-1wt0gwdanimation(src='https://ipfs.io/ipfs/QmWzwtEcfBwdKC2xaDsdrhpgmLTooxAAQFLqiewzHbHhuw', alt='resteem')
+            gwd-taparea#resteem-taparea.gwd-taparea-jl2t.gwd-gen-1ft8gwdanimation
+          #upvote-btn.gwd-div-1iou.gwd-gen-1tekgwdanimation
+            svg#upvote-oval.gwd-rect-1g98.gwd-svg-1l16.gwd-rect-1qif.gwd-rect-nasd.gwd-gen-1vukgwdanimation.gwd-svg-1otk(data-gwd-shape='rectangle')
+            .gwd-div-15bk.gwd-gen-c2trgwdanimation(data-gwd-group='chevron')
+              svg.gwd-line-1mg8.gwd-svg-z0vt.gwd-svg-1fik.gwd-svg-172j.gwd-svg-2ea8.gwd-svg-dv0k.gwd-grp-1xp3(data-gwd-shape='line', preserveAspectRatio='none', viewBox='0 0 32.829 32.829', data-gwd-grp-id='chevLeft')
+                line.gwd-grp-1xp3(x1='2.121', x2='30.707', y1='30.707', y2='2.121')
+              svg.gwd-line-1mg8.gwd-svg-1kjf.gwd-grp-1xp3(data-gwd-shape='line', preserveAspectRatio='none', viewBox='0 0 32.829 32.829', data-gwd-grp-id='chevRight')
+                line.gwd-grp-1xp3(x1='2.121', x2='30.707', y1='2.121', y2='30.707')
+            gwd-taparea#upvote-taparea.gwd-taparea-118r.gwd-gen-w55agwdanimation
+      svg#info-header-bg.gwd-rect-1f4g.gwd-gen-stnngwdanimation.gwd-svg-1wik.gwd-rect-apnl.gwd-svg-11fd(data-gwd-shape='rectangle')
+    #shutter-btn.gwd-div-1cvq
+      svg.gwd-oval-267n(data-gwd-shape='oval', preserveAspectRatio='none', viewBox='0 0 181 181')
+        ellipse(cx='50%', cy='50%', rx='90.5', ry='90.5')
+      svg.gwd-oval-vuui(data-gwd-shape='oval', preserveAspectRatio='none', viewBox='0 0 208 208')
+        ellipse(cx='50%', cy='50%', rx='99', ry='99')
+      gwd-taparea#shutter-taparea.gwd-taparea-tlc3
+    #side-menu.gwd-div-iyo5.gwd-div-11ba(style='float: left;')
+      svg#menu-bg.gwd-rect-nd9b.gwd-rect-1skq(data-gwd-shape='rectangle')
+      #side-menu-scrollable.gwd-div-1lbq
+        #menu-btns.gwd-div-1un3
+          p#home-btnt.gwd-p-16nt.gwd-p-137l.gwd-p-1t7l.gwd-p-muqy.gwd-p-10yq
+            | Home
+            br
+            br
+          p#send-steem.gwd-p-16nt.gwd-p-11wt.gwd-p-agk9.gwd-p-17az.gwd-p-1i7e.gwd-p-1yyn Send Steem
+          p#about-btn.gwd-p-16nt.gwd-p-11wt.gwd-p-1cbm.gwd-p-11wu.gwd-p-377c.gwd-p-17jg.gwd-p-zzcz About dlux
+          p#logout-btn.gwd-p-16nt.gwd-p-11wt.gwd-p-1cbm.gwd-p-ms4c Logout
+          svg.gwd-rect-kpm2.gwd-svg-vhd0.gwd-svg-1tia.gwd-svg-at21.gwd-svg-mkwv(data-gwd-shape='rectangle')
+          svg.gwd-rect-kpm2.gwd-svg-1n2k(data-gwd-shape='rectangle')
+          svg.gwd-rect-kpm2.gwd-svg-vsd8(data-gwd-shape='rectangle')
+          gwd-taparea#home-taparea.gwd-taparea-1p3m.gwd-taparea-1nh1
+          gwd-taparea#sendsteem-taparea.gwd-taparea-1p3m.gwd-taparea-55n9
+          gwd-taparea#about-taparea.gwd-taparea-1p3m.gwd-taparea-cgtn
+          gwd-taparea#logout-taparea.gwd-taparea-1p3m.gwd-taparea-ni98
+        #user-profile.gwd-div-1lps.gwd-div-5x8n
+          img#user-pic.gwd-img-zdtc.gwd-img-8be3(src='https://ipfs.io/ipfs/QmbxgtR7NwUcJ4rT2FwmmuQHjXdmwjHr1Ga3P5Krj876QM')
+          span#user-name-txt.gwd-gen-g2rvgwdanimation.gwd-span-2nts.gwd-span-1yot
+            br.gwd-br-nan5
+          span#user-voteval-txt.gwd-span-1df5
+          gwd-taparea#userprofile-taparea.gwd-taparea-9ixg
+      svg#side-menu-header-bg.gwd-rect-1f4g.gwd-gen-stnngwdanimation.gwd-svg-1wik.gwd-rect-apnl.gwd-svg-11fd(data-gwd-shape='rectangle')
+    #header.gwd-div-1mlc
+      #info-xr-btn.gwd-div-1rze.gwd-div-w6qa.gwd-div-16pj
+        svg#info-xr-bg.gwd-rect-1g98.gwd-svg-np1o(data-gwd-shape='rectangle')
+        svg#info-selectionbox.gwd-rect-1g98.gwd-rect-jdse.gwd-svg-rhxd(data-gwd-shape='rectangle')
+        svg#xr-selectionbox.gwd-rect-1g98.gwd-rect-jdse.gwd-svg-qxom(data-gwd-shape='rectangle')
+        p#info-txt.gwd-a-tpk6.gwd-p-1e2b info
+        p#xr-txt.gwd-a-tpk6.gwd-p-80i6 XR
+        gwd-taparea#info-taparea.gwd-taparea-1u5r.gwd-taparea-zhn6.gwd-taparea-1sih
+        gwd-taparea#xr-taparea.gwd-taparea-1u5r.gwd-taparea-zhn6.gwd-taparea-1uca
+      #menu-btn.gwd-div-1rze.gwd-div-vndf
+        svg.gwd-rect-1g98.gwd-svg-1l16(data-gwd-shape='rectangle')
+        #hamburger-icon.gwd-div-rhf8
+          svg.gwd-line-7k6l.gwd-svg-1vi2(data-gwd-shape='line', preserveAspectRatio='none', viewBox='0 0 60 7')
+            line(x1='0', x2='60', y1='3.5', y2='3.5')
+          svg.gwd-line-7k6l.gwd-svg-15hf(data-gwd-shape='line', preserveAspectRatio='none', viewBox='0 0 60 7')
+            line(x1='0', x2='60', y1='3.5', y2='3.5')
+          svg.gwd-line-7k6l.gwd-svg-1kdb(data-gwd-shape='line', preserveAspectRatio='none', viewBox='0 0 60 7')
+            line(x1='0', x2='60', y1='3.5', y2='3.5')
+        gwd-taparea#menu-taparea.gwd-taparea-1u5r.gwd-taparea-elkj
+      #close-btn.gwd-div-1rze.gwd-div-vndf.gwd-div-f555
+        svg.gwd-rect-1g98.gwd-svg-1l16(data-gwd-shape='rectangle')
+        svg.gwd-line-x0uw.gwd-svg-9apc(data-gwd-shape='line', preserveAspectRatio='none', viewBox='0 0 53.3 53.3')
+          line(x1='1.768', x2='51.532', y1='51.532', y2='1.768')
+        svg.gwd-line-x0uw.gwd-svg-4rmw(data-gwd-shape='line', preserveAspectRatio='none', viewBox='0 0 53.3 53.3')
+          line(x1='1.768', x2='51.532', y1='51.532', y2='1.768')
+        gwd-taparea#close-taparea.gwd-taparea-1u5r.gwd-taparea-elkj

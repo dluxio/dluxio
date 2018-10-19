@@ -89,7 +89,7 @@ function passGenerateHotLink(message) {
             } else if (message.uri.charAt(0) == '?') {
             message.uri = window.location + message.uri
             }
-            if (message.skipEncode != 'true'){
+            if (message.skipEncode != true){
             message.memo = encodeMsg(message.memo, message.to);
             }
             generateHotLink(message.to,message.amount,message.memo,message.uri)

@@ -47,20 +47,26 @@ window.gwd = window.gwd || {};
       }
     };
     gwd.resteem = function(event) {
-      if(confirm("You are about to resteem this post, this can't be undone.")){
+      if(confirm("Resteem... soon...")){
       var x = document.getElementById("resteem-oval");
       x.style.backgroundColor = "#008bfd";
     }
     };
     gwd.pay = function(event) {
-      var spDel = parseInt(prompt(`Amount of STEEM to send to ${author}`)).toFixed(3)
-      var link = `https://steemconnect.com/sign/transfer?from=${iAm}&to=${author}&amount=${spDel}&memo=Via%20dlux&uri=${location.href}`
+      if (author == 'dlux-io'){
+        var spDel = parseInt(prompt(`Amount of STEEM to send for ICO`)).toFixed(3)
+        var link = `https://steemconnect.com/sign/transfer?from=${iAm}&to=robotolux&amount=${spDel}&memo=Via%20dlux&uri=${location.href}`
+      } else {
+        var spDel = parseInt(prompt(`Amount of STEEM to send to ${author}`)).toFixed(3)
+        var link = `https://steemconnect.com/sign/transfer?from=${iAm}&to=${author}&amount=${spDel}&memo=Via%20dlux&uri=${location.href}`
+    }
     };
     gwd.mute = function(event) {
-      alert("You muted robotolux");
+      alert("Mute... soon...");
     };
     gwd.follow = function(event) {
-      follow(author)
+      prompt(`Folow... soon...`)
+      //follow(author)
     };
     gwd.togglePostHeader = function(event) {
       var x = document.getElementById("postHeader");
@@ -142,11 +148,17 @@ window.gwd = window.gwd || {};
     };
     gwd.delegateTap = function(event) {
       if (author == 'dlux-io'){
-        var spDel = parseInt(prompt(`Amount of SP to delegate to ${author} for ICO`)).toFixed(3)
+        var inter = prompt(`Amount of SP to delegate to ${author} for ICO`)
+        if (inter){
+        var spDel = parseInt(inter).toFixed(3)
         sendLink(`https://steemconnect.com/sign/delegateVestingShares?delegatee=${author}&vesting_shares=${spDel}%20SP`)
+      }
       } else {
-      var spDel = parseInt(prompt(`Amount of SP to delegate to ${author}`)).toFixed(3)
+        var inter = prompt(`Amount of SP to delegate to ${author}`)
+        if (inter) {
+      var spDel = parseInt(inter).toFixed(3)
       sendLink(`https://steemconnect.com/sign/delegateVestingShares?delegatee=${author}&vesting_shares=${spDel}%20SP`)
+    }
     }
     };
     gwd.shutterBtn = function(event) {
@@ -173,7 +185,7 @@ window.gwd = window.gwd || {};
     };
     gwd.logoutTap = function(event) {
       if (iAm == 'Guest') {
-        sendLink('/auth')
+        //sendLink('/auth')
       } else {
       setCookie('dropOff', `${stateKey}`, 15);
       sendLink('/auth/logout')

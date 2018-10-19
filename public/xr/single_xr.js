@@ -44,6 +44,10 @@ steem.api.getState(stateKey, (err, result) => {
       document.body.appendChild(iframe);
       })
       steem.api.getAccounts([iAm], (err, result) => {
+        if(err){
+          console.log({err})
+          return;
+        }
         let user = result[0]
         let jsonData;
         /*

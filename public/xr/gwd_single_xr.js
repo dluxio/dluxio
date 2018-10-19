@@ -187,6 +187,7 @@ window.gwd = window.gwd || {};
       if (iAm == 'Guest') {
         //sendLink('/auth')
       } else {
+      console.log({stateKey})
       setCookie('dropOff', `${stateKey}`, 15);
       sendLink('/auth/logout')
     }

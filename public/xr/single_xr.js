@@ -4,7 +4,6 @@ steem.api.getState(stateKey, (err, result) => {
       hostRep = steem.formatter.reputation(stateObj.content[postKey].author_reputation)
       document.getElementById('author-name-a').innerHTML = `@${host} (${hostRep})`
       document.getElementById('author-name-a').href = `/2d/@${host}`
-      function ago(v){v=0|(Date.now()-v)/1e3;var a,b={second:60,minute:60,hour:24,day:7,week:4.35,month:12,year:1e4},c;for(a in b){c=v%b[a];if(!(v=0|v/b[a]))return c+' '+(c-1?a+'s':a)}}
       postDate = ago(Date.parse(stateObj.content[postKey].created))
       document.getElementById('post-date').innerHTML = postDate
       postTitle = stateObj.content[postKey].title
@@ -324,6 +323,8 @@ steem.api.getState(stateKey, (err, result) => {
         return steem.memo.encode(localStorage.memoKey, rcvrMemoKey, `##{msg}`);
       });
       }
+
+      function ago(v){v=0|(Date.now()-v)/1e3;var a,b={second:60,minute:60,hour:24,day:7,week:4.35,month:12,year:1e4},c;for(a in b){c=v%b[a];if(!(v=0|v/b[a]))return c+' '+(c-1?a+'s':a)}}
 
       function setCookie(cname, cvalue, exmins) {
           var d = new Date();

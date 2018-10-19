@@ -188,7 +188,7 @@ window.gwd = window.gwd || {};
         sendLink('/auth')
       } else {
       console.log({stateKey})
-      setCookie('dropOff', `${stateKey}`, 15);
+      setCookie('dropOff', stateKey, 15);
       sendLink('/auth/logout')
     }
     };

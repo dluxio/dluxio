@@ -19,7 +19,7 @@ steem.api.getState(stateKey, (err, result) => {
       document.getElementById('post-body').innerHTML = `<span class="gwd-span-15ly"><span id="post-title" class="gwd-span-1k3x">${postTitle}<br></span><br>
         ${html}
         <br><br><br></span>`
-      if (iAm == 'Guest') {document.getElementById('logout-btn').innerHTML = 'Login'}
+      //if (iAm == 'Guest') {document.getElementById('logout-btn').innerHTML = 'Login'}
       var metadata = result.content[postKey].json_metadata
       var hashy = JSON.parse(metadata).vrHash
       if (!hashy) {
@@ -43,11 +43,8 @@ steem.api.getState(stateKey, (err, result) => {
       iframe.src = 'https://ipfs.io/ipfs/' + hashy + '?' + vars;
       document.body.appendChild(iframe);
       })
+      if (iAm != 'Guest'){
       steem.api.getAccounts([iAm], (err, result) => {
-        if(err){
-          console.log({err})
-          return;
-        }
         let user = result[0]
         let jsonData;
         /*
@@ -93,6 +90,7 @@ steem.api.getState(stateKey, (err, result) => {
           //resolve(data)
         })
       })
+    }
       //ios polyfill for motion
       function isIOS() {
       return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
@@ -128,6 +126,7 @@ steem.api.getState(stateKey, (err, result) => {
       window.attachEvent("onmessage", onMessage, false);
       }
       function onMessage(event) {
+        console.log(event)
       //if (event.origin !== "https://cheerful-suggestion.glitch.me") return;
       var data = event.data;
       if (typeof(window[data.func]) == "function") {
@@ -218,7 +217,7 @@ steem.api.getState(stateKey, (err, result) => {
       // handles links for site navigation
       function sendLink(link) {
       if (link == '/auth') {
-      setCookie('dropOff', `${stateKey}`, 15);
+      setCookie('dropOff', stateKey, 15);
       location.href = '/auth';
       } else if (link.includes("steemconnect.com")) {
       location.href = link;

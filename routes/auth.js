@@ -20,7 +20,7 @@ router.get('/', (req, res, next) => {
 /* GET authenticate a user/redirect to steemconnect. */
 router.get('/logout', (req, res) => {
    req.session.destroy();
-   res.redirect("/")
+   res.redirect("/feed/trending")
 });
 
 module.exports = router;

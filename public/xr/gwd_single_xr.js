@@ -119,7 +119,7 @@ window.gwd = window.gwd || {};
       }
     };
     gwd.toggleMenu = function(event) {
-      if (iAm == 'Guest') {sendLink('/auth')}
+      //if (iAm == 'Guest') {sendLink('/auth')}
       var x = document.getElementById("side-menu");
       if (x.style.visibility === "visible") {
         x.style.visibility = "hidden";
@@ -160,7 +160,11 @@ window.gwd = window.gwd || {};
       sendLink('/auth/logout')
     };
     gwd.userProfileTap = function(event) {
+      if (iAm == 'Guest') {
+      sendLink('/auth')
+      } else {
       sendLink(`/@${iAm}`)
+    }
     };
     gwd.closeTap = function(event) {
       sendLink('/2d/@robotolux')

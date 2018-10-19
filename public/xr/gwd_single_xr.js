@@ -34,7 +34,7 @@ window.gwd = window.gwd || {};
       alert("Post a photo to social media");
     };
     gwd.likeBtn = function(event) {
-      vote()
+      vote(10000)
     };
     gwd.followBtn = function(event) {
       follow(author)
@@ -136,7 +136,7 @@ window.gwd = window.gwd || {};
       }
     };
     gwd.upVote = function(event) {
-      vote()
+      vote(10000)
       var x = document.getElementById("upvote-oval");
       x.style.backgroundColor = "#008bfd";
     };
@@ -157,11 +157,11 @@ window.gwd = window.gwd || {};
       sendLink('/about')
     };
     gwd.logoutTap = function(event) {
-      sendLink('/logout')
+      sendLink('/auth/logout')
     };
     gwd.userProfileTap = function(event) {
-      sendLink(`${iAm}`)
+      sendLink(`/${iAm}`)
     };
     gwd.closeTap = function(event) {
-      sendLink('back()')
+      sendLink('/2d/@robotolux')
     };

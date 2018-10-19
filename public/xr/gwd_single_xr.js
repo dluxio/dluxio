@@ -166,9 +166,9 @@ window.gwd = window.gwd || {};
     };
     gwd.homeTap = function(event) {
       if (iAm == 'Guest') {
-      sendLink('/2d')
+      sendLink('/')
       } else {
-      sendLink(`/2d/@${iAm}`)
+      sendLink(`/@${iAm}`)
     }
     };
     gwd.sendSteemTap = function(event) {
@@ -196,7 +196,7 @@ window.gwd = window.gwd || {};
       if (iAm == 'Guest') {
       sendLink('/auth')
       } else {
-      sendLink(`/@${iAm}`)
+      sendLink(`/2d/@${iAm}`)
     }
     };
     gwd.closeTap = function(event) {

@@ -18,6 +18,7 @@ steem.api.getState(stateKey, (err, result) => {
       document.getElementById('post-body').innerHTML = `<span class="gwd-span-15ly"><span id="post-title" class="gwd-span-1k3x">${postTitle}<br></span><br>
         ${html}
         <br><br><br></span>`
+      if (iAm == 'Guest') {(document.getElementById('logout-btn').innerHTML = 'Login'}
       var metadata = result.content[postKey].json_metadata
       var hashy = JSON.parse(metadata).vrHash
       if (!hashy) {

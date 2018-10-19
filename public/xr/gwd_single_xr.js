@@ -157,7 +157,11 @@ window.gwd = window.gwd || {};
       sendLink('/about')
     };
     gwd.logoutTap = function(event) {
+      if (iAm == 'Guest') {
+        sendLink('/auth')
+      } else {
       sendLink('/auth/logout')
+    }
     };
     gwd.userProfileTap = function(event) {
       if (iAm == 'Guest') {

@@ -175,12 +175,13 @@ window.gwd = window.gwd || {};
       if (iAm == 'Guest') {
         sendLink('/auth')
       } else {
+      setCookie('dropOff', `${stateKey}`, 15);
       sendLink('/auth/logout')
     }
     };
     gwd.userProfileTap = function(event) {
       if (iAm == 'Guest') {
-      sendLink('/auth')
+      //sendLink('/auth')
       } else {
       sendLink(`/@${iAm}`)
     }

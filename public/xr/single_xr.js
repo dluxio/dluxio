@@ -3,7 +3,8 @@ steem.api.getState(stateKey, (err, result) => {
       host = stateObj.content[postKey].author
       hostRep = steem.formatter.reputation(stateObj.content[postKey].author_reputation)
       document.getElementById('author-name').innerHTML = `@${host} (${hostRep})`
-      postDate = stateObj.content[postKey].created
+      function ago(v){v=0|(Date.now()-v)/1e3;var a,b={second:60,minute:60,hour:24,day:7,week:4.35,month:12,year:1e4},c;for(a in b){c=v%b[a];if(!(v=0|v/b[a]))return c+' '+(c-1?a+'s':a)}}
+      postDate = ago(stateObj.content[postKey].created)
       document.getElementById('post-date').innerHTML = postDate
       postTitle = stateObj.content[postKey].title
       postVal = parseFloat(stateObj.content[postKey].total_payout_value)

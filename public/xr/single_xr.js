@@ -7,9 +7,11 @@ steem.api.getState(stateKey, (err, result) => {
       postDate = ago(Date.parse(stateObj.content[postKey].created))
       document.getElementById('post-date').innerHTML = postDate
       postTitle = stateObj.content[postKey].title
+      var pendingPostVal = parseFloat(stateObj.content[postKey].pending_payout_value)
       postVal = parseFloat(stateObj.content[postKey].total_payout_value)
-      if (postVal == 'NaN'){ postVal = parseFloat(stateObj.content[postKey].pending_payout_value)
-        if (postVal != 'NaN'){postVal.toFixed(2)} else {postVal = 0.00}}
+      if (postVal < pendingPostVal) { 
+        postVal = pendingPostVal
+        }
       postVotes = stateObj.content[postKey].net_votes
       document.getElementById('value-txt').innerHTML = `$${postVal} | ${postVotes} votes`
       postBody =  stateObj.content[postKey].body

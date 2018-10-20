@@ -203,11 +203,11 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
   let topbody = req.body.post
   let permlink = req.body.permlink
   let xr = req.body.xr
-  if (!permlink) {permlink = util.urlString()}
   var tags = req.body.tags.split(',').map(item => item.trim())
   let primaryTag = 'dluxar'
   let otherTags = tags.slice(0, 4)
   let title = req.body.title
+  if (!permlink) {permlink = util.urlString()}
   let hashy = req.body.vrHash
   let header = topbody.length
   if (hashy.split('/')[3] == 'ipfs') {

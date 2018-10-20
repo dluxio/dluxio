@@ -1,3 +1,5 @@
+initData()
+function initData(){
 steem.api.getState(stateKey, (err, result) => {
       stateObj = result
       host = stateObj.content[postKey].author
@@ -9,14 +11,14 @@ steem.api.getState(stateKey, (err, result) => {
       postTitle = stateObj.content[postKey].title
       var pendingPostVal = parseFloat(stateObj.content[postKey].pending_payout_value)
       postVal = parseFloat(stateObj.content[postKey].total_payout_value)
-      if (postVal < pendingPostVal) { 
+      if (postVal < pendingPostVal) {
         postVal = pendingPostVal
         }
       postVotes = stateObj.content[postKey].net_votes
       document.getElementById('value-txt').innerHTML = `$${postVal} | ${postVotes} votes`
       postBody =  stateObj.content[postKey].body
       console.log('here')
-      var converter = new showdown.Converter()
+      var converter = new showdown.Converter({ tables: true })
       var html = converter.makeHtml(postBody)
       document.getElementById('post-body').innerHTML = `<span class="gwd-span-15ly"><span id="post-title" class="gwd-span-1k3x">${postTitle}<br></span><br>
         ${html}
@@ -45,7 +47,8 @@ steem.api.getState(stateKey, (err, result) => {
       iframe.src = 'https://ipfs.io/ipfs/' + hashy + '?' + vars;
       document.body.appendChild(iframe);
       })
-      if (iAm != 'Guest'){
+    }
+    if (iAm != 'Guest'){
       steem.api.getAccounts([iAm], (err, result) => {
         let user = result[0]
         let jsonData;
@@ -92,6 +95,8 @@ steem.api.getState(stateKey, (err, result) => {
           //resolve(data)
         })
       })
+    } else {
+      document.getElementById('user-name-txt').innerHTML = `Welcome Guest`
     }
       //ios polyfill for motion
       function isIOS() {
@@ -150,7 +155,15 @@ steem.api.getState(stateKey, (err, result) => {
       'weight': message
       }
       }, (response) => {
-      steem.api.getState(`stateKey`, (err, result) => {
+      steem.api.getState(stateKey, (err, result) => {
+        stateObj = result
+        var pendingPostVal = parseFloat(stateObj.content[postKey].pending_payout_value)
+        postVal = parseFloat(stateObj.content[postKey].total_payout_value)
+        if (postVal < pendingPostVal) {
+          postVal = pendingPostVal
+          }
+        postVotes = stateObj.content[postKey].net_votes
+        document.getElementById('value-txt').innerHTML = `$${postVal} | ${postVotes} votes`
       var target = document.getElementById('iframeXRCanvas').contentWindow
       target.postMessage({
       'func': 'steemState',
@@ -160,7 +173,7 @@ steem.api.getState(stateKey, (err, result) => {
       })
       }
       function comment(message) {
-      confirm(`Confirm posting the ${message.message} with ${message.customJSON} as a steem comment.`)
+      confirm(`Confirm posting: ${message.message} \n\n| with [${message.customJSON}] as a steem comment.`)
       $.post({
       url: '/post/comment/',
       dataType: 'json',
@@ -168,11 +181,12 @@ steem.api.getState(stateKey, (err, result) => {
       'parentPermlink': `${permlink}`,
       'parentAuthor': `${author}`,
       'message': message.message,
-      'parentTitle': stateObj.content[postKey].title,
+      'parentTitle': 'Re:' + stateObj.content[postKey].title,
       'customJSON': message.customJSON
       }
       }, (response) => {
-      steem.api.getState(`stateKey`, (err, result) => {
+      steem.api.getState(stateKey, (err, result) => {
+        stateObj = result
       var target = document.getElementById('iframeXRCanvas').contentWindow
       target.postMessage({
       'func': 'steemState',
@@ -183,22 +197,25 @@ steem.api.getState(stateKey, (err, result) => {
       }
 
       function follow(message) {
-      console.log('got ' + message)
-      $.post({
-      url: '/post/follow/',
-      dataType: 'json',
-      data: {
-      'following': message
-      }
-      }, (response) => {
-      steem.api.getAccounts([`${iAm}`], (err, result) => {
-      var target = document.getElementById('iframeXRCanvas').contentWindow
-      target.postMessage({
-      'func': 'accountUpdate',
-      'message': result,
-      }, "*");
-      })
-      })
+      if (iAm == 'Guest'){
+        break;
+      } else {
+        $.post({
+          url: '/post/follow/',
+          dataType: 'json',
+          data: {
+            'following': message
+          }
+        }, (response) => {
+          steem.api.getAccounts([`${iAm}`], (err, result) => {
+            var target = document.getElementById('iframeXRCanvas').contentWindow
+            target.postMessage({
+              'func': 'accountUpdate',
+              'message': result,
+            }, "*");
+          })
+        })
+        }
       }
       function aVote(message) {
       $.post({

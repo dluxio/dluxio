@@ -113,8 +113,20 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
     'Hash360': Hash360,
     'headerLength': topbody.length
   })
-  var linker = `
+  var linker = `***
   #### [View in VR @dlux-io](https://dlux.io/dlux/@` + author + `/` + permlink + `)`
+  var body
+  var p = topbody.search(permlink)
+  if (p) {
+    body = topbody
+    steem.broadcast([['comment',{'parent_author': '','parent_permlink': 'dlux','author': author,'permlink': permlink,'title': title,'body': body,'json_metadata': customData}]], function (err, response) {
+    if (err) {
+      res.json({msg: err})
+    } else {
+      res.redirect(`/@${author}`)
+    }
+  })
+  } else {
   var body = topbody + linker
   steem.broadcast([['comment',{'parent_author': '','parent_permlink': 'dlux','author': author,'permlink': permlink,'title': title,'body': body,'json_metadata': customData}],['comment_options',{'author': author,'permlink': permlink,'max_accepted_payout': '1000000.000 SBD','percent_steem_dollars': 10000,'allow_votes': true,'allow_curation_rewards': true,'extensions': [[0,{'beneficiaries': [{'account': 'dlux-io','weight': 1000}]}]]}]], function (err, response) {
   if (err) {
@@ -123,6 +135,7 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
     res.redirect(`/@${author}`)
   }
 })
+}
 });
 
 /* POST a create customJson broadcast to STEEM network. */
@@ -234,6 +247,19 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
   This is an AR Marker
   Posted on [dlux](https://dlux.io)`
 
+  var body
+  var p = topbody.search(permlink)
+  if (p) {
+    body = topbody
+    steem.broadcast([['comment',{'parent_author': '','parent_permlink': 'dlux','author': author,'permlink': permlink,'title': title,'body': body,'json_metadata': customData}]], function (err, response) {
+    if (err) {
+      res.json({msg: err})
+      //res.redirect(`/@${parentAuthor}/${parentPermlink}`)
+    } else {
+      res.redirect('https://dlux.io/@' + author)
+    }
+  })
+  } else {
   var body = topbody + linker
   steem.broadcast([['comment',{'parent_author': '','parent_permlink': 'dlux','author': author,'permlink': permlink,'title': title,'body': body,'json_metadata': customData}],['comment_options',{'author': author,'permlink': permlink,'max_accepted_payout': '1000000.000 SBD','percent_steem_dollars': 10000,'allow_votes': true,'allow_curation_rewards': true,'extensions': [[0,{'beneficiaries': [{'account': 'dlux-io','weight': 1000}]}]]}]], function (err, response) {
   if (err) {
@@ -243,5 +269,6 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
     res.redirect('https://dlux.io/@' + author)
   }
 })
+}
 });
 module.exports = router;

@@ -88,7 +88,11 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
   let author = req.user.username
   let topbody = req.body.post
   let permlink = req.body.permlink
-  if (!permlink) {permlink = util.urlString()}
+  var editing = 1
+  if (!permlink) {
+    permlink = util.urlString()
+    editing = 0
+  }
   var tags = req.body.tags.split(',').map(item => item.trim())
   let primaryTag = 'dlux'
   let otherTags = tags.slice(0, 4)
@@ -220,7 +224,11 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
   let primaryTag = 'dluxar'
   let otherTags = tags.slice(0, 4)
   let title = req.body.title
-  if (!permlink) {permlink = util.urlString()}
+  var editing = 1
+  if (!permlink) {
+    permlink = util.urlString()
+    editing = 0
+  }
   let hashy = req.body.vrHash
   let header = topbody.length
   if (hashy.split('/')[3] == 'ipfs') {

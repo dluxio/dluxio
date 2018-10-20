@@ -4,8 +4,13 @@ steem.api.getState(stateKey, (err, result) => {
       stateObj = result
       host = stateObj.content[postKey].author
       hostRep = steem.formatter.reputation(stateObj.content[postKey].author_reputation)
-      document.getElementById('author-name-a').innerHTML = `@${host} (${hostRep})`
-      document.getElementById('author-name-a').href = `/2d/@${host}`
+      if (iAm == host){
+        document.getElementById('author-name-a').innerHTML = `@${host} (${hostRep}) | Edit`
+        document.getElementById('author-name-a').href = `/post/edit/@${host}/${permlink}`
+      } else {
+        document.getElementById('author-name-a').innerHTML = `@${host} (${hostRep})`
+        document.getElementById('author-name-a').href = `/2d/@${host}`
+      }
       postDate = ago(Date.parse(stateObj.content[postKey].created))
       document.getElementById('post-date').innerHTML = postDate
       postTitle = stateObj.content[postKey].title

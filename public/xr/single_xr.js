@@ -203,7 +203,7 @@ steem.api.getState(stateKey, (err, result) => {
 
       function follow(message) {
       if (iAm == 'Guest'){
-        break;
+        return
       } else {
         $.post({
           url: '/post/follow/',

@@ -131,7 +131,7 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
     if (err) {
       res.json({msg: err})
     } else {
-      res.redirect(`/@${author}`)
+      res.redirect(`/@${author}/${permlink}`)
     }
   })
   } else {
@@ -140,7 +140,7 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
       if (err) {
         res.json({msg: err})
       } else {
-        res.redirect(`/@${author}`)
+        res.redirect(`/@${author}/${permlink}`)
       }
     })
   }
@@ -307,7 +307,7 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
         res.json({msg: err})
         //res.redirect(`/@${parentAuthor}/${parentPermlink}`)
       } else {
-        res.redirect('https://dlux.io/@' + author)
+        res.redirect(`/@${author}/${permlink}`)
       }
     })
   } else {
@@ -317,7 +317,7 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
         res.json({msg: err})
         //res.redirect(`/@${parentAuthor}/${parentPermlink}`)
       } else {
-        res.redirect('https://dlux.io/@' + author)
+        res.redirect(`/@${author}/${permlink}`)
       }
     })
   }

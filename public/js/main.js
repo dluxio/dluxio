@@ -71,7 +71,7 @@ function getTrendingTags(){
    steem.api.getDiscussionsByBlog(query, (err, result) => {
      var filteredResults = []
     for (i = 0; i < result.length; i++) {
-      let vr = JSON.parse(result[i].json_metadata).vrHash
+      //let vr = JSON.parse(result[i].json_metadata).vrHash
       if (vr) {
         filteredResults.push(result[i])
       }
@@ -108,7 +108,7 @@ function getUserFeed(username, initial){
   steem.api.getDiscussionsByFeed(query, (err, result) => {
     var filteredResults = []
     for (i = 0; i < result.length; i++) {
-      let vr = JSON.parse(result[i].json_metadata).vrHash
+      //let vr = JSON.parse(result[i].json_metadata).vrHash
       if (vr) {
         filteredResults.push(result[i])
       }

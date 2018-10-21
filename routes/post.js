@@ -118,7 +118,7 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
     'headerLength': topbody.length
   })
   var linker = `***
-  #### [View in VR @dlux-io](https://dlux.io/dlux/@` + author + `/` + permlink + `)`
+  #### [View in VR @dlux-io](https://dlux.io/dlux/@${author}/${permlink})`
   var body
   if (editing) {
     var p = topbody.search(permlink)
@@ -252,11 +252,13 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
   })
   var resource = 'https://dlux.io/dluxar/@' + author + '/' + permlink
   var qrCodeURL = 'https://dlux.io/qr?link=' + resource
-  var linker = `
-  ![scan with smart phone](` + qrCodeURL + `)
+  var linker = `***
+  ![scan with smart phone](${qrCodeURL})
   QR Code contains [link](` + resource + `) to AR dApp
+  ***
   ![point phone here](https://ipfs.io/ipfs/QmXursyDdgcXHuVPSNtTN8G95SPDJGfUhyZVE97kngBWnN)
   This is an AR Marker
+  ***
   Posted on [dlux](https://dlux.io)`
 
   var body

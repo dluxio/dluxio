@@ -20,7 +20,7 @@ steem.api.getDynamicGlobalProperties((err, result) => {
 function getTrendingTags(){
   steem.api.getTrendingTags('', 20, (err, result) => {
     if (err) return console.log(err);
-    result = result.filter(post => post.parent_permlink === 'dlux')
+    //result = result.filter(post => post.parent_permlink === 'dlux')
     displayTrendingTags(result)
   });
 }
@@ -35,7 +35,7 @@ function getTrendingTags(){
    steem.api.getDiscussionsByTrending(query, (err, result) => {
      if (err === null) {
        displayContent(result,initial)
-       result = result.filter(post => post.parent_permlink === 'dlux')
+       //result = result.filter(post => post.parent_permlink === 'dlux')
        getaccounts(result.map(post => post.author))
      } else {
        console.log(err);
@@ -53,7 +53,7 @@ function getTrendingTags(){
    steem.api.getDiscussionsByCreated(query, (err, result) => {
      if (err === null) {
        displayContent(result, initial)
-       result = result.filter(post => post.parent_permlink === 'dlux')
+       //result = result.filter(post => post.parent_permlink === 'dlux')
        getaccounts(result.map(post => post.author))
      } else {
        console.log(err);

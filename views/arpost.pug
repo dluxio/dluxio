@@ -1,5 +1,9 @@
 extends layout
 
+block scripts
+  link(rel='stylesheet', href='https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css')
+  script(src='https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js')
+
 block content
   include partials/nav
 
@@ -17,6 +21,8 @@ block content
         input#permlink(type="text" name="permlink" value=permlink required)
       else
         input(type="text" name="title" required)
+      label Tags separated by commas, all lowercase, no spaces!
+        input(type="text" name="tags")
       label XR selector
         input#xr(type="checkbox" checked name="xr")
       label AR HTML Hash. Leave default if you didn't code a new project. &nbsp;
@@ -24,7 +30,7 @@ block content
       if arHash
         input#vrHash(type="text" name="vrHash" value=arHash required)
       else
-        input#vrHash(type="text" name="vrHash" value="QmSQmHArubDih7395b6GsaADdNqQKM6WZaV95FduCAdjrD" required)
+        input#vrHash(type="text" name="vrHash" value="Qmc7sLUrB3HaFMKjZs4rvS75D8w9pS4oEuHdWJGRe9orNv" required)
       label 360° Image Hash &nbsp;
         img(src='viz/info-icon.png', width='30', title='Take a 360° photo from inside your scene by pressing SHIFT + CTL + ALT + S, upload to IPFS and copy the hash at the end of the ipfs link: "QmRandomGarbageText". This will become the preview for your post in VR.')
       if hash360
@@ -39,13 +45,15 @@ block content
         input(type="text" name="image" value="QmPthDMHuHLpSTaJMWpdPzYxFc3V2ZoFXyevDBoqqzZAwh")
       label Blog Post
       if description
-        textarea(name="post")
+        textarea#postmd(name="post")
           | #{description}
       else
-        textarea(name="post")
-      label Tags separated by commas, all lowercase, no spaces!
-      input(type="text" name="tags")
+        textarea#postmd(name="post")
       label
-      button.btn.btn-primary(type="submit") Post to STEEM
+        button.btn.btn-primary(type="submit") Post to STEEM
       p Posting as #{user}
       p #{msg}
+
+block footer
+  script.
+    var simplemde = new SimpleMDE({ element: document.getElementById('postmd') });

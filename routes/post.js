@@ -176,6 +176,39 @@ router.post('/follow', util.isAuthenticated, (req, res) => {
 });
 });
 
+router.post('/reblog', util.isAuthenticated, (req, res) => {
+  steem.setAccessToken(req.user.steem)
+  steem.reblog(req.user.username, req.body.author, req.body.permlink, function(err, result) {
+    if (err) {
+      res.json({ err: err })
+    } else {
+      res.json({ msg: result })
+    }
+});
+});
+
+router.post('/ignore', util.isAuthenticated, (req, res) => {
+  steem.setAccessToken(req.user.steem)
+  steem.ignore(req.user.username, req.body.following, function(err, result) {
+    if (err) {
+      res.json({ err: err })
+    } else {
+      res.json({ msg: result })
+    }
+});
+});
+
+router.post('/delete', util.isAuthenticated, (req, res) => {
+  steem.setAccessToken(req.user.steem)
+  steem.deleteComment(req.user.username, req.body.permlink, function(err, result) {
+    if (err) {
+      res.json({ err: err })
+    } else {
+      res.json({ msg: result })
+    }
+});
+});
+
 /* POST a vote broadcast to STEEM network. */
 
 router.post('/vote', util.isAuthenticatedJSON, (req, res) => {
@@ -200,11 +233,11 @@ router.post('/comment', util.isAuthenticatedJSON, (req, res) => {
     steem.setAccessToken(req.user.steem)
     let author = req.user.username
     let permlink = req.body.parentPermlink + '-' + util.urlString()
-    let title = 'RE: ' + req.body.parentTitle
+    let title = req.body.parentTitle
     let body = req.body.message
     let parentAuthor = req.body.parentAuthor
     let parentPermlink = req.body.parentPermlink
-    let customJSON = req.body.customJSON
+    let customJSON = req.body.customJSON || ''
 
     steem.comment(parentAuthor, parentPermlink, author, permlink, title, body, customJSON, (err, steemResponse) => {
       if (err) {
@@ -225,7 +258,7 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
   let permlink = req.body.permlink
   let xr = req.body.xr
   var tags = req.body.tags.split(',').map(item => item.trim())
-  let primaryTag = 'dluxar'
+  let primaryTag = 'dlux'
   let otherTags = tags.slice(0, 4)
   let title = req.body.title
   var editing = 1
@@ -250,7 +283,7 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
     'headerLength': header,
     'xr': xr
   })
-  var resource = 'https://dlux.io/dluxar/@' + author + '/' + permlink
+  var resource = 'https://dlux.io/dlux/@' + author + '/' + permlink
   var qrCodeURL = 'https://dlux.io/qr?link=' + resource
   var linker = `***
   ![scan with smart phone](${qrCodeURL})

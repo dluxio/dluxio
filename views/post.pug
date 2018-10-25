@@ -1,5 +1,9 @@
 extends layout
 
+block scripts
+  link(rel='stylesheet', href='https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css')
+  script(src='https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js')
+
 block content
   include partials/nav
 
@@ -18,6 +22,8 @@ block content
         input#permlink(type="text" name="permlink" value=permlink required)
       else
         input(type="text" name="title" required)
+      label Tags separated by commas, all lowercase, no spaces!
+        input(type="text" name="tags")
       label VR HTML Hash &nbsp;
         img(src='viz/info-icon.png', width='30', title='Upload the html file containing your scene to IPFS, then copy the hash at the end of the ipfs link: "QmRandomGarbageText"')
       if vrHash
@@ -37,14 +43,16 @@ block content
       else
         input(type="text" name="image" value="QmPthDMHuHLpSTaJMWpdPzYxFc3V2ZoFXyevDBoqqzZAwh")
       label Blog Post
-      if description
-        textarea(name="post")
-          | #{description}
-      else
-        textarea(name="post")
-      label Tags separated by commas, all lowercase, no spaces!
-      input(type="text" name="tags")
+        if description
+          textarea#postmd(name="post")
+            | #{description}
+        else
+          textarea#postmd(name="post")
       label
       button.btn.btn-primary(type="submit") Post to STEEM
       p Posting as #{user}
       p #{msg}
+
+block footer
+  script.
+    var simplemde = new SimpleMDE({ element: document.getElementById('postmd') });

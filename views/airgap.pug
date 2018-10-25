@@ -1,0 +1,67 @@
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title dlux XR Account Creation
+    link(href='css/bootstrap-4.0.0.css', rel='stylesheet', type='text/css')
+    link(href='css/style_invite.css', rel='stylesheet', type='text/css')
+    meta(name='description', content='dlux xr account creation tool for onboarding new users into the Steem blockchain')
+  body
+    // The QR overlay
+    #qrOverlay.overlay
+      // Button to close the QR overlay
+      a.closebtn(href='javascript:void(0)', onclick='closeQR()') ×
+      // Overlay content
+      .overlay-content
+        #qrcode.justify-content-center
+        h3 Show this QR code to your dlux host.
+    .container-fluid.header-layer
+      .container.header-content
+        h1.text-center dlux
+        h2.text-center XR Account Creation
+        p.text-center
+          | Create a Steem blockchain account for free, dlux will cover the cost. This tool only works in person at dlux events.
+    .container-fluid.form-layer
+      .container.form-content
+        form#request-account.needs-validation(novalidate='')
+          .form-group
+            label(for='validationCustomEmail') Email (optional)
+            input#validationCustomEmail.form-control(placeholder='email', optional='', type='email')
+            .invalid-feedback
+              | Email address is invalid.
+          .form-group
+            label(for='validationCustomPhone') Phone Number (optional)
+            input#validationCustomPhone.form-control(placeholder='phone number', optional='', type='tel')
+          .form-group
+            label(for='validationCustomUsername') Username (required)
+            .input-group
+              .input-group-prepend
+                span#inputGroupPrepend.input-group-text @
+              input#validationCustomUsername.form-control.username-input(placeholder='username', aria-describedby='inputGroupPrepend', required='', type='text')
+              .invalid-feedback
+                | Username is invalid or taken.
+          .form-group
+            label(for='validationCustomPassword') Password
+            textarea#validationCustomPassword.form-control(placeholder='password', required='')
+          .form-group
+            label(for='validationCustomReferal') Referal Account
+            input#validationCustomReferal.form-control(value='', required='', type='text')
+          .form-group
+            .form-check
+              input#invalidCheck.form-check-input(value='', required='', type='checkbox')
+              label.form-check-label(for='invalidCheck')
+                | Agree to take a picture of your username and password
+              .invalid-feedback
+                | You must store password before submitting; lost passwords can not be recovered.
+          button.btn.btn-primary(type='submit', onclick='') Submit
+        script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js', integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo', crossorigin='anonymous')
+        script(src='https://unpkg.com/dsteem@latest/dist/dsteem.js')
+        script(src='/js/airgap.js')
+    footer.footer
+      .container.footer-content
+        p.text-center
+          | Join our
+          a(href='https://discord.gg/Beeb38j') Discord server
+          |  to get in touch.

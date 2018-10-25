@@ -47,11 +47,31 @@ window.gwd = window.gwd || {};
       }
     };
     gwd.resteem = function(event) {
-      if(confirm("Resteem... soon...")){
+      if (iAm == 'Guest') {
+        var toLogin = prompt('Must be logged in.')
+        if (toLogin){sendLink('/auth')}
+      } else {
+      if(confirm(`Resteeming is Permenent. Please Confirm`)){
+    $.post({
+    url: '/post/reblog/',
+    dataType: 'json',
+    data: {
+    'permlink': `${permlink}`,
+    'author': `${author}`
+    }
+    }, (response) => {
+      if(response.err){
+        console.log({response.err})
+        var x = document.getElementById("resteem-oval");
+        x.style.backgroundColor = "#FF0000";
+      }
       var x = document.getElementById("resteem-oval");
       x.style.backgroundColor = "#008bfd";
+      })
+    }
     }
     };
+
     gwd.pay = function(event) {
       if (iAm == 'Guest') {
         var toLogin = prompt('Must be logged in.')

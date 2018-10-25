@@ -95,7 +95,9 @@ router.get('/p/steve', (req, res, next) => {
 router.get('/ico', (req, res, next) => {
       res.redirect('/dlux/@dlux-io/c87j8xxkq1eudykaelft40lt6n1gg91z');
 });
-
+router.get('/i', (req, res, next) => {
+      res.render('airgap')
+});
 /* GET a users blog feed page. */
 router.get('/@:username/feed', (req, res, next) => {
   if(req.user){ var user = req.user.username} else {var user = 'Guest'}

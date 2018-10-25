@@ -135,7 +135,9 @@ steem.api.getState(stateKey, (err, result) => {
       //if (event.origin !== "https://cheerful-suggestion.glitch.me") return;
       var data = event.data;
       if (typeof(window[data.func]) == "function") {
-      window[data.func].call(null, data.message);
+        if (data.func == 'vote' || data.func == 'signDecode' || data.func == 'signEncode' || data.func == 'follow' || data.func == 'aVote' || data.func == 'sendLink' || data.func == 'iloaded' || data.func == 'passGenerateHotLink' || data.func == 'comment' ){
+        window[data.func].call(null, data.message);
+        }
       }
       }
 

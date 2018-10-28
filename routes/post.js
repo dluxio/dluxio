@@ -278,6 +278,8 @@ router.post('/post-advanced', util.isAuthenticatedJSON, (req, res) => {
       } else {
         xr = false
       }
+    } else {
+      xr = customJSON.xr
     }
     if (customJSON['app']) {
       delete customJSON['app']

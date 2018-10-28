@@ -78,10 +78,10 @@ window.gwd = window.gwd || {};
         if (toLogin){sendLink('/auth')}
       } else {
       if (author == 'dlux-io'){
-        var spDel = parseInt(prompt(`Amount of STEEM to send for ICO`)).toFixed(3)
+        var spDel = parseFloat(prompt(`Amount of STEEM to send for ICO`)).toFixed(3)
         var link = `https://steemconnect.com/sign/transfer?from=${iAm}&to=robotolux&amount=${spDel}&memo=Via%20dlux&uri=${location.href}`
       } else {
-        var spDel = parseInt(prompt(`Amount of STEEM to send to ${author}`)).toFixed(3)
+        var spDel = parseFloat(prompt(`Amount of STEEM to send to ${author}`)).toFixed(3)
         var link = `https://steemconnect.com/sign/transfer?from=${iAm}&to=${author}&amount=${spDel}&memo=Via%20dlux&uri=${location.href}`
     }
   }
@@ -100,7 +100,7 @@ window.gwd = window.gwd || {};
     }
     }, (response) => {
       if(response.err){
-        console.log({response.err})
+        console.log({response})
         var x = document.getElementById("resteem-oval");
         x.style.backgroundColor = "#FF0000";
       }

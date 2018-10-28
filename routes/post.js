@@ -251,6 +251,79 @@ router.post('/comment', util.isAuthenticatedJSON, (req, res) => {
     });
 });
 
+router.post('/post-advanced', util.isAuthenticatedJSON, (req, res) => {
+    steem.setAccessToken(req.user.steem)
+    let author = req.user.username
+    let permlink = req.body.permlink || util.urlString()
+    let title = req.body.title
+    let body = req.body.message
+    let attornery = req.body.attorney  || 'pro per'
+    let parentAuthor = req.body.parentAuthor || ''
+    let parentPermlink = req.body.parentPermlink || 'dlux'
+    let customJSON = req.body.customJSON || ''
+    let bens = req.body.beneficiaries
+    let header = body.length
+    var resource = `https://dlux.io/dlux/@${author}/${permlink}`
+    var qrCodeURL = 'https://dlux.io/qr?link=' + resource
+    var linker = `***\n
+    Interact with this dApp on [dlux.io](${resource}))\n
+    ***\n
+    ![qr link to app](${qrCodeURL})\n`
+    var xr
+    if (!customJSON.xr) {
+      if (customJSON.vrHash) {
+        xr = false
+      } else if (!customJSON.arHash) {
+        xr = true
+      } else {
+        xr = false
+      }
+    }
+    if (customJSON['app']) {
+      delete customJSON['app']
+    }
+    if (customJSON['attorney']) {
+      delete customJSON['attorney']
+    }
+    if (customJSON['headerLength']) {
+      delete customJSON['headerLength']
+    }
+    let dluxData = {
+      'app': 'dlux/0.2',
+      'attorney': attorney,
+      'headerLength': header,
+      'xr': xr
+    }
+    for (let key in dluxData) {
+      customJSON[key] = dluxData[key]
+    }
+    if (bens['dlux-io']) {
+      delete bens['dlux-io']
+    }
+    var ben = [{'account': 'dlux-io', 'weight': 1000}]
+    var totBens
+    if (bens) {
+    for (let key in bens) {
+      totBens += bens[key]
+    }
+    if (totBens > 0) {
+      if(totBens < 3000) {
+        for (let key in bens) {
+          ben.push({'account': key, 'weight': bens[key]})
+        }
+      }
+    }
+    }
+    customJSON = JSON.stringify(customJSON)
+      steem.broadcast([['comment', {'parent_author': parentAuthor, 'parent_permlink': parentPermlink, 'author': author, 'permlink': permlink, 'title': title, 'body': body, 'json_metadata': customJSON}], ['comment_options', {'author': author, 'permlink': permlink, 'max_accepted_payout': '1000000.000 SBD', 'percent_steem_dollars': 10000, 'allow_votes': true, 'allow_curation_rewards': true, 'extensions': [[0, {'beneficiaries': ben}]]}]], function (err, response) {
+        if (err) {
+          res.json({ error: err.error_description })
+        } else {
+          res.redirect(`/@${author}/${permlink}`)
+        }
+    });
+});
+
 router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
   steem.setAccessToken(req.user.steem)
   let author = req.user.username
@@ -285,13 +358,13 @@ router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {
   })
   var resource = 'https://dlux.io/dlux/@' + author + '/' + permlink
   var qrCodeURL = 'https://dlux.io/qr?link=' + resource
-  var linker = `***
-  ![scan with smart phone](${qrCodeURL})
-  QR Code contains [link](` + resource + `) to AR dApp
-  ***
-  ![point phone here](https://ipfs.io/ipfs/QmXursyDdgcXHuVPSNtTN8G95SPDJGfUhyZVE97kngBWnN)
-  This is an AR Marker
-  ***
+  var linker = `***\n
+  ![scan with smart phone](${qrCodeURL})\n
+  QR Code contains [link](` + resource + `) to AR dApp\n
+  ***\n
+  ![point phone here](https://ipfs.io/ipfs/QmXursyDdgcXHuVPSNtTN8G95SPDJGfUhyZVE97kngBWnN)\n
+  This is an AR Marker\n
+  ***\n
   Posted on [dlux](https://dlux.io)`
 
   var body

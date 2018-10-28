@@ -145,7 +145,7 @@ steem.api.getState(stateKey, (err, result) => {
       //if (event.origin !== "https://cheerful-suggestion.glitch.me") return;
       var data = event.data;
       if (typeof(window[data.func]) == "function") {
-        if (data.func == 'vote' || data.func == 'signDecode' || data.func == 'signEncode' || data.func == 'follow' || data.func == 'aVote' || data.func == 'sendLink' || data.func == 'iloaded' || data.func == 'passGenerateHotLink' || data.func == 'comment' ){
+        if (data.func == 'advPost' || data.func == 'vote' || data.func == 'signDecode' || data.func == 'signEncode' || data.func == 'follow' || data.func == 'aVote' || data.func == 'sendLink' || data.func == 'iloaded' || data.func == 'passGenerateHotLink' || data.func == 'comment' ){
         window[data.func].call(null, data.message);
         }
       }
@@ -179,6 +179,32 @@ steem.api.getState(stateKey, (err, result) => {
       })
       })
       }
+
+      function advPost(postData) {
+        if(confirm(`This app has requested to make a steem post on your behalf with\nTitle:${postData.title}\nBody:${postData.body}`)){
+      $.post({
+      url: '/post/post-advanced/',
+      dataType: 'json',
+      data: {
+      'permlink': postData.permlink,
+      'attorney': `${author}`,
+      'title': postData.title,
+      'message': postData.body,
+      'parentAuthor': postData.parentAuthor,
+      'parentPermlink': postData.parentPermlink,
+      'customJSON': postData.customJSON,
+      'beneficiaries': postData.beneficiaries,
+      }
+      }, (response) => {
+        alert(response)
+      target.postMessage({
+      'func': 'err',
+      'message': result,
+      }, "*");
+      })
+      }
+      }
+
       function comment(message) {
       confirm(`Confirm posting: ${message.message} \n\n| with [${message.customJSON}] as a steem comment.`)
       $.post({

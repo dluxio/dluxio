@@ -43,7 +43,7 @@ steem.api.getState(stateKey, (err, result) => {
       iframe.id = 'iframeXRCanvas'
       iframe.class = 'gwd-iframe-1pvv'
       iframe.allowfullscreen = 'yes'
-      iframe.scrolling = 'no'
+      iframe.scrolling = JSON.parse(metadata).scrolling || 'no'
       iframe.width = '100%'
       iframe.height = '100%'
       iframe.align = 'right'
@@ -199,7 +199,7 @@ steem.api.getState(stateKey, (err, result) => {
         alert(response)
       target.postMessage({
       'func': 'err',
-      'message': result,
+      'message': response,
       }, "*");
       })
       }

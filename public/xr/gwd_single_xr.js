@@ -61,7 +61,7 @@ window.gwd = window.gwd || {};
     }
     }, (response) => {
       if(response.err){
-        console.log({response.err})
+        console.log({response})
         var x = document.getElementById("resteem-oval");
         x.style.backgroundColor = "#FF0000";
       }
@@ -87,7 +87,28 @@ window.gwd = window.gwd || {};
   }
     };
     gwd.mute = function(event) {
-      alert("Mute... soon...");
+      if (iAm == 'Guest') {
+        var toLogin = prompt('Must be logged in.')
+        if (toLogin){sendLink('/auth')}
+      } else {
+      if(confirm(`Resteeming is Permenent. Please Confirm`)){
+    $.post({
+    url: '/post/ignore/',
+    dataType: 'json',
+    data: {
+    'following': `${author}`
+    }
+    }, (response) => {
+      if(response.err){
+        console.log({response.err})
+        var x = document.getElementById("resteem-oval");
+        x.style.backgroundColor = "#FF0000";
+      }
+      var x = document.getElementById("resteem-oval");
+      x.style.backgroundColor = "#008bfd";
+      })
+    }
+    }
     };
     gwd.follow = function(event) {
       prompt(`Folow... soon...`)

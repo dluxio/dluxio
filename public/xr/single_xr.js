@@ -101,7 +101,7 @@ steem.api.getState(stateKey, (err, result) => {
         })
       })
     } else {
-      document.getElementById('user-name-txt').innerHTML = `Welcome Guest`
+      //document.getElementById('user-name-txt').innerHTML = `Welcome Guest`
     }
       //ios polyfill for motion
       function isIOS() {

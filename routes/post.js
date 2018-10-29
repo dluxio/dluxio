@@ -316,10 +316,7 @@ router.post('/post-advanced', util.isAuthenticatedJSON, (req, res) => {
       }
     }
     }
-    console.log(customJSON)
     customJSON = JSON.stringify(customJSON)
-    console.log(customJSON)
-    /*
       steem.broadcast([['comment', {'parent_author': parentAuthor, 'parent_permlink': parentPermlink, 'author': author, 'permlink': permlink, 'title': title, 'body': body, 'json_metadata': customJSON}], ['comment_options', {'author': author, 'permlink': permlink, 'max_accepted_payout': '1000000.000 SBD', 'percent_steem_dollars': 10000, 'allow_votes': true, 'allow_curation_rewards': true, 'extensions': [[0, {'beneficiaries': ben}]]}]], function (err, response) {
         if (err) {
           res.json({ error: err.error_description })
@@ -327,7 +324,6 @@ router.post('/post-advanced', util.isAuthenticatedJSON, (req, res) => {
           res.json({link: `/@${author}/${permlink}`})
         }
     });
-    */
 });
 
 router.post('/create-arpost', util.isAuthenticatedJSON, (req, res) => {

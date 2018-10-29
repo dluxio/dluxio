@@ -99,6 +99,7 @@ app.use('/keycam', index);
 app.use('/qr', qr);
 app.use('/post', post);
 app.use('/post/create-post', post);
+app.use('/post/post-advanced', post);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

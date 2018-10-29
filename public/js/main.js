@@ -708,7 +708,7 @@ url: '/post/post-advanced',
 dataType: 'json',
 data: {
 'permlink': postData.permlink,
-'attorney': `${author}/${permlink}`,
+'attorney': steemKey,
 'title': postData.title,
 'message': postData.message,
 'parentAuthor': postData.parentAuthor,

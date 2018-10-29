@@ -181,7 +181,7 @@ steem.api.getState(stateKey, (err, result) => {
       }
 
       function advPost(postData) {
-        if(confirm(`This app has requested to make a steem post on your behalf with\nTitle:${postData.title}\nBody:${postData.body}`)){
+        if(confirm(`This app has requested to make a steem post on your behalf with\nTitle:${postData.title}\nBody:${postData.message}`)){
       $.post({
       url: '/post/post-advanced/',
       dataType: 'json',

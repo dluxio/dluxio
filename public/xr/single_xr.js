@@ -187,7 +187,7 @@ steem.api.getState(stateKey, (err, result) => {
       dataType: 'json',
       data: {
       'permlink': postData.permlink,
-      'attorney': `${author}/${permlink}`,
+      'attorney': steemKey,
       'title': postData.title,
       'message': postData.message,
       'parentAuthor': postData.parentAuthor,
@@ -196,7 +196,7 @@ steem.api.getState(stateKey, (err, result) => {
       'beneficiaries': postData.beneficiaries,
       }
       }, (response) => {
-        alert(response)
+        sendLink(response.link)
       target.postMessage({
       'func': 'err',
       'message': response,

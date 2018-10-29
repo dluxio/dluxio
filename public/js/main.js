@@ -717,7 +717,7 @@ data: {
 'beneficiaries': postData.beneficiaries,
 }
 }, (response) => {
-  alert(response)
+  sendLink(response.link)
 target.postMessage({
 'func': 'err',
 'message': response,

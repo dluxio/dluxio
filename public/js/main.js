@@ -704,7 +704,7 @@ function getCookie(cname) {
 function advPost(postData) {
   if(confirm(`This app has requested to make a steem post on your behalf with\nTitle:${postData.title}\nBody:${postData.message}`)){
 $.post({
-url: '/post/post-advanced/',
+url: '/post/post-advanced',
 dataType: 'json',
 data: {
 'permlink': postData.permlink,

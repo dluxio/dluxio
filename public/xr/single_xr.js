@@ -183,7 +183,7 @@ steem.api.getState(stateKey, (err, result) => {
       function advPost(postData) {
         if(confirm(`This app has requested to make a steem post on your behalf with\nTitle:${postData.title}\nBody:${postData.message}`)){
       $.post({
-      url: '/post/post-advanced/',
+      url: '/post/post-advanced',
       dataType: 'json',
       data: {
       'permlink': postData.permlink,
@@ -234,7 +234,7 @@ steem.api.getState(stateKey, (err, result) => {
         return
       } else {
         $.post({
-          url: '/post/follow/',
+          url: '/post/follow',
           dataType: 'json',
           data: {
             'following': message
@@ -253,7 +253,7 @@ steem.api.getState(stateKey, (err, result) => {
 
       function aVote(message) {
       $.post({
-      url: '/post/vote/',
+      url: '/post/vote',
       dataType: 'json',
       data: {
       'permlink': message.permlink,

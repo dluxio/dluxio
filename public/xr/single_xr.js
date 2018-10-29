@@ -187,9 +187,9 @@ steem.api.getState(stateKey, (err, result) => {
       dataType: 'json',
       data: {
       'permlink': postData.permlink,
-      'attorney': `${author}`,
+      'attorney': `${author}/${permlink}`,
       'title': postData.title,
-      'message': postData.body,
+      'message': postData.message,
       'parentAuthor': postData.parentAuthor,
       'parentPermlink': postData.parentPermlink,
       'customJSON': postData.customJSON,

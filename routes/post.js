@@ -261,7 +261,7 @@ router.post('/post-advanced', util.isAuthenticatedJSON, (req, res) => {
     let parentAuthor = req.body.parentAuthor || ''
     let parentPermlink = req.body.parentPermlink || 'dlux'
     let customJSON = req.body.customJSON || ''
-    let bens = req.body.beneficiaries
+    let bens = req.body.beneficiaries || {}
     let header = body.length
     var resource = `https://dlux.io/dlux/@${author}/${permlink}`
     var qrCodeURL = 'https://dlux.io/qr?link=' + resource

@@ -24,6 +24,8 @@ html
     script.
       var stateObj
       var steemKey = '#{username}/#{permlink}'
+      var author = '#{username}';
+      var parmlink = '#{permlink}'
       steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
       stateObj = result
       var metadata = result.content[steemKey].json_metadata

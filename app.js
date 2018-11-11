@@ -16,7 +16,7 @@ let feed = require('./routes/feed');
 let post = require('./routes/post');
 let twod = require('./routes/twod')
 let qr = require('./routes/qr');
-let arpost = require('./routes/arpost');
+let vr = require('./routes/vr');
 let config = require('./config');
 let util = require('./modules/util');
 let steemconnect2 = require('sc2-sdk');
@@ -94,7 +94,7 @@ app.use('/', index);
 //app.use('/logout', auth);
 app.use('/feed', feed);
 app.use('/2d', twod);
-app.use('/arpost', arpost);
+app.use('/vr', vr);
 app.use('/keycam', index);
 app.use('/qr', qr);
 app.use('/post', post);

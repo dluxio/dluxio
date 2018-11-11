@@ -1,0 +1,234 @@
+extends layout
+
+block content
+  include partials/side-nav
+
+  .navbar.navbar-inverse.fixed-top.bg-black
+    .mainnav
+      .navbar-header.topnav
+        .row
+          .col-4
+            span(style='font-size:30px;cursor:pointer;color:#ffffff', onclick='openNav()')
+              i.fas.fa-bars.hamburger-btn
+          .col-4
+            center
+              a.navbar-brand.navbar-text(title='Home', href='/') dlux
+          .col-4
+      .bottomnav
+        ul#myTab.nav.nav-pills.justify-content-between.navtabs-align(role='tablist')
+          li.nav-item
+            a#info-tab.nav-link.active.tabs(data-toggle='pill', href='#info', role='tab', aria-controls='info', aria-selected='true') Info
+          li.nav-item
+            a#ico-tab.nav-link(data-toggle='pill', href='#ico', role='tab', aria-controls='ico', aria-selected='false') ICO
+          li.nav-item
+            a#tech-tab.nav-link(data-toggle='pill', href='#tech', role='tab', aria-controls='tech', aria-selected='false') Technical
+  .container-fluid
+    .container
+      #myTabContent.tab-content
+        #info.tab-pane.fade.show.active.text-center(role='tabpanel', aria-labelledby='info-tab')
+          p
+          h1.text-center.headroom New media. New money. New reality.
+          p
+          p
+          h2.text-center
+            em dlux is a decentralized content network explored virtually in 3D space.
+          p
+          img.img-fluid.img-pad(src='https://ipfs.io/ipfs/QmPEwTbxfjLTiSXd3CGEEetJNfk59QJVC1qgR7aGD3bXpc', alt='', width='246', height='155')
+          p.text-center
+            | Design and publish dapps, interfaces, and experiences for distribution through web browsers at no cost.
+          p
+          h1.text-center AR and VR on any device.
+          p
+          p
+          h2.text-center This is an immersive canvas beyond the 16x9 box, build anything.
+          p
+          p.text-center dlux has built boiler-plate projects on Glitch using A-Frame.
+          p.text-center Users can remix these projects to quickly begin building XR scenes.
+          hr(width='50px', color='#ffffff')
+          p
+          h1.text-center Attention economy built on trust and crypto.
+          p
+          img.img-fluid.img-pad(src='https://ipfs.io/ipfs/QmSTcWgjGRxGEQB5ek6URodGbbRFqgdsLQytsyHP1yGJ2n', alt='', width='200', height='200')
+          p
+          h2.text-center
+            em
+              | Content is monetized via the STEEM blockchain, which is incorruptible, irrefutable, immutable, and secure.
+          p
+          p.text-center
+            | Bypass centralized censorship and enforce transparency with community up-voting and down-voting.
+          p.text-center Escape advertising filter bubbles with a peer-to-peer value economy.
+          p.text-center Contribute to a proof-of-brain network built on trust and reputation.
+          hr(width='50px', color='#ffffff')
+          p
+          h1.text-center Team OTOLUX
+          p
+          p.text-center
+            | The dlux software is designed and published by OTOLUX, a future-first, do-good experiential agency comprised of two humans:
+          img.img-fluid.img-pad(src='https://ipfs.io/ipfs/QmTbSEpkK5yEesefkSv8EFVZwhbqUXPcUMHwcSdwPrgyzC', alt='', width='180', height='181')
+          p
+          h1.text-center Steve Ettinger
+          p
+          p
+            a.text-center(title="Steven's STEEM blog", href='/@disregardfiat') @disregardfiat
+          p.text-center Co-Founder | Development Lead
+          img.img-fluid.img-pad(src='https://ipfs.io/ipfs/QmTbSEpkK5yEesefkSv8EFVZwhbqUXPcUMHwcSdwPrgyzC', alt='', width='180', height='181')
+          p
+          h1.text-center Mark Giles
+          p
+          p
+            a.text-center(title="Mark's STEEM blog", href='/@markegiles') @markegiles
+          p.text-center Co-Founder | Design Lead
+        #ico.tab-pane.fade.text-center(role='tabpanel', aria-labelledby='ico-tab')
+          p
+          h1.text-center.headroom Donate Steem now to secure your dlux SMT
+          p
+          p
+          h2.text-center
+            em dlux SMT is launching March 24th when the STEEM SMT framework goes live!
+          p
+          img.img-fluid.img-pad(src='https://ipfs.io/ipfs/QmSTcWgjGRxGEQB5ek6URodGbbRFqgdsLQytsyHP1yGJ2n', alt='', width='246', height='155')
+          p.text-center SMT means Smart Media Contract, a new crypto framework on STEEM
+          p
+          h1.text-center Participate in the dlux ICO with STEEM
+          p
+          p
+          h2.text-center There are two ways to get dlux SMT in our Steem ICO:
+          p
+          p.text-center 1. send STEEM to
+          p
+          h2
+            a(title='@robotolux', href='/@robotolux') @robotolux
+          p
+          p.text-center 2. delegate Steem Power to
+          p
+          h2
+            a(title='@dlux-io', href='/@dlux-io') @dlux-io
+          p
+          p
+            | YES! You can earn dlux SMT just for delegating your Steem Power to @dlux-io to help us grow!
+          .justify-content-center.align-items-center.text-center
+            ul.smt-ul
+              | All you need to participate in the dlux SMT is:
+              li a STEEM account
+              li some STEEM or Steem Power
+          p.text-center
+            | Click either username above to login through SteemConnect and make your transfer.
+          p.text-center
+            | Need a STEEM account or help buying STEEM? Check out the
+          a(href='#faq') FAQ
+          hr(width='50px', color='#ffffff')
+          p
+          h1.text-center Demo our XR tech: Try our beta interfaces for sending Steem
+          p
+          img.img-fluid.img-pad(src='https://ipfs.io/ipfs/QmVRm5dnMsmMBCcidh2uuHswy7TU1sJE6w5jRhi2Gw1WnV', alt='', width='200', height='200')
+          p
+          h3.text-center dlux VR ICO Terminal
+          p
+          p.text-center
+            | We built a virtual space with all the relevant details about the ICO status and controls to transact with the Steem blockchain from inside VR!
+          img.img-fluid.img-pad(src='https://ipfs.io/ipfs/QmVXQjx7F82KVhagGBiH7XV1uVgQPQoUUBVULVhBQtMC6U', alt='', width='180', height='181')
+          p
+          h3.text-center dlux AR ICO Terminal
+          p
+          p.text-center
+            | We also built an a small push button AR terminal that appears above our dlux marker.
+          hr(width='50px', color='#ffffff')
+          p
+          h1.text-center Tokenomics
+          p
+          p.text-center Read about our SMT
+          p
+            a.text-center(href='https://docs.google.com/document/d/1_jHIJsX0BRa5ujX0s-CQg3UoQC2CBW4wooP2lSSh3n0/edit?usp=sharing') Read more about our tokenomics in our White Paper.
+          p
+            a(name='faq')
+          h1.text-center FAQ
+          p
+          p.text-left
+            | Q. How do I get a Steem account?
+            br
+            | A. Visit signup.steemit.com or have a dlux founder create one for you in person.
+          p.text-left
+            | Q. How do I get Steem crypto?
+            br
+            | A. Use blocktrades.us to transfer crypto such as Bitcoin or Ethereum into Steem or Steem Power.
+          p.text-left Steem is also now available in NetCoins ATMs.
+          p.text-left
+            | Q. How do I get Bitcoin or Ethereum?
+            br
+            | A. You need a fiat gateway. One option is to download the Coinbase app on your smartphone.
+        #tech.tab-pane.fade.text-center(role='tabpanel', aria-labelledby='tech-tab')
+          p
+          h1.text-center.headroom Open source, decentralized XR
+          p
+          p
+          h2.text-center
+            em
+              | dlux is built from many great projects, bringing together an incredible community.
+          p
+          img.img-pad.img-fluid(src='https://ipfs.io/ipfs/QmSTZmjrJvt6u5sF5BXpKivUgLXMP26frRkFFtMFQuKUAP', alt='', width='200', height='200')
+          p
+          h1.text-center A-Frame: WebVR + AR.js
+          p
+          p.text-center
+            | Our forked A-Frame inspector lets you build and publish anything you can dream of with 3D models, photos, and video.
+          p.text-center
+            | We've built several templates for you to start from, and stored them on Glitch to easily remix into your own creations.
+          p.text-center
+            | If you'd like to get started building AR and VR experiences with A-Frame and Glitch that you can publish to Steem, check out
+            a(title='Learn how to build dlux dApps', href='https://github.com/dluxio/dluxio/wiki') our Wiki
+          img.img-pad.img-fluid(src='https://ipfs.io/ipfs/QmTSLiLQ7yexWH3WSv1vk1LLuY8DPjDjBKYynExHtCBvpL', alt='', width='200', height='200')
+          p
+          h1.text-center STEEM social blockchain
+          p
+          p.text-center
+            | Steem is a blockchain using decentralized proof-of-stake as a consensus mechanism to pay content creators crypto currency from a rewards pool.
+          p.text-center
+            | New money enters the system because the Steem currency is desirable since it can be used to amplify your voice through a process called Powering Up.
+          p.text-center
+            | Steem is a social media blockchain capable of deriving value and distributing rewards through community upvotes and down votes.
+          p.text-center
+            | Learn more and sign up for a
+            a(href='https://signup.steemit.com/') STEEM account.
+          img.img-pad.img-fluid(src='https://ipfs.io/ipfs/QmVmhVhX1n24gEHJqPrpCHds7vsY7aBvNSh818oFSmwXja', alt='', width='200', height='200')
+          p
+          h1.text-center InterPlanetary File System
+          p
+          p.text-center
+            | IPFS is distributed internet based on the same peer-to-peer technology as BitTorrent.
+          p.text-center No centralized servers, just software that copies itself based on need.
+          p.text-center
+            | This is a resilient, high availability, censorship resistant distribution model fit for developed and developing worlds.
+      .container-fluid
+        .container.text-center
+  script.
+    function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+    }
+    function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    }
+  footer
+    p.text-center
+      a(href='https://github.com/dluxio/dluxio/wiki') Project Wiki (GitHub)
+      br
+      a(href='https://discord.gg/Beeb38j') Chat Server (Discord)
+      br
+      a(href='/@dlux-io') Steem Blog (@dlux-io)
+      br
+      a(href='https://www.instagram.com/dluxxr') Instagram (@dluxxr)
+      br
+      a(href='https://twitter.com/@dluxxr') Twitter (@dluxxr)
+    p.text-center
+      a(href='https://www.coinschedule.com/ico/decentralized-limitless-user-experiences') Coin Schedule
+    p.text-center
+      a(href='https://docs.google.com/document/d/1_jHIJsX0BRa5ujX0s-CQg3UoQC2CBW4wooP2lSSh3n0/edit?usp=sharing') White Paper
+      br
+      a(href='https://docs.google.com/presentation/d/1L0ZhqUsetBB2jI8fcHqUIOt7ddDKFtn4VV_C2-Uogcw/edit?usp=sharing') Slide Deck
+      br
+      a(href='https://docs.google.com/document/d/1tYNnmzofexhnQjBFJvHmOW41RBxPjTW8RhCjmfwjZSk/edit?usp=sharing') Abstract
+      br
+    p.text-center
+      a(href='/') dlux.io
+      br
+      a(href='http://www.otolux.la') OTOLUX.la
+      br

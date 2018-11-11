@@ -265,10 +265,8 @@ router.post('/post-advanced', util.isAuthenticatedJSON, (req, res) => {
     let header = body.length
     var resource = `https://dlux.io/dlux/@${author}/${permlink}`
     var qrCodeURL = 'https://dlux.io/qr?link=' + resource
-    var linker = `***\n
-    Interact with this dApp on [dlux.io](${resource}))\n
-    ***\n
-    ![qr link to app](${qrCodeURL})\n`
+    var linker = `\n***\nInteract with this dApp on [dlux.io](${resource}))\n***\n![qr link to app](${qrCodeURL})\n`
+    body = body + linker
     var xr
     if (!customJSON.xr) {
       if (customJSON.vrHash) {

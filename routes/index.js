@@ -98,6 +98,15 @@ router.get('/ico', (req, res, next) => {
 router.get('/i', (req, res, next) => {
       res.render('airgap')
 });
+router.get('/about', (req, res, next) => {
+  if(req.user){
+      res.render('about', {
+        user: req.user.username,
+      })
+    } else {
+      res.render('about')
+    }
+});
 /* GET a users blog feed page. */
 router.get('/@:username/feed', (req, res, next) => {
   if(req.user){ var user = req.user.username} else {var user = 'Guest'}

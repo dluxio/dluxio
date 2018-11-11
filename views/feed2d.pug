@@ -2,17 +2,35 @@ extends layout
 
 block content
   include partials/nav
+  include partials/side-nav
 
-  aside.trending__tags
-  main.feed(data-feed-type=`${feed}` data-username=`${username}` data-tag=`${tag}`)
+  .container-fluid
     .container
-      if feed != 'user-feed'
-        .row: h2= feed + ' - ' + tag
-      else
-        .row
-          h2= 'Hey ' + user.name + ' 👋'
-          h5 Here are posts from people you follow
-    .container
-      .row.feed-insert
-      .btn.btn-primary.load-more-posts Load More Posts
-  script(src='/js/showdown.min.js')
+      .tab-content
+        #feed.tab-pane.container.fade.show.active.headroom
+          main.feed(data-feed-type='feed', data-username='undefined', data-tag='dlux')
+            .container
+              .row.feed-insert
+        #trending.tab-pane.fade.headroom(role='tabpanel', aria-labelledby='trending-tab')
+          main.feed(data-feed-type='trending', data-username='undefined', data-tag='dlux')
+            .container
+              .row.feed-insert
+        #new.tab-pane.fade.headroom(role='tabpanel', aria-labelledby='new-tab')
+          main.feed(data-feed-type='new', data-username='undefined', data-tag='dlux')
+            .container
+              .row.feed-insert
+        #hot.tab-pane.fade.headroom(role='tabpanel', aria-labelledby='hot-tab')
+          main.feed(data-feed-type='hot', data-username='undefined', data-tag='dlux')
+            .container
+              .row.feed-insert
+      .container-fluid
+        .container.text-center
+          .text-center
+            .btn.btn-primary.load-more-posts Load More Posts
+  script.
+    function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+    }
+    function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    }

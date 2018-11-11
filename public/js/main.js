@@ -171,21 +171,31 @@ function displayContent(result, initial){
       } else {
         image = JSON.parse(post.json_metadata).image[0]
       }
-
+      var vr = JSON.parse(post.json_metadata).vrHash, ar
+      if (!vr) {
+      ar = JSON.parse(post.json_metadata).arHash
+      }
+      var badge = ''
+      if (ar){
+        badge = '<h2><span class="badge badge-secondary ar-badge">AR</span></h2>'
+      } else if (vr) {
+        badge = '<h2><span class="badge badge-secondary vr-badge">VR</span></h2>'
+      }
       let itemTemplate = `
-        <div class="item " data-post-id="${post.id}" data-url="${post.url}" data-permlink="${ post.permlink }">
-          <img class="item__image " src="https://steemitimages.com/520x520/${image}" onerror="">
-          <div class="item__meta">
-            <a href="${post.url}"><h3>${post.title}</h3></a>
-            <a href="/@${post.author}"><span>@${post.author}</span></a>
-            <form method="post">
-              <input type="hidden" name="postId" value="${post.id}">
-              <input type="hidden" name="author" value="${post.author}">
-              <input type="hidden" name="permlink" value="${post.permlink}">
-              <input type="submit" class="vote" value="Vote">
-            </form>
-          </div>
+      <div class="item " data-post-id="${post.id}" data-url="${post.url}" data-permlink="${post.permlink}">
+  ${badge}
+        <img class="item__image img-fluid mx-auto d-block" src="https://steemitimages.com/520x520/${image}" onerror="">
+        <div class="item__meta">
+          <a href="${post.url}"><h3>${post.title}</h3></a>
+          <a href="/@${post.author}"><span class="card-username">@${post.author}</span></a>
+          <form method="post">
+            <input type="hidden" name="postId" value="${post.id}">
+            <input type="hidden" name="author" value="${post.author}">
+            <input type="hidden" name="permlink" value="${post.permlink}">
+            <input type="submit" class="vote" value="Vote">
+          </form>
         </div>
+      </div>
         `
         $('.feed-insert').append(itemTemplate)
   }
@@ -666,7 +676,7 @@ function encodeMsg(msg, to) {
   if (!localStorage.memoKey) {
     return 'No Private Memo Key Found'
   }
-  steem.api.getAccounts(['#{to}'], (err, result) => {
+  steem.api.getAccounts([`${to}`], (err, result) => {
     if (err) {
       return 'Error retrieving Public Memo Key of reciever'
     }
@@ -674,7 +684,7 @@ function encodeMsg(msg, to) {
       return 'No such user'
     }
   let rcvrMemoKey = result[0].memo_key
-  return steem.memo.encode(localStorage.memoKey, rcvrMemoKey, `##{msg}`);
+  return steem.memo.encode(localStorage.memoKey, rcvrMemoKey, `#${msg}`);
 });
 }
 

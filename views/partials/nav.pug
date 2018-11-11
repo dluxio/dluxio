@@ -1,14 +1,21 @@
-nav(class="navbar navbar-expand-lg navbar-dark bg-dark")
-  a.navbar-brand(href="/") dlux
-  .collapse.navbar-collapse
-    .navbar-nav
-      a.nav-item.nav-link(href="/2d/feed/dlux") 2D Trending
-      a.nav-item.nav-link(href="/feed/dlux") VR Trending
-    .navbar-nav.ml-auto
-      if user
-        if user.name = user
-          a.nav-item.nav-link(href=`/@${user}`) VR Profile
-          a.nav-item.nav-link(href=`/2d/@${user}`) 2D Profile
-          a.nav-item.nav-link(href="/auth/logout") Logout
-        else
-          a.btn.btn-primary(href="/auth") Login With SteemConnect
+.navbar.navbar-inverse.fixed-top.bg-black
+  .mainnav
+    .navbar-header.topnav
+      .row
+        .col-4
+          span(style='font-size:30px;cursor:pointer;color:#ffffff', onclick='openNav()')
+            i.fas.fa-bars.hamburger-btn
+        .col-4
+          center
+            a.navbar-brand.navbar-text(href='#') dlux
+        .col-4
+    .bottomnav
+      ul.nav.nav-pills.justify-content-between
+        li.nav-item
+          a#feed-tab.nav-link.active(data-toggle='pill', href='#feed', role='tab', aria-controls='feed', aria-selected='true') Feed
+        li.nav-item
+          a#trending-tab.nav-link(data-toggle='pill', href='#trending', role='tab', aria-controls='trending', aria-selected='false') Trending
+        li.nav-item
+          a#new-tab.nav-link(data-toggle='pill', href='#new', role='tab', aria-controls='new', aria-selected='false') New
+        li.nav-item
+          a#hot-tab.nav-link(data-toggle='pill', href='#hot', role='tab', aria-controls='hot', aria-selected='false') Hot

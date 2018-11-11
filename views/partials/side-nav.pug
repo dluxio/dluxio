@@ -1,0 +1,50 @@
+#mySidenav.sidenav
+  .content
+    .row
+      .col-6
+        a(href='#', onclick="alert('Coming soon.');")
+          i.fas.fa-search.nav-search-btn
+      .col-6
+        a.nav-close-btn(href='javascript:void(0)', onclick='closeNav()') ×
+    .row.justify-content-center
+      .text-center
+        if user
+          a(href=`/@${user}`)
+            img.img-fluid.user-img(src='https://ipfs.io/ipfs/QmP3rzUTcguKBLbckYbA2izGLgAakzzWMn3PTsnytdtVeu', alt='User Profile Pic', width='96', height='96')
+        else
+          a(href='#')
+            img.img-fluid.user-img(src='https://ipfs.io/ipfs/QmP3rzUTcguKBLbckYbA2izGLgAakzzWMn3PTsnytdtVeu', alt='User Profile Pic', width='96', height='96')
+    .row.sidenav-user-options.text-center
+      if user
+        p
+          a.username(href=`/@${user}`) @#{user}
+      else
+        p
+          a.username(href='https://signup.steemit.com') Signup
+          |  | 
+          a.username(href='/auth') Login
+    .row.justify-content-center
+      .text-center
+        a.btn.enter-vr.text-center(href='/vr') Enter VR
+    .row.justify-content-center
+      a.sidenav-main-options(href='/') Home
+    .row.justify-content-center
+      a.sidenav-main-options(href='https://caramel-drain.glitch.me/?state=iridescent-twilight', target='_blank') Chat
+    .row.justify-content-center
+      a.sidenav-main-options(href='/about') About
+    .row.justify-content-center
+      a.sidenav-main-options(href='https://github.com/dluxio/dluxio/wiki', target='_blank') Create
+    .push
+  if user
+    footer.footer
+      .container
+        .row.justify-content-center
+          .col-4.menu-footer.text-center
+            a.menu-footer(href='/auth/logout')
+              i.fas.fa-door-open
+          .col-4.menu-footer.text-center
+            a.menu-footer(href='#', onclick="alert('Coming soon.');")
+              i.fas.fa-wallet
+          .col-4.menu-footer.text-center
+            a.menu-footer(href='#', onclick="alert('Coming soon.');")
+              i.fas.fa-cog

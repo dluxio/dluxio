@@ -23,13 +23,14 @@ html
       }
     script.
       var stateObj
-      var steemKey = '#{username}/#{permlink}'
-      var author = '#{username}';
-      var permlink = '#{permlink}'
+      const steemKey = '#{username}/#{permlink}'
+      const author = '#{username}';
+      const permlink = '#{permlink}'
       steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
       stateObj = result
       var metadata = result.content[steemKey].json_metadata
       var hashy = JSON.parse(metadata).vrHash
+      var scrolling = JSON.parse(metadata).scrolling
       if (!hashy) {
       hashy = JSON.parse(metadata).arHash
       }
@@ -39,7 +40,7 @@ html
       var vars = location.href.split('?')[1]
       var iframe = document.createElement('iframe');
       iframe.id = 'theIframe'
-      iframe.scrolling = 'no'
+      iframe.scrolling = scrolling || 'no'
       iframe.width = '100%'
       iframe.height = '100%'
       iframe.setAttribute('allowvr', true)

@@ -12,7 +12,7 @@ router.get('/', (req, res, next) => {
         steem.me((err, steemResponse) => {
           req.session.steemconnect = steemResponse.account;
           req.session.access_token = req.query.access_token;
-          res.redirect(`/feed/trending`)
+          res.redirect(`/@${req.user.username}`)
         });
     }
 });

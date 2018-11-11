@@ -1,0 +1,257 @@
+@charset "UTF-8";
+body {
+    background-color: #000000;
+}
+h1 {
+    color: #ffffff;
+}
+.bottomnav {
+	clear:both;
+	width: 100%;
+}
+
+.dropdown-menu {
+    background-color: #000000;
+}
+.header {
+    background-color: #000000;
+    padding-top: 10px;
+}
+.dropdown-item {
+    color: #FCFCFC;
+}
+.media-icons {
+    margin-right: 20px;
+}
+p {
+    color: #FFFFFF;
+}
+.nav.nav-tabs .nav-item .nav-link.active {
+    background-color: #000000;
+    border-bottom-width: medium;
+    border-bottom-color: #008BFD;
+    color: #FFFFFF;
+    border-top-style: none;
+    border-right-style: none;
+    border-left-style: none;
+}
+.nav-item .nav-link {
+}
+.nav-item {
+    margin-right: -3px;
+}
+.tab-layer {
+    background-color: #000000;
+    padding-top: 10px;
+}
+.nav.nav-tabs {
+    border-bottom-style: solid;
+}
+body {
+    font-family: "Lato", sans-serif;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 9999;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+
+.sidenav-user-options {
+    padding-top: 8px;
+    padding-right: 8px;
+	padding-left: 8px;
+    padding-bottom: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #2D8CEB;
+    display: block;
+    transition: 0.3s;
+}
+.sidenav-main-options {
+	color: #BBBCCD;
+	font-size: 40px;
+
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+.menu-footer {
+    color: #B0B1CE;
+    font-size: 30px;
+}
+.nav-search-btn {
+    float: left;
+    color: #FFFFFF;
+    font-size: 30px;
+}
+.profile-pic {
+}
+.enter-vr {
+    color: #EB2D54;
+    border-width: 2px;
+    border-color: #EB2D54;
+    border-radius: 100px;
+    background-color: #000000;
+    text-align: center;
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.enter-vr:hover {
+	background-color: #EB2D54;
+	color: #ffffff;
+}
+.nav-close-btn {
+    color: #FFFFFF;
+    float: right;
+    font-size: 53px;
+    margin-top: -32px;
+    margin-bottom: -20px;
+}
+
+.user-img {
+    margin-top: 40px;
+    margin-bottom: 8px;
+}
+h2 {
+    color: #989898;
+}
+.img-pad {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.headroom {
+    padding-top: 200px;
+}
+.mainnav {
+    width: 100%;
+}
+.navbar-brand {
+    color: #FFFFFF;
+    font-size: 3em;
+
+}
+.bg-black {
+    background-color: #000000;
+}
+.hamburger-btn {
+    margin-right: 18px;
+    margin-top: 25px;
+    vertical-align: middle;
+}
+ul {
+    color: #FFFFFF;
+    text-align: left;
+}
+.container {
+    max-width: 900px;
+}
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+.topnav {
+    width: 100%;
+}
+
+}
+html, body {
+  height: 100%;
+  margin: 0;
+}
+.content {
+  padding: 20px;
+  min-height: 100%;
+  margin: 0 auto -64px;
+}
+.footer,
+.push {
+  height: 64px;
+}
+.nav-tabs > li.nav-item > a:hover {
+	border: none;
+}
+.smt-ul {
+    max-width: 600px;
+    text-align: left;
+    display: inline-block;
+}
+h2 {
+    color: #FFFFFF;
+    padding-left: 15px;
+}
+.vr-badge {
+    background-color: #EB2D54;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+.ar-badge {
+    background-color: #077BFF;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+.card-username {
+    margin-left: 15px;
+}
+h3 {
+    color: #EB2D54;
+    padding-top: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.item {
+    margin: 30px 0;
+    border-radius: 3px;
+    box-shadow: 0 0 13px rgba(0,0,0,0.05);
+    width: 100%;
+    position: relative;
+    padding-top: 0px;
+    display: inline-block;
+    background-color: #000000;
+}
+.feed, .profile-feed, .trending__tags, .balances, .create-post, .single {
+padding: 0px 0;
+max-width: 520px;
+margin: 0 auto;
+}
+.container-fluid {
+	padding-right: 0px;
+	padding-left: 0px;
+}
+.container {
+	padding-right: 0px;
+	padding-left: 0px;
+
+}
+.row{
+	margin-right: 0px;
+	margin-left: 0px;
+}
+.vote {
+    float: right;
+    color: #EB2D54;
+    border-width: 2px;
+    border-color: #EB2D54;
+    border-radius: 100px;
+    background-color: #000000;
+    text-align: center;
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+.load-more-posts {
+  margin-bottom: 50px;
+}

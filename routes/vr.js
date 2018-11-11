@@ -4,10 +4,13 @@ let router = express.Router();
 
 
 router.get('/', (req, res, next) =>  {
-  if(req.user){ var user = req.user.username} else {var user = 'Guest'}
+  if(req.user){
       res.render('vr', {
-        user: user,
+        user: req.user.username,
       });
+    } else {
+      res.render('vr');
+    }
 });
 
 module.exports = router;

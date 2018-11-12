@@ -250,9 +250,9 @@ window.gwd = window.gwd || {};
       if (iAm == 'Guest') {
       sendLink('/auth')
       } else {
-      sendLink(`/2d/@${iAm}`)
+      sendLink(`/@${iAm}`)
     }
     };
     gwd.closeTap = function(event) {
-      sendLink('/2d/@robotolux')
+      sendLink('/')
     };

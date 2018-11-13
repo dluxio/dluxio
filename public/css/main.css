@@ -255,3 +255,30 @@ margin: 0 auto;
 .load-more-posts {
   margin-bottom: 50px;
 }
+#json-input {
+    width: 50%;
+    float: left;
+    height: 300px;
+}
+#json-display {
+    width: 50%;
+    float: right;
+    height: 300px;
+}
+#translate {
+    display: block;
+    clear: both;
+    margin-left: auto;
+    margin-right: auto;
+}
+.editor-toolbar {
+background-color: #C7C7C7;
+}
+.form-content {
+  background-color: #202020;
+  padding: 30px;
+  border-radius: 30px;
+}
+label {
+  color: #FFFFFF;
+}

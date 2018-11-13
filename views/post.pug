@@ -3,6 +3,7 @@ extends layout
 block scripts
   link(rel='stylesheet', href='https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css')
   script(src='https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js')
+  script(src='https://use.fontawesome.com/releases/v5.5.0/css/all.css')
 
 block content
   include partials/side-nav
@@ -51,31 +52,33 @@ block content
             input#validationCustomBeneficiaries.form-control(type='text', placeholder='Username', aria-describedby='inputGroupPrepend', optional='')
             input#validationCustomBeneficiariesValue.form-control(type='text', placeholder='Value', aria-describedby='inputGroupPrepend', optional='')
         .form-group
-          .row
-            .col-6
-              textarea#json-input(autocomplete='off')
-                | {
-                | "app":"dlux/0.1",
-                | "arHash":"",
-                | "xr": true,
-                | "image":[
-                | ],
-                | "Hash360":"",
-                | "tags":[
-                | "dlux"
-                | ],
-                | "links":[
-                | ],
-                | "format":"markdown"
-                | }
-            .col-6
-              pre#json-display.
-          button#translate Translate
+          label(for='json-input') Custom JSON
+          .input-group
+            textarea#json-input(autocomplete='off')
+              | {
+              | "app":"dlux/0.1",
+              | "arHash":"",
+              | "xr": true,
+              | "image":[
+              | ],
+              | "Hash360":"",
+              | "tags":[
+              | "dlux"
+              | ],
+              | "links":[
+              | ],
+              | "format":"markdown"
+              | }
+            pre#json-display.
+            button#translate
+              i.fas.fa-exchange-alt
+                br
+                | Translate
         .form-group
           .form-check
             input#invalidCheck.form-check-input(type='checkbox', value='', required='')
             label.form-check-label(for='invalidCheck')
-              | Agree to
+              | Agree to 
               a(href='#') terms and conditions
             .invalid-feedback
               | You must agree before submitting.

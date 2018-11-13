@@ -93,7 +93,7 @@ router.get('/p/steve', (req, res, next) => {
       res.redirect('/@dlux-io/56szwz5ouyqwjonyg4p44u08ow2qz42r');
 });
 router.get('/ico', (req, res, next) => {
-      res.redirect('/dlux/@dlux-io/c87j8xxkq1eudykaelft40lt6n1gg91z');
+      res.redirect('/dlux/@dlux-io/addmst758y8ajhiuvigmesxuj1yo4mve');
 });
 router.get('/i', (req, res, next) => {
       res.render('airgap')

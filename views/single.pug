@@ -34,6 +34,12 @@ html
       if (!hashy) {
       hashy = JSON.parse(metadata).arHash
       }
+      if (!hashy) {
+      hashy = JSON.parse(metadata).appHash
+      }
+      if (!hashy) {
+      hashy = JSON.parse(metadata).audHash
+      }
       if (hashy.split('/')[3] == 'ipfs') {
       hashy = hashy.split('/')[4];
       }

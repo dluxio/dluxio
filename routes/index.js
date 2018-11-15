@@ -180,6 +180,8 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
           var xr = 0
           if (data.vrHash){dlux = 1}
           if (data.arHash){dlux = 1}
+          if (data.appHash){dlux = 1}
+          if (data.audHash){dlux = 1}
           if(data.xr){
           renderxr();
         } else if (dlux) {

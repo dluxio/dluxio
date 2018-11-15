@@ -11,46 +11,48 @@ block content
   .container-fluid.header-layer
     .container.header-content
       h1.text-center dlux
-      h2.text-center Create or Edit dlux Posts
+      h2.text-center Create dlux Posts
       p.text-center
         | Give your STEEM post a title, tags, and description. Finally, add the specifics about your creation.
   .container-fluid.form-layer
     .container.form-content
       form.needs-validation(novalidate='')
-        .form-group
-          label(for='validationCustomPermlink') Permlink
-          input#validationCustomPermlink.form-control(type='text', placeholder='dlux.io/@username/...', required='')
+        //.form-group
+          //label(for='validationCustomPermlink') Permlink
+          //input#validationCustomPermlink.form-control(type='text', placeholder='optional')
         .form-group
           label(for='validationCustomTitle') Title
           .input-group
             input#validationCustomTitle.form-control(type='text', placeholder='Title', required='')
             button.btn.btn-outline-secondary.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Type
             .dropdown-menu
-              a.dropdown-item(href='#') AR
+              a.dropdown-item(href='#', onclick='templatejson(0)') Blog
               .dropdown-divider(role='separator')
-              a.dropdown-item(href='#') VR
+              a.dropdown-item(href='#', onclick='templatejson(1)') AR
               .dropdown-divider(role='separator')
-              a.dropdown-item(href='#') App
+              a.dropdown-item(href='#', onclick='templatejson(2)') VR
               .dropdown-divider(role='separator')
-              a.dropdown-item(href='#') Video
+              a.dropdown-item(href='#', onclick='templatejson(3)') App
               .dropdown-divider(role='separator')
-              a.dropdown-item(href='#') Photo
-              .dropdown-divider(role='separator')
-              a.dropdown-item(href='#') Sound
+              //a.dropdown-item(href='#', onclick='templatejson(4)') Video
+              //.dropdown-divider(role='separator')
+              //a.dropdown-item(href='#', onclick='templatejson(5)') Photo
+              //.dropdown-divider(role='separator')
+              //a.dropdown-item(href='#', onclick='templatejson(6)') Sound
         .form-group
           label(for='validationCustomDescription') Description
           textarea#validationCustomDescription.form-control(rows='3', placeholder='Enter a description about your scene', required='')
         .form-group
           label(for='validationCustomTags') Tags (comma seperated, no spaces)
           .input-group
-            input#validationCustomTags.form-control.text-lowercase(type='text', placeholder='Add up to 4', required='')
-        .form-group
-          label(for='validationCustomBeneficiaries') Beneficiaries
-          .input-group
-            .input-group-prepend
-              span#inputGroupPrepend.input-group-text @
-            input#validationCustomBeneficiaries.form-control(type='text', placeholder='Username', aria-describedby='inputGroupPrepend', optional='')
-            input#validationCustomBeneficiariesValue.form-control(type='text', placeholder='Value', aria-describedby='inputGroupPrepend', optional='')
+            input#validationCustomTags.form-control.text-lowercase(type='text', onkeyup='addTags()', placeholder='tags, look-like, this', required='')
+        //.form-group
+          //label(for='validationCustomBeneficiaries') Beneficiaries
+          //.input-group
+            //.input-group-prepend
+              //span#inputGroupPrepend.input-group-text @
+            //input#validationCustomBeneficiaries.form-control(type='text', placeholder='Username', aria-describedby='inputGroupPrepend', optional='')
+            //input#validationCustomBeneficiariesValue.form-control(type='text', placeholder='Value', aria-describedby='inputGroupPrepend', optional='')
         .form-group
           label(for='json-input') Custom JSON
           .input-group
@@ -74,19 +76,19 @@ block content
               i.fas.fa-exchange-alt
                 br
                 | Translate
-        .form-group
-          .form-check
-            input#invalidCheck.form-check-input(type='checkbox', value='', required='')
-            label.form-check-label(for='invalidCheck')
-              | Agree to 
-              a(href='#') terms and conditions
-            .invalid-feedback
-              | You must agree before submitting.
-        button.btn.btn-primary(type='submit') Submit
+        //.form-group
+          //.form-check
+            //input#invalidCheck.form-check-input(type='checkbox', value='', required='')
+            //label.form-check-label(for='invalidCheck')
+              //| Agree to
+              //a(href='#') terms and conditions
+            //.invalid-feedback
+              //| You must agree before submitting.
+        button.btn.btn-primary(type='submit', onclick="submitPost()") Submit
     footer.footer
       .container.footer-content
         p.text-center
-          | If you're not at an event, join our
+          | Join our
           a(href='https://discord.gg/Beeb38j') Discord server
           |  to get in touch.
 block footer
@@ -94,7 +96,48 @@ block footer
     var simplemde = new SimpleMDE({ element: document.getElementById('validationCustomDescription') });
   script(src='/js/jquery.json-editor.min.js', crossorigin='anonymous')
   script.
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    function addTags(){
+    var tags = document.querySelector('#validationCustomTags').value.split(',').map(item => item.trim())
+    var json = JSON.parse(document.querySelector('#json-input').value)
+    json.tags = tags.slice(0, 4)
+    document.querySelector('#json-input').value = JSON.stringify(json)
+    }
+    function templatejson(sw){
+    switch (sw){
+    case 1:
+    console.log('triggered1')
+    document.querySelector('#json-input').value = '{"app":"dlux/0.1",\n"arHash":"",\n"xr": true,\n"image":[]\n,"Hash360":"",\n"tags":["dlux"],\n"links":[],\n"format":"markdown"}'
+    break;
+    case 2:
+    console.log('triggered2')
+    document.querySelector('#json-input').value = '{"app":"dlux/0.1",\n"vrHash":"",\n"xr": true,\n"image":[],\n"Hash360":"",\n"tags":["dlux"],\n"links":[],\n"format":"markdown"}'
+    break;
+    case 3:
+    console.log('triggered3')
+    document.querySelector('#json-input').value = '{"app":"dlux/0.1",\n"appHash":"",\n"scrolling":true,\n"xr": true,\n"image":[],\n"Hash360":"",\n"tags":["dlux"],\n"links":[],\n"format":"markdown"}'
+    break;
+    default:
+    console.log('triggeredD')
+    document.querySelector('#json-input').value = '{"app":"dlux/0.1",\n"xr": false,\n"image":[],\n"tags":["dlux"],\n"links":[],\n"format":"markdown"}'
+    }}
+    function submitPost(){
+    $.post({
+    url: '/post/post-advanced',
+    dataType: 'json',
+    var thisvar = document.querySelector('#validationCustomPermlink')
+    var data = {
+    'permlink': thisvar.value,
+    'attorney': 'manual',
+    'title': document.querySelector('#validationCustomTitle').value,
+    'message': document.querySelector('#validationCustomDescription').value,
+    'customJSON': document.querySelector('#json-input').value,
+    'beneficiaries': document.querySelector('#validationCustomTitle').value,
+    }
+    }, (response) => {
+    console.log(response)
+    location.href = response.link
+    })
+    }
     (function() {
     'use strict';
     window.addEventListener('load', function() {

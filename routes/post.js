@@ -81,6 +81,38 @@ router.get('/edit/@:username/:permlink', util.isAuthenticated, (req, res, next) 
 });
 });
 
+router.get('/edit-adv/@:username/:permlink', util.isAuthenticated, (req, res, next) => {
+  getSteemContent(req.user.username, req.params.permlink).then(data => {
+    if (data.err){
+      res.render('post', {
+        user: data.err,
+      });
+    } else {
+    if (data.vrHash){
+    res.render('post', {
+      permlink: req.params.permlink,
+      user: req.user.username,
+      title: data.title,
+      description: data.description,
+      image: data.image,
+      vrHash: data.vrHash,
+      hash360: data.hash360
+    });
+  } else {
+    res.render('arpost', {
+      permlink: req.params.permlink,
+      user: req.user.username,
+      title: data.title,
+      description: data.description,
+      image: data.image,
+      arHash: data.arHash,
+      hash360: data.hash360
+    });
+  }
+}
+});
+});
+
 /* POST a create post broadcast to STEEM network. */
 
 router.post('/create-post', util.isAuthenticated, (req, res) => {
@@ -257,7 +289,7 @@ router.post('/post-advanced', util.isAuthenticatedJSON, (req, res) => {
     let permlink = req.body.permlink || util.urlString()
     let title = req.body.title
     let body = req.body.message
-    let attorney = req.body.attorney  || 'pro per'
+    let attorney = req.body.attorney  || 'manual'
     let parentAuthor = req.body.parentAuthor || ''
     let parentPermlink = req.body.parentPermlink || 'dlux'
     let customJSON = JSON.parse(req.body.customJSON) || ''
@@ -307,7 +339,7 @@ router.post('/post-advanced', util.isAuthenticatedJSON, (req, res) => {
       totBens += bens[key]
     }
     if (totBens > 0) {
-      if(totBens < 3000) {
+      if(totBens < 9000) {
         for (let key in bens) {
           ben.push({'account': key, 'weight': bens[key]})
         }

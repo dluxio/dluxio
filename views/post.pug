@@ -124,9 +124,8 @@ block footer
     $.post({
     url: '/post/post-advanced',
     dataType: 'json',
-    var thisvar = document.querySelector('#validationCustomPermlink')
     var data = {
-    'permlink': thisvar.value,
+    'permlink': document.querySelector('#validationCustomPermlink').value,
     'attorney': 'manual',
     'title': document.querySelector('#validationCustomTitle').value,
     'message': document.querySelector('#validationCustomDescription').value,

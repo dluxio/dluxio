@@ -94,7 +94,7 @@ html
       window.attachEvent("onmessage", onMessage, false);
       }
       function onMessage(event) {
-      if (event.origin !== "https://ipfs.io") return;
+      if (event.origin !== "https://ipfs.dlux.io") return;
       var data = event.data;
       if (typeof(window[data.func]) == "function") {
       if (data.func == 'advPost' || data.func == 'vote' || data.func == 'signDecode' || data.func == 'signEncode' || data.func == 'follow' || data.func == 'aVote' || data.func == 'sendLink' || data.func == 'iloaded' || data.func == 'passGenerateHotLink' || data.func == 'comment' ){

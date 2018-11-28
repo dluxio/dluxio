@@ -23,6 +23,7 @@ html
       }
     script.
       var stateObj
+      var ipfsdomain
       const steemKey = '#{username}/#{permlink}'
       const author = '#{username}';
       const permlink = '#{permlink}'
@@ -52,7 +53,8 @@ html
       iframe.setAttribute('allowvr', true)
       iframe.setAttribute('allowfullscreen', true)
       iframe.setAttribute('allow', 'gyroscope; accelerometer; microphone; camera; xr')
-      iframe.src = `https://${hashy}.ipfs.dlux.io/ipfs/${hashy}?${vars}`;
+      ipfsdomain = `https://${hashy}.ipfs.dlux.io/ipfs/${hashy}?${vars}`;
+      iframe.src = ipfsdomain
       document.body.appendChild(iframe);
       });
       if (isIOS()) {
@@ -94,7 +96,7 @@ html
       window.attachEvent("onmessage", onMessage, false);
       }
       function onMessage(event) {
-      if (event.origin !== "https://ipfs.dlux.io") return;
+      if (event.origin !== ipfsdomain) return;
       var data = event.data;
       if (typeof(window[data.func]) == "function") {
       if (data.func == 'advPost' || data.func == 'vote' || data.func == 'signDecode' || data.func == 'signEncode' || data.func == 'follow' || data.func == 'aVote' || data.func == 'sendLink' || data.func == 'iloaded' || data.func == 'passGenerateHotLink' || data.func == 'comment' ){

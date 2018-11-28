@@ -55,7 +55,7 @@ steem.api.getState(stateKey, (err, result) => {
       iframe.align = 'right'
       iframe.setAttribute('allow', 'gyroscope; accelerometer; microphone; camera; xr;')
       iframe.setAttribute('allowfullscreen', true)
-      iframe.src = 'https://ipfs.io/ipfs/' + hashy + '?' + vars;
+      iframe.src = `https://${hashy}.ipfs.dlux.io/ipfs/${hashy}?${vars}`;
       document.body.appendChild(iframe);
       })
     }

@@ -52,7 +52,7 @@ html
       iframe.setAttribute('allowvr', true)
       iframe.setAttribute('allowfullscreen', true)
       iframe.setAttribute('allow', 'gyroscope; accelerometer; microphone; camera; xr')
-      iframe.src = 'https://ipfs.io/ipfs/' + hashy + '?' + vars;
+      iframe.src = `https://${hashy}.ipfs.dlux.io/ipfs/${hashy}?${vars}`;
       document.body.appendChild(iframe);
       });
       if (isIOS()) {

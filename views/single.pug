@@ -53,7 +53,7 @@ html
       iframe.setAttribute('allowvr', true)
       iframe.setAttribute('allowfullscreen', true)
       iframe.setAttribute('allow', 'gyroscope; accelerometer; microphone; camera; xr')
-      ipfsdomain = `https://${hashy}.ipfs.dlux.io`;
+      ipfsdomain = `https://${hashy}.ipfs.dlux.io`.toLowerCase();
       iframe.src = ipfsdomain + `/ipfs/${hashy}?${vars}`
       document.body.appendChild(iframe);
       });

@@ -32,6 +32,7 @@ app.use(cors({
 app.options(cors());
 app.use(cookieSession({
   name: 'session',
+  sameSite: true,
   keys: ['secret'],
   maxAge: 6 * 24 * 60 * 60 * 1000   //6 days
 }));

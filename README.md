@@ -30,7 +30,9 @@ Check out our [Waffle board](https://waffle.io/dluxio/dluxio/join)
 ### How to contribute:
 
 [Github dluxio/dluxio](https://github.com/dluxio/dluxio)
+
 [Waffle board](https://waffle.io/dluxio/dluxio/join)
+
 [Discord](https://discord.gg/Beeb38j)
 
 ### Run dlux locally

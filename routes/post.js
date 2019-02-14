@@ -145,7 +145,7 @@ router.post('/create-post', util.isAuthenticated, (req, res) => {
     'tags': otherTags,
     'app': 'dlux/0.1',
     'vrHash': hashy,
-    'image': 'https://ipfs.io/ipfs/' + image,
+    'image': [image],
     'Hash360': Hash360,
     'headerLength': topbody.length
   })

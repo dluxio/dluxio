@@ -27,9 +27,9 @@ html
       const steemKey = '#{username}/#{permlink}'
       const author = '#{username}';
       const permlink = '#{permlink}'
-      steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
+      steem.api.getContent(author, permlink, (err, result) => {
       stateObj = result
-      var metadata = result.content[steemKey].json_metadata
+      var metadata = result.json_metadata
       var hashy = JSON.parse(metadata).vrHash
       var scrolling = JSON.parse(metadata).scrolling
       if (!hashy) {
@@ -47,12 +47,11 @@ html
       var vars = location.href.split('?')[1]
       var iframe = document.createElement('iframe');
       iframe.id = 'theIframe'
-      iframe.scrolling = scrolling || 'no'
+      iframe.scrolling = scrolling || 'yes'
       iframe.width = '100%'
       iframe.height = '100%'
-      iframe.setAttribute('allowvr', true)
       iframe.setAttribute('allowfullscreen', true)
-      iframe.setAttribute('allow', 'gyroscope; accelerometer; microphone; camera; xr')
+      iframe.setAttribute('allow', 'gyroscope; accelerometer; microphone; camera')
       ipfsdomain = `https://${hashy}.ipfs.dlux.io`.toLowerCase();
       iframe.src = ipfsdomain + `/ipfs/${hashy}?${vars}`
       document.body.appendChild(iframe);
@@ -235,24 +234,31 @@ html
       }
       userLoggedIn = '#{iAm}'
       function iloaded(){
-      steem.api.getState(`/#{category}/@#{username}/#{permlink}`, (err, result) => {
+      if (isIOS()) {
+      window.addEventListener('devicemotion', function(e) {
+      document.getElementById('theIframe').contentWindow.postMessage({
+      type: 'devicemotion',
+      deviceMotionEvent: cloneDeviceMotionEvent(e),
+      }, '*');
+      });
+      }
+      steem.api.getContent(author, permlink, function(err, result) {
       var target = document.getElementById('theIframe').contentWindow
       target.postMessage({
       'func': 'iAm',
-      'message': '#{iAm}',
+      'message': userLoggedIn,
       }, "*");
       target.postMessage({
       'func': 'key',
-      'message': '#{username}/#{permlink}',
+      'message': 'markegiles/z67rwq0di4qv7egjx7dma81xjkv2jt87',
       }, "*");
       target.postMessage({
       'func': 'steemState',
       'message': result,
       }, "*");
-      target.postMessage({
-      'func': 'memoKey',
-      'message': hasMemoKey(),
-      }, "*");
-      })
+      });
+      if(window.steem_keychain) {
+      postable = true
+      }
       }
     body

@@ -192,7 +192,7 @@ else if (window.attachEvent) {
 window.attachEvent("onmessage", onMessage, false);
 }
 function onMessage(event) {
-//if (event.origin !== "https://dlux.io" || "localhost:3000") return;
+//if (event.origin !== "https://www.dlux.io" || "localhost:3000") return;
 var data = event.data;
 if (typeof(window[data.func]) == "function") {
 window[data.func].call(null, data.message);

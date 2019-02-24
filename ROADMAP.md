@@ -1,7 +1,7 @@
 # Decentralized Limitless User eXperiences Initial Offering (DLUXIO)
 ![Slide 1](https://ipfs.busy.org/ipfs/QmVmkMheznQSX9geEUZ7KtAoYPNGQ9WhF4SNRC7WdGCvZH)
 
-[**dlux.io**](https://dlux.io) is an integrated VR and AR hosting platform using the STEEM social blockchain. dlux is capable of hosting any dApps that can run in browser.
+[**dlux.io**](https://www.dlux.io) is an integrated VR and AR hosting platform using the STEEM social blockchain. dlux is capable of hosting any dApps that can run in browser.
 
 ![Slide 2](https://ipfs.busy.org/ipfs/QmSLBvJ7wGsUbAT2n2FCEo1bPAJZaqVrWPgAx9aH7fymZb)
 
@@ -152,7 +152,7 @@ distinct sets of actions), without fees, and at real-time speeds.
 [SMT Whitepaper](https://smt.steem.io/smt-whitepaper.pdf)
 
 ### More Information
-* [dlux.io](https://dlux.io)
+* [dlux.io](https://www.dlux.io)
 * [Github](github.com/dluxio/dluxio)
 * [@dlux-io](https://steemit.com/@dlux-io)
 * [Discord](https://discord.gg/Beeb38j)

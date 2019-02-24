@@ -6,7 +6,7 @@ Written by @disregardfiat
 
 ***
 
-## [dlux.io](https://dlux.io)
+## [dlux.io](https://www.dlux.io)
 
 ## Abstract
 
@@ -31,13 +31,13 @@ The dlux frontend brings content monetization to literally any medium of communi
 14 More Information
 15 Disclaimers
 #### Capabilities
-dApps are stored on IPFS and loaded into a sandboxed iFrame with a minimal STEEM wallet API.
+Currently, dlux dApps are static javascript applications that run client side. The dlux front end passes blockchain data to the iFrame/sandbox so it can reference it's own information. This allows a new paradigm for monetizing content stored in IPFS. URL paramaters can also be passed to the iFrame allowing QR code links to include specific information like location, or position on a game board, in addition to it's blockchain references alone. This means dlux applications can have infinite instances. The VR platform allows any media or virtual experience to be shared. The AR platform can bring the trust of the blockchain to any physical device or service. The STEEM medium is currently uncensorable. This platform directly competes with the App Store and the Google Play Store for software distribution markets, at a significant advantage, namely: all our services are free, you stake your reputation on content posted, you may earn steem rewards, there is no software to download. Other than an optional STEEM sign in, the user is presented with no ads.  
 ##### Social Good
-Dicovering content via dlux or though other physical means allows us to reward and incentivize actions that we appreciate and value. This encourages more people to interact and better the world.
+From Adam Smith to Karl Marx, attempting to understand wealth and value have had tremendous successes and failures. Our stance is attention is what has value to all of us. What we know is blockchain has provided mechanisms for consensus. Previously these trust mechanisms were easy to exploit or hard to maintain. Creating cracks and wedges that have today concentrated assets in the hands of very few. These concentrations of wealth are built around intellectual property... however these mechanisms of valuation are at odds with the success of species, not just ours. From cleaning the oceans to providing adequate health care, information on how to do that is ultimately the most valuable to all of us. The proof of brain algorithm, along with a proper distribution of the token resources can trustably replace intermediaries on prediction markets like the stock market by valuing contributions to the public domain and encouraging its use in the building blocks for the society of tomorrow. Our goal is to eliminate suffering by bringing attention to it by way of its solutions, big or small.
 ##### The unlimited utility
-Utilizing any medium of communication means all actions and interactions can be correctly incentivized based on the collective brain of those engaged.
+Utilizing any medium of communication means all actions and interactions can be correctly incentivized based on the collective brain of those engaged. This paradigm encourages community participation and communication as well as direction of dlux tokens via open algorithms.
 #### Aditional Tools
-A web based interactive developement enviroment is availible for building and testing of dApps prior to insertion into the blockchain. A free web based IPFS asset management system is utilized. This allows any connected computer with a modern browser to build VR and AR assets at no additional cost.
+A web based interactive development environment is available for building and testing of dApps prior to insertion into the blockchain. A free web based IPFS asset management system is utilized. This allows any connected computer with a modern browser to build VR and AR assets at no additional cost.
 
 #### Risks
 
@@ -208,7 +208,7 @@ distinct sets of actions), without fees, and at real-time speeds.
 [SMT Whitepaper](https://smt.steem.io/smt-whitepaper.pdf)
 
 #### More Information
-* [dlux.io](https://dlux.io)
+* [dlux.io](https://www.dlux.io)
 * [Github](github.com/dluxio/dluxio)
 * [@dlux-io](https://steemit.com/@dlux-io)
 * [Discord](https://discord.gg/Beeb38j)

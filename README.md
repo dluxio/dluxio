@@ -10,7 +10,7 @@ A community driven decentralized project that aims to provide VR as a decentrali
 dlux is a steem dApp that serves webXR which queries the steem blockchain client side for data. Steem posts act as a monetized vessel that contains IPFS addresses in metadata. When a post is loaded an iFrame is served full screen that contains the XR scene; the parent window has steem wallet API which allows preconfigured window messages to trigger transactions like vote, dApp navigation, and generate hot signing link. XR scenes are uploaded to IPFS, and a post containing their static references are inserted into the blockchain by users. dlux.io also maintains a webRTC signaling server which connects XR viewers in individual posts, allowing p2p avatar interactions and voice chat. The free full featured starter pack for building VR experience can be [remixed here](https://glitch.com/edit/#!/cheerful-suggestion) and the AR version [here.](https://glitch.com/edit/#!/pollen-gem)
 
 ### Trying to make a VR post? Start here:
-[Remix this!](https://glitch.com/edit/#!/cheerful-suggestion)
+[Remix this!](https://glitch.com/edit/#!/remix/dlux-vr)
 
 ### Trying to make an AR post? Start here:
 [Remix this!](https://glitch.com/edit/#!/pollen-gem)
@@ -23,15 +23,9 @@ For the broadest possible audience we are delivering to a web browser.
 * node packages: networked-aframe-instance(wss) steemconnect qr-image
 * client side: aframe networked-aframe steemjs arjs
 
-### Roadmap:
-
-Check out our [Waffle board](https://waffle.io/dluxio/dluxio/join)
-
 ### How to contribute:
 
 [Github dluxio/dluxio](https://github.com/dluxio/dluxio)
-
-[Waffle board](https://waffle.io/dluxio/dluxio/join)
 
 [Discord](https://discord.gg/Beeb38j)
 

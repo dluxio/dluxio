@@ -3,11 +3,11 @@
 
 A community driven decentralized project that aims to provide VR as a decentralized alternative to social media/media distribution that is inherently monetized. Also AR as an alternative to extra devices for modern points of interactivity; terminals and points-of-sale.
 
-[![Waffle.io - Columns and their card count](https://badge.waffle.io/dluxio/dluxio.svg?columns=all)](https://waffle.io/dluxio/dluxio)
+Find us on [discord](https://discord.gg/Beeb38j)
 
 ### How it works:
 
-dlux is a steem dApp that serves webXR which queries the steem blockchain client side for data. Steem posts act as a monetized vessel that contains IPFS addresses in metadata. When a post is loaded an iFrame is served full screen that contains the XR scene; the parent window has steem wallet API which allows preconfigured window messages to trigger transactions like vote, dApp navigation, and generate hot signing link. XR scenes are uploaded to IPFS, and a post containing their static references are inserted into the blockchain by users. dlux.io also maintains a webRTC signaling server which connects XR viewers in individual posts, allowing p2p avatar interactions and voice chat. The free full featured starter pack for building VR experience can be [remixed here](https://glitch.com/edit/#!/cheerful-suggestion) and the AR version [here.](https://glitch.com/edit/#!/pollen-gem)
+dlux is a steem dApp that serves webXR which queries the steem blockchain client side for data. Steem posts act as a monetized vessel that contains IPFS addresses in metadata. When a post is loaded an iFrame is served full screen that contains the XR scene; the parent window has steem wallet API which allows preconfigured window messages to trigger transactions like vote, dApp navigation, and generate hot signing link. XR scenes are uploaded to IPFS, and a post containing their static references are inserted into the blockchain by users. dlux.io also maintains a webRTC signaling server which connects XR viewers in individual posts, allowing p2p avatar interactions and voice chat. The free full featured starter pack for building VR experience can be [remixed here](https://glitch.com/edit/#!/remix/dlux-vr).
 
 ### Trying to make a VR post? Start here:
 [Remix this!](https://glitch.com/edit/#!/remix/dlux-vr)

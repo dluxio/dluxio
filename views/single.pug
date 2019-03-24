@@ -98,7 +98,7 @@ html
       if (event.origin !== ipfsdomain) return;
       var data = event.data;
       if (typeof(window[data.func]) == "function") {
-      if (data.func == 'advPost' || data.func == 'vote' || data.func == 'signDecode' || data.func == 'signEncode' || data.func == 'follow' || data.func == 'aVote' || data.func == 'sendLink' || data.func == 'iloaded' || data.func == 'passGenerateHotLink' || data.func == 'comment' ){
+      if (data.func == 'advPost' || data.func == 'vote' || data.func == 'signDecode' || data.func == 'signEncode' || data.func == 'follow' || data.func == 'aVote' || data.func == 'sendLink' || data.func == 'iloaded' || data.func == 'passGenerateHotLink' || data.func == 'comment' || data.func == 'reqsign' ){
       window[data.func].call(null, data.message);
       }
       }
@@ -233,6 +233,21 @@ html
       } else {}
       }
       userLoggedIn = '#{iAm}'
+      if(userLoggedIn=='Guest' && localStorage.getItem('skn')){userLoggedIn=localStorage.getItem('skn')}
+      else if (window.steem_keychain){
+      iAm = prompt('Steem Username for Steem Keychain','no @')
+      }
+      function reqsign(op){
+      if(window.steem_keychain){
+      steem_keychain.requestBroadcast(op[1][1], op[0], op[1][0], function(response) {
+      console.log(response);
+      target.postMessage({
+      'func': 'keychainResponse',
+      'message': response
+      }, "*");
+      });
+      }
+      }
       function iloaded(){
       if (isIOS()) {
       window.addEventListener('devicemotion', function(e) {

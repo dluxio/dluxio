@@ -239,7 +239,7 @@ html
       }
       function reqsign(op){
       if(window.steem_keychain){
-      steem_keychain.requestBroadcast(op[1][1], op[0], op[1][0], function(response) {
+      steem_keychain.requestBroadcast(op[1][1], [op[0]], op[1][0], function(response) {
       console.log(response);
       target.postMessage({
       'func': 'keychainResponse',

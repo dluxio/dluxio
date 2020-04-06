@@ -1,5 +1,6 @@
 initData()
 function initData(){
+steem.api.setOptions({ url: "https://anyx.io" })
 steem.api.getState(stateKey, (err, result) => {
       stateObj = result
       host = stateObj.content[postKey].author

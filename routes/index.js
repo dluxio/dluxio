@@ -2,7 +2,7 @@ let express = require('express');
 let router = express.Router();
 let request = require('request');
 var steem = require('steem');
-steem.setOptions({api:"https://anyx.io"})
+steem.api.setOptions({ url: "https://anyx.io" })
 /* GET home page. */
 function removeMD(md, options) {
 options = options || {};

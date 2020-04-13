@@ -10,7 +10,7 @@ let cors = require('cors');
 let socketIo = require("socket.io");        // web socket external module
 let request = require('request');
 let index = require('./routes/index');
-let auth = require('./routes/auth');
+//let auth = require('./routes/auth');
 let feed = require('./routes/feed');
 let post = require('./routes/post');
 let twod = require('./routes/twod')
@@ -18,10 +18,10 @@ let qr = require('./routes/qr');
 let vr = require('./routes/vr');
 let config = require('./config');
 let util = require('./modules/util');
-let steemconnect2 = require('sc2-sdk');
+//let steemconnect2 = require('sc2-sdk');
 let app = express();
-var passport = require('passport');
-var SteemConnectStrategy = require('passport-steemconnect').Strategy;
+//var passport = require('passport');
+//var SteemConnectStrategy = require('passport-steemconnect').Strategy;
 app.set('trust proxy');
 var https_redirect = function(req, res, next) {
     if (process.env.NODE_ENV === 'production') {
@@ -42,12 +42,14 @@ app.use(cors({
   origin: '*, *'
 }));
 app.options(cors());
+/*
 app.use(cookieSession({
   name: 'session',
   sameSite: true,
   keys: ['secret'],
   maxAge: 6 * 24 * 60 * 60 * 1000   //6 days
 }));
+*/
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -61,7 +63,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressSanitized.middleware());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+/*
 // custom middleware
 app.use(util.setUser);
 
@@ -101,7 +103,7 @@ app.get('/auth/oauth/oauth2/callback',
           delete req.session.returnTo;
         });
 
-
+*/
 app.use('/', index);
 //app.use('/auth', auth);
 //app.use('/logout', auth);

@@ -19,15 +19,12 @@
     "networked-aframe": "^0.6.1",
     "npm": "^6.4.1",
     "parsejson": "github:arkenidar/parsejson",
-    "passport": "^0.4.0",
-    "passport-steemconnect": "github:dluxio/Passport-SteemConnect",
     "pug": "2.0.0-beta11",
     "qr-image": "^3.2.0",
     "request": "^2.88.0",
-    "sc2-sdk": "^1.1.0",
     "serve-favicon": "~2.4.5",
     "socketio": "^1.0.0",
-    "steem": "^0.7.1"
+    "steem-js-patched": "^0.0.1"
   },
   "devDependencies": {
     "claudia": "^4.0.0",

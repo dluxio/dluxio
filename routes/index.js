@@ -82,7 +82,7 @@ router.get('/', (req, res, next) =>  {
 
 /* GET a users blog profile page. */
 router.get('/@:username', (req, res, next) => {
-  if(req.cookie.user){ var user = req.cookie.user} else {var user = 'Guest'}
+  if(req.cookies.user){ var user = req.cookies.user} else {var user = 'Guest'}
       let username = req.params.username
       res.render('profile', {
         user: user,
@@ -116,7 +116,7 @@ router.get('/about', (req, res, next) => {
 
 /* GET a users blog feed page. */
 router.get('/@:username/feed', (req, res, next) => {
-  if(req.user){ var user = req.user.username} else {var user = 'Guest'}
+  if(req.cookies.user){ var user = req.cookies.user} else {var user = 'Guest'}
       let username = req.params.username
       res.render('profile', {
         user: user,

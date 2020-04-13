@@ -5,6 +5,7 @@ let allContent = []
 let converter = new showdown.Converter({ tables: true })
 let totalVestingShares, totalVestingFundSteem;
 
+steem.api.setOptions({"url": "https://anyx.io"})
 /**
  * gets totalVestingShares and totalVestingFundSteem from STEEM API to use later
  */

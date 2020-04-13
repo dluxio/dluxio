@@ -1,5 +1,4 @@
 let express = require('express');
-let steem = require('../modules/steemconnect')
 let router = express.Router();
 var qr = require('qr-image')
 

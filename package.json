@@ -16,7 +16,6 @@
     "express-sanitize-escape": "^1.1.0",
     "express-session": "^1.15.6",
     "morgan": "^1.9.1",
-    "networked-aframe": "^0.6.1",
     "npm": "^6.4.1",
     "parsejson": "github:arkenidar/parsejson",
     "pug": "2.0.0-beta11",

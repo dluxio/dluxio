@@ -1,7 +1,7 @@
 let express = require('express');
 let router = express.Router();
 let request = require('request');
-var steem = require('steem');
+var steem = require('steem-js-patched');
 steem.api.setOptions({ url: "https://anyx.io" })
 /* GET home page. */
 function removeMD(md, options) {
@@ -82,7 +82,7 @@ router.get('/', (req, res, next) =>  {
 
 /* GET a users blog profile page. */
 router.get('/@:username', (req, res, next) => {
-  if(req.user){ var user = req.user.username} else {var user = 'Guest'}
+  if(req.cookie.user){ var user = req.cookie.user} else {var user = 'Guest'}
       let username = req.params.username
       res.render('profile', {
         user: user,
@@ -168,6 +168,7 @@ steem.api.getContent(username, permlink, function(err, result) {
 }
       /* GET a single post page page. */
 router.get('/:category/@:username/:permlink', (req, res, next) => {
+      console.log(req)
       let category = req.params.category
       let username = req.params.username
       let permlink = req.params.permlink

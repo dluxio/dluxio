@@ -1,5 +1,6 @@
 function doOnLoad () {
   isChrome();
+  steem.api.setOptions({"url": "https://anyx.io"})
 }
 function isChrome () {
 // Check for chrome to alert user they may not be seeing everything

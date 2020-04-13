@@ -68,6 +68,7 @@ return md;
 return output;
 };
 
+/* Handle with new staatics
 router.get('/', (req, res, next) =>  {
   if(req.user){
     res.render('index', {
@@ -77,6 +78,7 @@ router.get('/', (req, res, next) =>  {
     res.render('index', { title: 'dlux'});
   }
 });
+*/
 
 /* GET a users blog profile page. */
 router.get('/@:username', (req, res, next) => {
@@ -99,6 +101,8 @@ router.get('/ico', (req, res, next) => {
 router.get('/i', (req, res, next) => {
       res.render('airgap')
 });
+
+/* handle with statics
 router.get('/about', (req, res, next) => {
   if(req.user){
       res.render('about', {
@@ -108,6 +112,8 @@ router.get('/about', (req, res, next) => {
       res.render('about')
     }
 });
+*/
+
 /* GET a users blog feed page. */
 router.get('/@:username/feed', (req, res, next) => {
   if(req.user){ var user = req.user.username} else {var user = 'Guest'}

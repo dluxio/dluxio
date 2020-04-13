@@ -24,7 +24,7 @@
     "request": "^2.88.0",
     "serve-favicon": "~2.4.5",
     "socketio": "^1.0.0",
-    "steem-js-patched": "^0.0.1"
+    "steem-js-patched": "^1.0.0"
   },
   "devDependencies": {
     "claudia": "^4.0.0",

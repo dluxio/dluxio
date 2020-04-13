@@ -168,7 +168,6 @@ steem.api.getContent(username, permlink, function(err, result) {
 }
       /* GET a single post page page. */
 router.get('/:category/@:username/:permlink', (req, res, next) => {
-      console.log(req)
       let category = req.params.category
       let username = req.params.username
       let permlink = req.params.permlink
@@ -176,8 +175,8 @@ router.get('/:category/@:username/:permlink', (req, res, next) => {
       let description = 'Blockchain powered social VR'
       let image = 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h'
       let iAm = 'Guest'
-      if (req.user){
-        iAm = req.user.username
+      if (req.cookies.user){
+        iAm = req.cookies.user
       }
        //something that would only get sent when requestiong from off platform for OG:data? hmm
         getSteemContent(username, permlink).then(data => {
@@ -241,9 +240,9 @@ router.get('/@:username/:permlink', (req, res, next) => {
   let description = 'Blockchain powered social VR'
   let image = 'https://ipfs.io/ipfs/QmQ84g5YwraX1cF87inZut2GaQiBAFaKEHsUaYT44oTs9h'
   let iAm = 'Guest'
-  if (req.user){
-    iAm = req.user.username
-  }
+      if (req.cookies.user){
+        iAm = req.cookies.user
+      }
    //something that would only get sent when requestiong from off platform for OG:data? hmm
     getSteemContent(username, permlink).then(data => {
       title = data.title;
